@@ -1,13 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# spEcula <img src="man/figures/logo.png" align="right"height="139"/></a>
+# spEcula <img src="man/figures/logo.png" align="right" height="140"/>
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 The goal of `spEcula` is to make it easier to use R for spatial
-speculation which based on spatial dependence, spatial stratification
+speculation based on spatial dependence, spatial stratification
 heterogeneity and geographical configuration similarity.
 
 ## Installation
