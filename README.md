@@ -25,36 +25,80 @@ devtools::install_github("SpatLyu/spEcula")
 
 `geosimilarity` package has achieved `gos` model,but when data is
 larger,`geosimilarity` may be slow. I develop the parallelized `gos`
-model in `spEcula`,which can assing the `cores` argument in `gos()`
-function.
+model in `spEcula`,which can change the `cores` argument in `gos()`
+function to parallel computation.
 
 ``` r
 library(spEcula)
 
+hist(zn$Zn)
+```
+
+<img src="man/figures/README-example-1.png" width="100%" />
+
+``` r
+# log-transformation
+zn$Zn = log(zn$Zn)
+hist(zn$Zn)
+```
+
+<img src="man/figures/README-example-2.png" width="100%" />
+
+``` r
 system.time({
   g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
            data = zn, newdata = grid, kappa = 0.08,cores = 6)
 })
 ##    user  system elapsed 
-##     0.0     0.0     3.1
+##    0.00    0.00    3.25
 ```
 
 ``` r
-
 g1
 ## # A tibble: 13,132 × 7
-##       pred uncertainty90 uncertainty95 uncertainty99 uncertainty99.5
-##      <dbl>         <dbl>         <dbl>         <dbl>           <dbl>
-##  1 3.83e50        0.0785        0.0510       0.0280          0.0238 
-##  2 3.86e50        0.0517        0.0349       0.00984         0.00919
-##  3 3.88e50        0.0675        0.0416       0.0215          0.0143 
-##  4 4.00e50        0.0651        0.0560       0.0134          0.00769
-##  5 4.06e50        0.0740        0.0443       0.0176          0.0137 
-##  6 3.93e50        0.0700        0.0465       0.0196          0.0165 
-##  7 4.03e50        0.0445        0.0335       0.0179          0.0173 
-##  8 3.90e50        0.0480        0.0424       0.0220          0.0114 
-##  9 3.88e50        0.0428        0.0427       0.0180          0.00993
-## 10 3.94e50        0.0214        0.0214       0.0177          0.0137 
+##     pred uncertainty90 uncertainty95 uncertainty99 uncertainty99.5
+##    <dbl>         <dbl>         <dbl>         <dbl>           <dbl>
+##  1  3.08        0.0818        0.0523        0.0287         0.0243 
+##  2  3.11        0.0529        0.0356        0.0102         0.00954
+##  3  3.13        0.0693        0.0429        0.0224         0.0148 
+##  4  3.12        0.0665        0.0572        0.0140         0.00799
+##  5  3.09        0.0736        0.0460        0.0181         0.0139 
+##  6  3.07        0.0728        0.0480        0.0200         0.0169 
+##  7  3.14        0.0453        0.0345        0.0185         0.0178 
+##  8  3.21        0.0488        0.0434        0.0227         0.0118 
+##  9  3.22        0.0435        0.0432        0.0186         0.0103 
+## 10  3.20        0.0217        0.0217        0.0182         0.0141 
 ## # ℹ 13,122 more rows
 ## # ℹ 2 more variables: uncertainty99.9 <dbl>, uncertainty100 <dbl>
 ```
+
+``` r
+library(ggplot2)
+library(viridis)
+## Loading required package: viridisLite
+```
+
+``` r
+grid$pred = exp(g1$pred)
+grid$uc99 = g1$`uncertainty99`
+
+ggplot(grid, aes(x = Lon, y = Lat, fill = pred)) +
+  geom_tile() +
+  scale_fill_viridis(option = "magma", direction = -1) + 
+  coord_equal() +
+  labs(fill = 'Prediction') +
+  theme_bw() 
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+
+``` r
+ggplot(grid, aes(x = Lon, y = Lat, fill = uc99)) +
+  geom_tile() +
+  scale_fill_viridis(option = "mako", direction = -1) + 
+  coord_equal() +
+  labs(fill = bquote(Uncertainty~(zeta==0.99))) +
+  theme_bw() 
+```
+
+<img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />

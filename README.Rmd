@@ -33,16 +33,39 @@ devtools::install_github("SpatLyu/spEcula")
 
 ### Computationally optimized geographically optimal similarity (GOS) model
 
-`geosimilarity` package has achieved `gos` model,but when data is larger,`geosimilarity` may be slow. I develop the parallelized `gos` model in `spEcula`,which can assing the `cores` argument in `gos()` function.
+  `geosimilarity` package has achieved `gos` model,but when data is larger,`geosimilarity` may be slow. I develop the parallelized `gos` model in `spEcula`,which can change the `cores` argument in `gos()` function to parallel computation.
 
 ```{r example}
 library(spEcula)
 
+hist(zn$Zn)
+# log-transformation
+zn$Zn = log(zn$Zn)
+hist(zn$Zn)
+```
+
+```{r}
 system.time({
   g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
            data = zn, newdata = grid, kappa = 0.08,cores = 6)
 })
-
 g1
+library(ggplot2)
+library(viridis)
+grid$pred = exp(g1$pred)
+grid$uc99 = g1$`uncertainty99`
+
+ggplot(grid, aes(x = Lon, y = Lat, fill = pred)) +
+  geom_tile() +
+  scale_fill_viridis(option = "magma", direction = -1) + 
+  coord_equal() +
+  labs(fill = 'Prediction') +
+  theme_bw() 
+ggplot(grid, aes(x = Lon, y = Lat, fill = uc99)) +
+  geom_tile() +
+  scale_fill_viridis(option = "mako", direction = -1) + 
+  coord_equal() +
+  labs(fill = bquote(Uncertainty~(zeta==0.99))) +
+  theme_bw() 
 ```
 

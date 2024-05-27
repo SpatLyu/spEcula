@@ -5,7 +5,7 @@
 \alias{zn}
 \title{Spatial datasets of trace element Zn.}
 \format{
-\code{zn}: A tibble of trace element Zn with 873 rows and 12 variables
+\code{zn}: A tibble of trace element Zn with 885 rows and 12 variables
 }
 \usage{
 zn

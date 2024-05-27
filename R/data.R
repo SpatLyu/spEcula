@@ -4,7 +4,7 @@
 #' package.
 #'
 #' @name zn
-#' @format \code{zn}: A tibble of trace element Zn with 873 rows and 12 variables
+#' @format \code{zn}: A tibble of trace element Zn with 885 rows and 12 variables
 #' @docType data
 #' @keywords dataset trace elements
 "zn"
