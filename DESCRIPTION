@@ -1,0 +1,11 @@
+Package: spEcula
+Title: Spatial Speculation With R
+Version: 0.0.0.9000
+Authors@R: 
+    person("Wenbo", "Lv", , "lyu.geosocial@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0009-0002-6003-3800"))
+Description: Spatial speculation based on spatial dependence, spatial stratification heterogeneity and geographical configuration similarity.
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
