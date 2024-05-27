@@ -5,14 +5,15 @@
 \alias{grid}
 \title{Spatial grid data of explanatory variables.}
 \format{
-\code{grid}: A data frame of grided trace element explanatory variables
-with 13132 rows and 12 variables, where the first column is ID.
+\code{grid}: A tibble of grided trace element explanatory variables
+with 13132 rows and 12 variables, where the first column is GridID.
 }
 \usage{
 grid
 }
 \description{
-Spatial grid data of explanatory variables.
+Spatial grid data of explanatory variables,modified from \code{geosimilarity}
+package.
 }
 \keyword{dataset}
 \keyword{elements}

@@ -5,13 +5,14 @@
 \alias{zn}
 \title{Spatial datasets of trace element Zn.}
 \format{
-\code{zn}: A data frame of trace element Zn with 894 rows and 12 variables
+\code{zn}: A tibble of trace element Zn with 873 rows and 12 variables
 }
 \usage{
 zn
 }
 \description{
-Spatial datasets of trace element Zn.
+Spatial datasets of trace element Zn,modified from \code{geosimilarity}
+package.
 }
 \keyword{dataset}
 \keyword{elements}
