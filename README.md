@@ -6,9 +6,9 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `spEcula` is to make it easier to use R for spatial
-speculation based on spatial dependence, spatial stratification
-heterogeneity and geographical configuration similarity.
+The goal of **spEcula** is to make it easier to use R for spatial
+speculation based on *spatial dependence*, *spatial stratification
+heterogeneity* and *geographical configuration similarity*.
 
 ## Installation
 
