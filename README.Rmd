@@ -31,10 +31,18 @@ devtools::install_github("SpatLyu/spEcula")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+### Computationally optimized geographically optimal similarity (GOS) model
+
+`geosimilarity` package has achieved `gos` model,but when data is larger,`geosimilarity` may be slow. I develop the parallelized `gos` model in `spEcula`,which can assing the `cores` argument in `gos()` function.
 
 ```{r example}
 library(spEcula)
-## basic example code
+
+system.time({
+  g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
+           data = zn, newdata = grid, kappa = 0.08,cores = 6)
+})
+
+g1
 ```
 
