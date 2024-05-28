@@ -28,5 +28,7 @@ Suggests:
     knitr,
     rmarkdown,
     skimr,
-    car
+    car,
+    cowplot,
+    viridis
 VignetteBuilder: knitr

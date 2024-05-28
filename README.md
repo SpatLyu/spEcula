@@ -16,7 +16,7 @@ You can install the development version of `spEcula` like so:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SpatLyu/spEcula")
+devtools::install_github("SpatLyu/spEcula",build_vignettes = T,dep = T)
 ```
 
 ## Example
@@ -31,26 +31,13 @@ function to parallel computation.
 ``` r
 library(spEcula)
 
-hist(zn$Zn)
-```
-
-<img src="man/figures/README-example-1.png" width="100%" />
-
-``` r
-# log-transformation
 zn$Zn = log(zn$Zn)
-hist(zn$Zn)
-```
-
-<img src="man/figures/README-example-2.png" width="100%" />
-
-``` r
 system.time({
   g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
            data = zn, newdata = grid, kappa = 0.08,cores = 6)
 })
 ##    user  system elapsed 
-##    0.00    0.00    3.25
+##    0.00    0.00    3.22
 ```
 
 ``` r
@@ -74,6 +61,7 @@ g1
 
 ``` r
 library(ggplot2)
+library(cowplot)
 library(viridis)
 ## Loading required package: viridisLite
 ```
@@ -82,23 +70,24 @@ library(viridis)
 grid$pred = exp(g1$pred)
 grid$uc99 = g1$`uncertainty99`
 
-ggplot(grid, aes(x = Lon, y = Lat, fill = pred)) +
+f1 = ggplot(grid, aes(x = Lon, y = Lat, fill = pred)) +
   geom_tile() +
-  scale_fill_viridis(option = "magma", direction = -1) + 
+  scale_fill_viridis(option="magma", direction = -1) + 
   coord_equal() +
-  labs(fill = 'Prediction') +
+  labs(fill='Prediction') +
   theme_bw() 
+f2 = ggplot(grid, aes(x = Lon, y = Lat, fill = uc99)) +
+  geom_tile() +
+  scale_fill_viridis(option="mako", direction = -1) + 
+  coord_equal() +
+  labs(fill=bquote(Uncertainty~(zeta==0.99))) +
+  theme_bw() 
+
+plot_grid(f1,f2,nrow = 1,label_fontfamily = 'serif',
+          labels = paste0('(',letters[1:2],')'),
+          label_fontface = 'plain',label_size = 10,
+          hjust = -1.5,align = 'hv')  -> p
+p
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
-
-``` r
-ggplot(grid, aes(x = Lon, y = Lat, fill = uc99)) +
-  geom_tile() +
-  scale_fill_viridis(option = "mako", direction = -1) + 
-  coord_equal() +
-  labs(fill = bquote(Uncertainty~(zeta==0.99))) +
-  theme_bw() 
-```
-
-<img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />
