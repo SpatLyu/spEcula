@@ -24,3 +24,9 @@ Imports:
 Depends: 
     R (>= 4.2.0)
 LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown,
+    skimr,
+    car
+VignetteBuilder: knitr

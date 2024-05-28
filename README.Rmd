@@ -26,7 +26,7 @@ You can install the development version of `spEcula` like so:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SpatLyu/spEcula")
+devtools::install_github("SpatLyu/spEcula",build_vignettes = T,dep = T)
 ```
 
 ## Example
