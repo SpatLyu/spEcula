@@ -107,10 +107,10 @@ b2$plot
 ### Spatial prediction use GOS model
 
 ```{r rungos}
-system.time({
+tictoc::tic()
 g = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
         data = zn, newdata = grid, kappa = 0.07,cores = 6)
-})
+tictoc::toc()
 ```
 
 back transformation using transformation parameters that have used Box-cos transformation

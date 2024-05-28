@@ -51,7 +51,7 @@ Table: Data summary
 |:-------------|---------:|-------------:|------:|-----:|------:|------:|------:|------:|------:|:-----|
 |Lon           |         0|             1| 120.59|  0.27| 120.05| 120.41| 120.55| 120.76| 121.23|▃▇▇▃▃ |
 |Lat           |         0|             1| -27.94|  0.30| -28.52| -28.17| -27.98| -27.75| -27.29|▅▆▇▃▃ |
-|Zn            |         0|             1|   3.29|  0.71|   1.58|   2.79|   3.23|   3.87|   4.88|▂▆▇▆▃ |
+|Zn            |         0|             1|  41.64| 32.95|   5.00|  18.00|  29.00|  58.00| 181.00|▇▂▂▁▁ |
 |Elevation     |         0|             1| 481.54| 34.70| 398.89| 462.64| 485.56| 507.04| 562.99|▂▃▇▇▁ |
 |Slope         |         0|             1|   0.30|  0.15|   0.01|   0.20|   0.27|   0.39|   0.81|▃▇▃▂▁ |
 |Aspect        |         0|             1| 170.97| 86.06|   4.88| 100.28| 176.51| 230.21| 352.60|▅▅▇▅▃ |
@@ -75,10 +75,10 @@ Table: Data summary
 |:------------------------|:-----|
 |Name                     |grid  |
 |Number of rows           |13132 |
-|Number of columns        |14    |
+|Number of columns        |12    |
 |_______________________  |      |
 |Column type frequency:   |      |
-|numeric                  |14    |
+|numeric                  |12    |
 |________________________ |      |
 |Group variables          |None  |
 
@@ -99,8 +99,6 @@ Table: Data summary
 |pH            |         0|             1|    5.74|    0.18|   5.11|    5.63|    5.75|    5.87|     6.18|▁▂▇▇▂ |
 |Road          |         0|             1|    9.82|    8.36|   0.00|    3.31|    7.95|   14.21|    50.14|▇▅▁▁▁ |
 |Mine          |         0|             1|   14.79|   12.12|   0.02|    5.54|   11.43|   19.85|    56.64|▇▅▂▁▁ |
-|pred          |         0|             1|   30.48|   12.38|  10.94|   20.81|   25.89|   38.44|    76.15|▇▆▃▂▁ |
-|uc99          |         0|             1|    0.03|    0.07|   0.00|    0.01|    0.02|    0.03|     1.00|▇▁▁▁▁ |
 
 
 
@@ -114,7 +112,7 @@ do a normality test on it.
 
 ``` r
 moments::skewness(zn$Zn)
-## [1] 0.004367706
+## [1] 1.414892
 ```
 
 ``` r
@@ -123,7 +121,7 @@ shapiro.test(zn$Zn)
 ## 	Shapiro-Wilk normality test
 ## 
 ## data:  zn$Zn
-## W = 0.98626, p-value = 2.241e-07
+## W = 0.84834, p-value < 2.2e-16
 ```
 
 The Shapiro-Wilk normality test with a $\text{p-value} < 2.2e-16 << 0.05$ and W value of $0.84834$, we can conclude with high confidence that `zn` variable in `Zn` data does not follow a normal distribution.
@@ -135,8 +133,8 @@ Now,we transform the `zn` variable in `Zn` data,here I use `Power Transform` met
 lambdapt = car::powerTransform(zn$Zn)
 lambdapt
 ## Estimated transformation parameter 
-##     zn$Zn 
-## 0.8942749
+##       zn$Zn 
+## -0.02447525
 ```
 
 ``` r
@@ -154,7 +152,7 @@ hist(zn$Zn)
 
 ``` r
 moments::skewness(zn$Zn)
-## [1] -0.04330951
+## [1] 0.004367706
 ```
 
 All right, let's move on to the next step to see variable correlation:
@@ -187,7 +185,7 @@ b1 = bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
                data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
                nrepeat = 10,nsplit = .8,cores = 1)
 tictoc::toc()
-## 33.67 sec elapsed
+## 32.73 sec elapsed
 ```
 
 ``` r
@@ -200,25 +198,25 @@ b1$cvmean
 ## # A tibble: 19 × 2
 ##    kappa  rmse
 ##    <dbl> <dbl>
-##  1  0.01 0.541
-##  2  0.02 0.534
-##  3  0.03 0.530
-##  4  0.04 0.529
-##  5  0.05 0.527
-##  6  0.06 0.527
-##  7  0.07 0.527
-##  8  0.08 0.527
-##  9  0.09 0.527
-## 10  0.1  0.527
-## 11  0.2  0.527
-## 12  0.3  0.527
-## 13  0.4  0.527
-## 14  0.5  0.527
-## 15  0.6  0.527
-## 16  0.7  0.527
-## 17  0.8  0.527
-## 18  0.9  0.527
-## 19  1    0.527
+##  1  0.01 0.610
+##  2  0.02 0.602
+##  3  0.03 0.597
+##  4  0.04 0.596
+##  5  0.05 0.594
+##  6  0.06 0.594
+##  7  0.07 0.594
+##  8  0.08 0.594
+##  9  0.09 0.594
+## 10  0.1  0.594
+## 11  0.2  0.594
+## 12  0.3  0.594
+## 13  0.4  0.594
+## 14  0.5  0.594
+## 15  0.6  0.594
+## 16  0.7  0.594
+## 17  0.8  0.594
+## 18  0.9  0.594
+## 19  1    0.594
 ```
 
 ``` r
@@ -236,7 +234,7 @@ b2 = bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
                data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
                nrepeat = 10,nsplit = .8,cores = 6)
 tictoc::toc()
-## 10.21 sec elapsed
+## 10.48 sec elapsed
 ```
 
 ``` r
@@ -249,25 +247,25 @@ b2$cvmean
 ## # A tibble: 19 × 2
 ##    kappa  rmse
 ##    <dbl> <dbl>
-##  1  0.01 0.541
-##  2  0.02 0.534
-##  3  0.03 0.530
-##  4  0.04 0.529
-##  5  0.05 0.527
-##  6  0.06 0.527
-##  7  0.07 0.527
-##  8  0.08 0.527
-##  9  0.09 0.527
-## 10  0.1  0.527
-## 11  0.2  0.527
-## 12  0.3  0.527
-## 13  0.4  0.527
-## 14  0.5  0.527
-## 15  0.6  0.527
-## 16  0.7  0.527
-## 17  0.8  0.527
-## 18  0.9  0.527
-## 19  1    0.527
+##  1  0.01 0.610
+##  2  0.02 0.602
+##  3  0.03 0.597
+##  4  0.04 0.596
+##  5  0.05 0.594
+##  6  0.06 0.594
+##  7  0.07 0.594
+##  8  0.08 0.594
+##  9  0.09 0.594
+## 10  0.1  0.594
+## 11  0.2  0.594
+## 12  0.3  0.594
+## 13  0.4  0.594
+## 14  0.5  0.594
+## 15  0.6  0.594
+## 16  0.7  0.594
+## 17  0.8  0.594
+## 18  0.9  0.594
+## 19  1    0.594
 ```
 
 ``` r
@@ -280,12 +278,11 @@ b2$plot
 
 
 ``` r
-system.time({
+tictoc::tic()
 g = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
         data = zn, newdata = grid, kappa = 0.07,cores = 6)
-})
-##    user  system elapsed 
-##    0.00    0.00    4.27
+tictoc::toc()
+## 4.1 sec elapsed
 ```
 
 back transformation using transformation parameters that have used Box-cos transformation
@@ -302,6 +299,10 @@ show the result
 ``` r
 library(ggplot2)
 library(viridis)
+## Loading required package: viridisLite
+```
+
+``` r
 library(cowplot)
 
 f1 = ggplot(grid, aes(x = Lon, y = Lat, fill = pred)) +
