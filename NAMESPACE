@@ -2,6 +2,7 @@
 
 export(bestkappa)
 export(gos)
+export(inverse_bcPower)
 importFrom(DescTools,RMSE)
 importFrom(dplyr,"%>%")
 importFrom(dplyr,summarise)

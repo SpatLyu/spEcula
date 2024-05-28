@@ -7,8 +7,10 @@
 <!-- badges: end -->
 
 The goal of **spEcula** is to make it easier to use R for spatial
-speculation based on *spatial dependence*, *spatial stratification
-heterogeneity* and *geographical configuration similarity*.
+prediction based on *spatial dependence*, *spatial stratification
+heterogeneity* and *geographical configuration similarity*, and spatial
+statistical inference based on **spatial relationships** (the **three
+laws of geography**).
 
 ## Installation
 
@@ -16,17 +18,17 @@ You can install the development version of `spEcula` like so:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SpatLyu/spEcula",build_vignettes = T,dep = T)
+devtools::install_github("SpatLyu/spEcula",dep = T)
 ```
 
 ## Example
 
-### Computationally optimized geographically optimal similarity (GOS) model
+### Geographically Optimal Similarity (GOS) model
 
 `geosimilarity` package has achieved `gos` model,but when data is
 larger,`geosimilarity` may be slow. I develop the parallelized `gos`
-model in `spEcula`,which can change the `cores` argument in `gos()`
-function to parallel computation.
+model in `spEcula`,which can change the `cores` argument in `gos()` and
+`bestkappa` function to parallel computation.
 
 ``` r
 library(spEcula)
@@ -37,7 +39,7 @@ system.time({
            data = zn, newdata = grid, kappa = 0.08,cores = 6)
 })
 ##    user  system elapsed 
-##    0.01    0.00    3.20
+##    0.00    0.00    3.43
 ```
 
 ``` r

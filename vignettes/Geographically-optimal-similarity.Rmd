@@ -116,7 +116,7 @@ g = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
 back transformation using transformation parameters that have used Box-cos transformation
 
 ```{r}
-grid$pred = (g$pred * lambdapt$lambda + 1) ^ (1 / lambdapt$lambda)
+grid$pred = inverse_bcPower(g$pred,lambdapt$lambda)
 grid$uc99 = g$`uncertainty99`
 ```
 
