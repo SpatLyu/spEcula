@@ -38,7 +38,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 3.17 sec elapsed
+## 3.16 sec elapsed
 ```
 
 ``` r

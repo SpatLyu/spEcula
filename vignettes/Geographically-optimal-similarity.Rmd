@@ -185,7 +185,7 @@ b1 = bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
                data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
                nrepeat = 10,nsplit = .8,cores = 1)
 tictoc::toc()
-## 32.73 sec elapsed
+## 32.56 sec elapsed
 ```
 
 ``` r
@@ -234,7 +234,7 @@ b2 = bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
                data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
                nrepeat = 10,nsplit = .8,cores = 6)
 tictoc::toc()
-## 10.48 sec elapsed
+## 9.86 sec elapsed
 ```
 
 ``` r
@@ -282,7 +282,7 @@ tictoc::tic()
 g = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
         data = zn, newdata = grid, kappa = 0.07,cores = 6)
 tictoc::toc()
-## 4.1 sec elapsed
+## 4.69 sec elapsed
 ```
 
 back transformation using transformation parameters that have used Box-cos transformation

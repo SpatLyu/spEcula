@@ -26,6 +26,7 @@
 #' @importFrom parallel makeCluster stopCluster parLapply
 #' @importFrom tibble as_tibble
 #' @importFrom purrr map_dfr
+#' @importFrom dplyr select
 #'
 #' @examples
 #' \dontrun{
@@ -40,27 +41,18 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
   doclust = FALSE
   tau = 1 - kappa
   formula = as.formula(formula)
-  response = data[,colnames(data) == as.character(formula[[2]])]
-  response = as.vector(as.matrix(response))
+  formula.vars = all.vars(formula)
+  response = data[, formula.vars[1], drop = TRUE]
   no = nrow(data)
   np = nrow(newdata)
+  nv = ifelse(formula.vars[2] == ".", ncol(data) - 1, length(formula.vars) - 1)
 
-  if (formula[[3]]=="."){
-    nv = ncol(data) - 1
+  if (formula.vars[2] == "."){
+    obs_explanatory = data[,-which(colnames(data) == formula.vars[1])]
+    pred_explanatory = newdata[,-which(colnames(newdata) == formula.vars[1])]
   } else {
-    nv = length(all.vars(formula)[-1])
-  }
-
-  if (formula[[3]]=="."){
-    obs_explanatory = data[,-which(colnames(data) == as.character(formula[[2]]))]
-  } else {
-    obs_explanatory = subset(data, TRUE, match(all.vars(formula)[-1], colnames(data)))
-  }
-
-  if (formula[[3]]=="."){
-    pred_explanatory = newdata[,-which(colnames(newdata) == as.character(formula[[2]]))]
-  } else {
-    pred_explanatory = subset(newdata, TRUE, match(all.vars(formula)[-1], colnames(newdata)))
+    obs_explanatory = subset(data, TRUE, match(formula.vars[-1], colnames(data)))
+    pred_explanatory = subset(newdata, TRUE, match(formula.vars[-1], colnames(newdata)))
   }
 
   if (inherits(cores, "cluster")) {
@@ -80,11 +72,11 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
   obs_explanatory = as.matrix(obs_explanatory)
   pred_explanatory = as.matrix(pred_explanatory)
   xall = rbind(obs_explanatory, pred_explanatory)
-  sdv = sapply(1:nv, function(x) sd(xall[,x]))
+  sdv = sapply(1:nv, \(x) sd(xall[,x]))
 
   calculgos = \(u){
     xpredvalues = pred_explanatory[u,]
-    ej1 = lapply(1:nv, function(x) Ej(obs_explanatory[,x], xpredvalues[x], np, sdv[x]))
+    ej1 = lapply(1:nv, \(x) Ej(obs_explanatory[,x], xpredvalues[x], np, sdv[x]))
     ej = do.call(pmin, ej1)
     k = which(ej >= quantile(ej, tau))
     ej2 = ej[k]
