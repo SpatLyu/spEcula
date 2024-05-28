@@ -16,7 +16,11 @@ Imports:
   stats,
   parallel,
   tibble, 
-  purrr
+  purrr,
+  dplyr,
+  ggplot2,
+  ggrepel,
+  DescTools
 Depends: 
     R (>= 4.2.0)
 LazyData: true

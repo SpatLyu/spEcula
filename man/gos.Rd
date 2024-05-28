@@ -21,7 +21,9 @@ that 25\% of observations with high similarity to a prediction
 location are used for modelling.}
 
 \item{cores}{positive integer(default is 1). If cores > 1, a 'parallel' package
-cluster with that many cores is created and used. You can also supply a cluster object}
+cluster with that many cores is created and used. You can also supply a cluster
+object.When data is less than 1500 row,choose \code{1} cores and when data is more
+than 5000 row,increase the cores.}
 }
 \value{
 A tibble made up of predictions and uncertainties.
@@ -35,6 +37,9 @@ g = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
 data = zn, newdata = grid, kappa = 0.08,cores = 6)
 g
 }
+}
+\references{
+Song, Y. (2022). Geographically Optimal Similarity. Mathematical Geosciences. doi: 10.1007/s11004-022-10036-8.
 }
 \author{
 Wenbo Lv \email{lyu.geosocial@gmail.com}
