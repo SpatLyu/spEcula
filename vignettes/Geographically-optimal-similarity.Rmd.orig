@@ -1,0 +1,148 @@
+---
+title: "Geographically Optimal Similarity Model in R package spEcula"
+author: "Wenbo Lv & Yangyang Lei"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Geographically-optimal-similarity}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "##"
+)
+```
+
+##  GOS model <img src="../man/figures/logo.png" align="right" height="75"/>
+
+This vignette explains how to run a `GOS` model in `spEcula` package.
+
+```{r echo=FALSE, out.width='75%', fig.align="center",fig.cap="Schematic overview of geographically optimal similarity (GOS) model"}
+knitr::include_graphics('../man/figures/gos_flowchart.png')
+```
+
+### Load data and package
+
+use `zn` data to train the `gos` model,use `grid` data to predict.
+
+```{r}
+library(spEcula)
+
+skimr::skim(zn)
+skimr::skim(grid)
+```
+
+### Data pre-processing and variable selection
+
+We will use the `zn` data and `grid` data o predict `Zn` in the scope of `grid` data.
+
+From above,we can see that `zn` variable in `Zn` data is skewed (right skewed),so Let's
+do a normality test on it.
+
+```{r}
+moments::skewness(zn$Zn)
+shapiro.test(zn$Zn)
+```
+
+The Shapiro-Wilk normality test with a $\text{p-value} < 2.2e-16 << 0.05$ and W value of $0.84834$, we can conclude with high confidence that `zn` variable in `Zn` data does not follow a normal distribution.
+
+Now,we transform the `zn` variable in `Zn` data,here I use `Power Transform` method.(ps: you can also use a log-transformation). `Power Transform` uses the maximum likelihood-like approach of Box and Cox (1964) to select a transformation of a `univariate` or multivariate response for normality. First we have to calculate appropriate transformation parameters using `powerTransform()` function of `car` package and then use this parameter to transform the data using `bcPower()` function.
+
+```{r bcPower}
+lambdapt = car::powerTransform(zn$Zn)
+lambdapt
+zn$Zn = car::bcPower(zn$Zn,lambdapt$lambda)
+```
+
+Now, let's see the transformed `zn` variable in `Zn` data and see the skewness:
+
+```{r skewness,fig.width=7.5,fig.height=7.5}
+hist(zn$Zn)
+moments::skewness(zn$Zn)
+```
+
+All right, let's move on to the next step to see variable correlation:
+
+```{r warning=FALSE,fig.width=7.5,fig.height=7.5}
+PerformanceAnalytics::chart.Correlation(zn[, c(3:12)],pch = 19)
+```
+
+and test multicollinearity use vif:
+
+```{r multicollinearity}
+m1 = lm(Zn ~ Slope + Water + NDVI + SOC + pH + Road + Mine, data = zn)
+car::vif(m1)
+```
+
+In this step, the selected variables include Slope, Water, NDVI, SOC, pH, Road, and Mine.
+
+### Determining the optimal similarity
+
+```{r b1, fig.width=7.5,fig.height=7.5}
+tictoc::tic()
+b1 = bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
+               data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
+               nrepeat = 10,nsplit = .8,cores = 1)
+tictoc::toc()
+b1$bestkappa
+b1$cvmean
+b1$plot
+```
+
+You can set more optional numbers to the `kappa` vector and a higher value of the cross-validation repeat times `nrepeat` with a multi-core parallel(set `cores` bigger).
+
+```{r b2, fig.width=7.5,fig.height=7.5}
+tictoc::tic()
+b2 = bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
+               data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
+               nrepeat = 10,nsplit = .8,cores = 6)
+tictoc::toc()
+b2$bestkappa
+b2$cvmean
+b2$plot
+```
+
+### Spatial prediction use GOS model
+
+```{r rungos}
+system.time({
+g = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
+        data = zn, newdata = grid, kappa = 0.07,cores = 6)
+})
+```
+
+back transformation using transformation parameters that have used Box-cos transformation
+
+```{r}
+grid$pred = inverse_bcPower(g$pred,lambdapt$lambda)
+grid$uc99 = g$`uncertainty99`
+```
+
+show the result
+
+```{r gosresult,fig.width=9.5,fig.height=3.5}
+library(ggplot2)
+library(viridis)
+library(cowplot)
+
+f1 = ggplot(grid, aes(x = Lon, y = Lat, fill = pred)) +
+  geom_tile() +
+  scale_fill_viridis(option="magma", direction = -1) +
+  coord_equal() +
+  labs(fill='Prediction') +
+  theme_bw()
+f2 = ggplot(grid, aes(x = Lon, y = Lat, fill = uc99)) +
+  geom_tile() +
+  scale_fill_viridis(option="mako", direction = -1) +
+  coord_equal() +
+  labs(fill=bquote(Uncertainty~(zeta==0.99))) +
+  theme_bw()
+
+plot_grid(f1,f2,nrow = 1,label_fontfamily = 'serif',
+          labels = paste0('(',letters[1:2],')'),
+          label_fontface = 'plain',label_size = 10,
+          hjust = -1.5,align = 'hv')  -> p
+p
+```

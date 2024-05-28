@@ -18,8 +18,7 @@
 #'              location are used for modelling.
 #' @param cores positive integer(default is 1). If cores > 1, a 'parallel' package
 #' cluster with that many cores is created and used. You can also supply a cluster
-#' object.When data is less than 1500 row,choose `1` cores and when data is more
-#' than 5000 row,increase the cores.
+#' object.
 #'
 #' @return A tibble made up of predictions and uncertainties.
 #'
@@ -120,7 +119,7 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
 #' Song, Y. (2022). Geographically Optimal Similarity. Mathematical Geosciences. doi: 10.1007/s11004-022-10036-8.
 #'
 #' @usage
-#' bestkappa(formula,data = data,kappa=seq(0.05,1,0.05),
+#' bestkappa(formula,data = NULL,kappa=seq(0.05,1,0.05),
 #'           nrepeat = 10,nsplit = 0.5,cores = 1)
 #'
 #' @param formula A formula of GOS model
@@ -137,14 +136,14 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
 #' default is `0.5`.
 #' @param cores positive integer(default is 1). If cores > 1, a 'parallel' package
 #' cluster with that many cores is created and used. You can also supply a cluster
-#' object.When data is less than 1500 row,choose `1` cores and when data is more
-#' than 5000 row,increase the cores.
+#' object.
 #'
 #' @return A list of the result of the best kappa and the computation process curve.
 #'
 #' @importFrom DescTools RMSE
 #' @importFrom dplyr %>% summarise
-#' @importFrom purrr pmap_dfr
+#' @importFrom parallel makeCluster stopCluster clusterExport parLapply
+#' @importFrom purrr map_dfr
 #' @importFrom ggplot2 ggplot aes geom_point geom_line scale_x_continuous scale_y_continuous theme_bw
 #' @importFrom ggrepel geom_label_repel
 #'
@@ -163,21 +162,33 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
 #' }
 #' @export
 
-bestkappa = \(formula, data = data,kappa = seq(0.05,1,0.05),
+bestkappa = \(formula, data = NULL, kappa = seq(0.05,1,0.05),
               nrepeat = 10,nsplit = 0.5,cores = 1){
+  doclust = FALSE
+  if (inherits(cores, "cluster")) {
+    doclust = TRUE
+  } else if (cores > 1) {
+    doclust = TRUE
+    cores = parallel::makeCluster(cores)
+    on.exit(parallel::stopCluster(cores), add=TRUE)
+  }
 
+  no = nrow(data)
   namey = all.vars(formula)[1]
 
-  calcvrmse = \(i,seed,kappa){
+  calcvrmse = \(paramp){# The function is wrapped this way to use `parallel::parLapply`.
+    i = paramp[[1]]
+    seed = paramp[[2]]
+    kappa = paramp[[3]]
     set.seed(seed)
-    trainindex = sample.int(n = nrow(data),
-                            size = floor(nsplit * nrow(data)),
+    trainindex = sample.int(n = no,
+                            size = floor(nsplit * no),
                             replace = F)
     cvtrain = data[trainindex, ]
     cvtest = data[-trainindex, ]
 
     g = gos(formula, data = cvtrain, newdata = cvtest,
-            kappa = kappa, cores = cores)
+            kappa = kappa, cores = 1)
     pred = g$pred
 
     cvrmse = c(kappa,DescTools::RMSE(cvtest[[namey]], pred))
@@ -185,10 +196,19 @@ bestkappa = \(formula, data = data,kappa = seq(0.05,1,0.05),
     return(cvrmse)
   }
 
-  out_rmse = purrr::pmap_dfr(list("i" = seq_along(rep(kappa, times = nrepeat)),
-                                "seed" = rep(c(1:nrepeat), each = length(kappa)),
-                                "kappa" = rep(kappa, times = nrepeat)),
-                           calcvrmse)
+  paradf = data.frame("i" = seq_along(rep(kappa, times = nrepeat)),
+                      "seed" = rep(c(1:nrepeat), each = length(kappa)),
+                      "kappa" = rep(kappa, times = nrepeat))
+  parak = split(paradf, seq_len(nrow(paradf)))
+
+  if (doclust) {
+    parallel::clusterExport(cores,'gos')
+    out_rmse = parallel::parLapply(cores,parak,calcvrmse)
+    out_rmse = tibble::as_tibble(do.call(rbind, out_rmse))
+  } else {
+    out_rmse = purrr::map_dfr(parak,calcvrmse)
+  }
+
   cv.out = out_rmse %>%
     dplyr::summarise(rmse = mean(rmse,na.rm = T),
                      .by = kappa)

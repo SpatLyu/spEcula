@@ -1,6 +1,6 @@
 Package: spEcula
 Title: Spatial Inference And Spatial Prediction With R
-Version: 0.1.0.9000
+Version: 0.1.0.9999
 Authors@R: c(
     person("Wenbo", "Lv", , "lyu.geosocial@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0002-6003-3800")),
@@ -16,8 +16,8 @@ Imports:
   stats,
   parallel,
   tibble, 
-  purrr,
   dplyr,
+  purrr,
   ggplot2,
   ggrepel,
   DescTools
@@ -32,5 +32,7 @@ Suggests:
     moments,
     cowplot,
     viridis,
-    PerformanceAnalytics
+    PerformanceAnalytics,
+    tictoc
 VignetteBuilder: knitr
+Config/build/clean-inst-doc: FALSE

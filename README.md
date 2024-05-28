@@ -18,7 +18,7 @@ You can install the development version of `spEcula` like so:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SpatLyu/spEcula",dep = T)
+devtools::install_github("SpatLyu/spEcula",build_vignettes = T,dep = T)
 ```
 
 ## Example
@@ -34,12 +34,11 @@ model in `spEcula`,which can change the `cores` argument in `gos()` and
 library(spEcula)
 
 zn$Zn = log(zn$Zn)
-system.time({
-  g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
-           data = zn, newdata = grid, kappa = 0.08,cores = 6)
-})
-##    user  system elapsed 
-##    0.00    0.00    3.43
+tictoc::tic()
+g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
+         data = zn, newdata = grid, kappa = 0.08,cores = 6)
+tictoc::toc()
+## 3.17 sec elapsed
 ```
 
 ``` r
