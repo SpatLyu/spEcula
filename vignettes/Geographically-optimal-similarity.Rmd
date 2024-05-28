@@ -19,6 +19,10 @@ knitr::opts_chunk$set(
 
 This vignette explains how to run a `GOS` model in `spEcula` package.
 
+```{r echo=FALSE, out.width='75%', fig.align="center",fig.cap="Schematic overview of geographically optimal similarity (GOS) model"}
+knitr::include_graphics('../man/figures/gos_flowchart.png')
+```
+
 ### Load data and package
 
 use `zn` data to train the `gos` model,use `grid` data to predict.
@@ -107,7 +111,6 @@ system.time({
 g = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
         data = zn, newdata = grid, kappa = 0.07,cores = 6)
 })
-head(g)
 ```
 
 back transformation using transformation parameters that have used Box-cos transformation
@@ -119,7 +122,7 @@ grid$uc99 = g$`uncertainty99`
 
 show the result
 
-```{r fig.width=10,fig.height=3.5}
+```{r fig.width=9,fig.height=3.5}
 library(ggplot2)
 library(viridis)
 library(cowplot)

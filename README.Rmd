@@ -43,15 +43,16 @@ system.time({
   g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
            data = zn, newdata = grid, kappa = 0.08,cores = 6)
 })
+g1$pred = exp(g1$pred)
+grid$pred = g1$pred
+grid$uc99 = g1$`uncertainty99`
 g1
 ```
 
-```{r fig.width=10,fig.height=3.5}
+```{r fig.width=9.5,fig.height=3.5}
 library(ggplot2)
 library(cowplot)
 library(viridis)
-grid$pred = exp(g1$pred)
-grid$uc99 = g1$`uncertainty99`
 
 f1 = ggplot(grid, aes(x = Lon, y = Lat, fill = pred)) +
   geom_tile() +
