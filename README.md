@@ -37,7 +37,7 @@ system.time({
            data = zn, newdata = grid, kappa = 0.08,cores = 6)
 })
 ##    user  system elapsed 
-##    0.04    0.02    3.14
+##    0.01    0.00    3.20
 ```
 
 ``` r
