@@ -21,7 +21,10 @@ Imports:
   ggplot2,
   ggrepel,
   DescTools,
-  kohonen
+  kohonen,
+  aweSOM,
+  htmlwidgets,
+  cluster
 Depends: 
     R (>= 4.2.0)
 LazyData: true
