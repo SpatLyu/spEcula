@@ -8,7 +8,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "##"
+)
+```
 
 ##  GeoSOM model <img src="../man/figures/logo.png" align="right" height="75"/>
 
@@ -19,28 +24,16 @@ This vignette explains how to run a `GeoSOM` model in `spEcula` package.
 Here use `pmc` data,which is the 2011 Portugal Census data contains the centroid coordinates and 12 selected socio-economic variables for the 278 municipalities of Portugal.The 12 selected variables are `denspop11`(Population density) `discapd`(Average distance to the closest district capital) `gmm2011`(Average monthly earnings) `podc`(Daily purchasing power per capita) `tdesmp11`(Unemployment rate) `pbsdt11`(Population receiving the unemployment benefit) `ne_sup`(Population with a university degree completed) `abanesc`(Percentage of school dropout) `pdmcdt11`(Expenses of the municipality on cultural and sports activities)
 `pdiv`(Percentage of divorces) `distpolall`(Average distance to the closest police station) `tcrmiltot`(Criminality rate).
 
-
-``` r
+```{r Load-data-and-package}
 library(spEcula)
 
 data(pmc)
 head(pmc)
-## # A tibble: 6 × 14
-##   centroidx centroidy denspop11 discapd gmm2011  podc tdesmp11 pbsst11 ne_sup abanesc pdmcdt11
-##       <dbl>     <dbl>     <dbl>   <dbl>   <dbl> <dbl>    <dbl>   <dbl>  <dbl>   <dbl>    <dbl>
-## 1    -2126.   -26872.      55.0  49814.    970.  86.8     13.6   0.743  10.3     1.97   0.0599
-## 2   -22225.   101936      142.   23220.    920.  85.2     10.1   0.329   9.73    1.48   0.0347
-## 3    51047.   123750       26.5  32855.    692.  61.6      8.9   0.749   4.65    0.97   0.230 
-## 4    65335.  -116583       10.8  46776.    765.  57.1     15.6   1.11    4.98    0.7    0.0692
-## 5   -30628.   114637      159.   15458.    910.  80.2     10.4   0.301   9.52    1.25   0.226 
-## 6    -8846.  -281339      290.   30102.    914. 103.      17.2   0.992  11.5     1.96   0.118 
-## # ℹ 3 more variables: pdiv <dbl>, distpolall <dbl>, tcrmiltot <dbl>
 ```
 
 ### Build GeoSOM model
 
-
-``` r
+```{r Build-and-assess-geosom-model}
 set.seed(20220724)
 g = geosom(data = pmc, coords = c("centroidx","centroidy"), 
            wt = 5,grid = geosomgrid(6,10),normalize = TRUE)
@@ -50,21 +43,8 @@ g = geosom(data = pmc, coords = c("centroidx","centroidy"),
 
 The ```geosom_quality()``` computes several measures to help assess the quality of a GeoSOM.
 
-
-``` r
+```{r}
 geosom_quality(g)
-## 
-## ## Quality measures:
-##  * Quantization error     :  6.599247 
-##  * (% explained variance) :  44.81 
-##  * Topographic error      :  0.7122302 
-##  * Kaski-Lagus error      :  5.198531 
-##  
-## ## Number of obs. per map cell:
-##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 
-## 12  2  4  7  8  3  6  3  4  2  2  7  7  1  3  4  2  4  5  4  2  5  4  5  5  5  5  4  4  3  1  2 
-## 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 
-##  2  5  4  6  4  4  5  3  5  6  3  4  5  2  4  9  5  5  6  4  5  6  7  7  4  6  6 11
 ```
 
 
@@ -82,12 +62,9 @@ It is common to further cluster the GeoSOM map into superclasses, groups of cell
 
 Two methods are implemented in `spEcula` now, PAM (k-medians) and hierarchical clustering. This is how to obtain them in R. In this example, we choose 12 superclasses. We will return to the choice of superclasses below.
 
-
-``` r
+```{r}
 g_superclass = geosom_superclass(g,12,method = 'pam')
 g_superclass
-##  [1]  1  2  2  3  4  3  5  5  2  6  3  6  5  5  2  6  6  6  5  5  5  2  7  7  8  9 10 11  7  7
-## [31]  9  9  9 11  7  7  9  8  8 11  7  3  9  8  8  8 12  3 10  8  8  8 12 12 10  9  8  8  8  9
 ```
 
 ### Plotting general map information
@@ -97,33 +74,23 @@ Using the ```type``` argument to the function, one the following types of plots 
 
 * **Observations Cloud**: visualize the observations as points inside their cell.
 
-
-``` r
+```{r}
 geosom_plot(g, type = "Cloud", superclass = g_superclass)
-## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 ```
-
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
 
 * **Hitmap** or **population map**: visualizes the number of observation per cell. The areas of the inner shapes are proportional to their population.  
 The background colors indicate the superclasses. The palette of these colors can be adapted using the ```palsc``` argument.
 
-
-``` r
+```{r}
 geosom_plot(g, type = "Hitmap", superclass = g_superclass)
 ```
-
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
 
 
 * **UMatrix** is a way to explore the topography of the map. It shows the average distance between each cell and its neighbors' prototypes, on a color scale. On this map, the darker cells are close to their neighbors, while the brighter cells are more distant from their neighbors.
 
-
-``` r
+```{r}
 geosom_plot(g, type = "UMatrix", superclass = g_superclass)
 ```
-
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
 
 
 ### Plotting numeric variables on the map
@@ -139,59 +106,39 @@ geosom_plot(g, type = "UMatrix", superclass = g_superclass)
 
 In all of these plots, by default the means of the chosen variables are displayed within each cell. Other choices of values (medians or prototypes) can be specified using the ```values``` parameter. The scales of the plots can also be adapted, using the ```scales``` argument. Colors of the variables are controlled by the ```palvar``` argument.
 
-
-``` r
+```{r }
 geosom_plot(g, type = "Circular", superclass = g_superclass)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
-
 On the following barplot, we plot the protoype values instead of the observations means.
 
-
-``` r
+```{r}
 geosom_plot(g, type = "Barplot", superclass = g_superclass, values = "prototypes") 
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
-
 On the following box-and-whisker plot, the scales are set to be the same accross variables.
 
-
-``` r
+```{r}
 geosom_plot(g, type = "Boxplot", superclass = g_superclass, scales = "same") 
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
-
 On the following lines plot, we use the observation medians instead of the means.
 
-
-``` r
+```{r}
 geosom_plot(g, type = "Line", superclass = g_superclass, values = "median") 
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
-
 The following radar chart uses the default parameters.
 
-
-``` r
+```{r}
 geosom_plot(g, type = "Radar", superclass = g_superclass) 
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
-
 The color plot, or heat map, applies to a single numeric variable. The superclass overlay can be removed by setting the ```showSC``` parameter to ```FALSE```.
 
-
-``` r
+```{r}
 geosom_plot(g, type = "Color", superclass = g_superclass) 
-## Warning in aweSOM::aweSOMplot(som = gsom, type = type, data = gsom$data[[1]], : Color :
-## Multiple variables provided, only the first one will be plotted.
 ```
-
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
 
 You can save those plot use `htmlwidgets::saveWidget()`,like:
 
@@ -203,51 +150,21 @@ htmlwidgets::saveWidget(geosom_plot(g,type = "Circular",
 
 ### Choosing the number of superclasses
 
-
-``` r
+```{r, fig.width=6, fig.height=5} 
 geosom_bestsupperclass(g)
 ```
 
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png)
-
 ### Get and viz the geosom cluster label
 
-
-``` r
+```{r}
 g_label = geosom_clusterlabel(g,g_superclass)
 g_label
-##   [1]  2  7  8  5  7  1  2  7  6  3  5  6 10  9  1  5  4  9  6  5  6  9 11  2  4  8  8  7  7  9
-##  [31] 11  8 12  5  8  3  3  5  6  8 12  5  3  7  5  9  3  6  5  8 12 10  8  6  6  9  8  7  9  8
-##  [61]  6  4 11  9 12  9  8  5  5  8  8  2  9 12  7  7  2  2  8  9  2  5  7  3 12  3  5  5  8  1
-##  [91]  8  2 11  7 10 11  8 10  5  9  9 11  2  3  8  2  9 12  9  7  1  1  8  7  4  1  4  6 11  8
-## [121] 10 10  3  3  8  8  8  7  8  3  7 10  9  5  8  7 11 10  9 10  8  3  9  1  8  8  8  2  7  6
-## [151]  2 11  5  5  9  3  6  8  9  6  2  4  4  9  1  3  7  7  8  7  2  3 12  3  9  3  9 11  7 12
-## [181]  8  9  8  7  6  8  9  7  9  9  5  8  5  1  3  7  8 12 10  5  5  8  8  6  8  9  6  8  3  8
-## [211]  6  2 12  1  3  8  8 10  8  8  3  8  5 10  3  3  7  1  2  4  3  7  5  8  8  8  5  8  7 11
-## [241] 10  7  6  8 12  7  7  9  3  9  6  2  9  5  8 10  1 12  9  3  2  9 12 10  3  8  7  8  8  5
-## [271]  9  9  5 10 10  8 12 11
 ```
 
-
-``` r
+```{r fig.width=7.5, fig.height=5}
 library(sf)
-## Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.3.1; sf_use_s2() is TRUE
-```
-
-``` r
 library(ggplot2)
 library(dplyr)
-## 
-## Attaching package: 'dplyr'
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-``` r
 
 pmc %>% 
   mutate(zone = as.factor(g_label)) %>% 
@@ -260,16 +177,11 @@ pmc %>%
         axis.ticks = element_blank())
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
-
 You can also use `mapview` to interactive view.
 
-
-``` r
+```{r}
 pmc %>% 
   mutate(zone = as.factor(g_label)) %>% 
   st_as_sf(coords = c("centroidx","centroidy")) %>% 
   mapview::mapview(zcol = "zone",cex = 5, legend = TRUE)
 ```
-
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
