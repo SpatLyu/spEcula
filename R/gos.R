@@ -30,6 +30,8 @@
 #'
 #' @examples
 #' \dontrun{
+#' data(zn)
+#' data(grid)
 #' g = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
 #' data = zn, newdata = grid, kappa = 0.08,cores = 6)
 #' g
@@ -144,6 +146,8 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
 #' library(dplyr)
 #' library(ggplot2)
 #' library(ggrepel)
+#' data(zn)
+#' data(grid)
 #' system.time({
 #'   b1 = bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
 #'                  data = zn,kappa = c(0.01, 0.05, 0.1, 0.2, 0.5, 1),

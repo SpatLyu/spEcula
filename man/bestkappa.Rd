@@ -4,7 +4,7 @@
 \alias{bestkappa}
 \title{Function for the best kappa parameter}
 \usage{
-bestkappa(formula,data = data,kappa=seq(0.05,1,0.05),
+bestkappa(formula,data = NULL,kappa=seq(0.05,1,0.05),
           nrepeat = 10,nsplit = 0.5,cores = 1)
 }
 \arguments{
@@ -27,8 +27,7 @@ default is \code{0.5}.}
 
 \item{cores}{positive integer(default is 1). If cores > 1, a 'parallel' package
 cluster with that many cores is created and used. You can also supply a cluster
-object.When data is less than 1500 row,choose \code{1} cores and when data is more
-than 5000 row,increase the cores.}
+object.}
 }
 \value{
 A list of the result of the best kappa and the computation process curve.
@@ -41,6 +40,8 @@ Computationally optimized function for determining the best kappa parameter for 
 library(dplyr)
 library(ggplot2)
 library(ggrepel)
+data(zn)
+data(grid)
 system.time({
   b1 = bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
                  data = zn,kappa = c(0.01, 0.05, 0.1, 0.2, 0.5, 1),

@@ -32,13 +32,15 @@ model in `spEcula`,which can change the `cores` argument in `gos()` and
 
 ``` r
 library(spEcula)
+data(zn)
+data(grid)
 
 zn$Zn = log(zn$Zn)
 tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 3.16 sec elapsed
+## 3.35 sec elapsed
 ```
 
 ``` r

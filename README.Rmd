@@ -37,6 +37,8 @@ devtools::install_github("SpatLyu/spEcula",build_vignettes = T,dep = T)
 
 ```{r example}
 library(spEcula)
+data(zn)
+data(grid)
 
 zn$Zn = log(zn$Zn)
 tictoc::tic()

@@ -26,6 +26,8 @@ use `zn` data to train the `gos` model,use `grid` data to predict.
 
 ``` r
 library(spEcula)
+data(zn)
+data(grid)
 
 skimr::skim(zn)
 ```

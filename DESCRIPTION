@@ -20,7 +20,8 @@ Imports:
   purrr,
   ggplot2,
   ggrepel,
-  DescTools
+  DescTools,
+  kohonen
 Depends: 
     R (>= 4.2.0)
 LazyData: true
