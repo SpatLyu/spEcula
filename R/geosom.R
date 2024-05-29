@@ -234,7 +234,8 @@ geosom_bestsuperclass = \(gsom, nclass= 2,method = "pam",
     ok.hclust = stats::hclust(stats::dist(codebook), hmethod)
 
   ncells = nrow(codebook)
-  nvalues = max(nclass, min(ncells, max(ceiling(sqrt(ncells)), 59)))
+  nvalues = max(nclass, min(ncells, 59, max(ceiling(sqrt(ncells)),
+                            length(unique(gsom$unit.classif)))))
   clust.var = sapply(1:nvalues, function(k) {
     if (method == "hclust") {
       clust = stats::cutree(ok.hclust, k)
