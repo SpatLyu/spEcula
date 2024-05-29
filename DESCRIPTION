@@ -36,6 +36,7 @@ Suggests:
     moments,
     cowplot,
     viridis,
+    mapview,
     htmlwidgets,
     PerformanceAnalytics,
     tictoc

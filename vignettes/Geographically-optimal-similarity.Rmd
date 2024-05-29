@@ -183,9 +183,9 @@ In this step, the selected variables include Slope, Water, NDVI, SOC, pH, Road, 
 
 ``` r
 tictoc::tic()
-b1 = bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
-               data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
-               nrepeat = 10,nsplit = .8,cores = 1)
+b1 = gos_bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
+                   data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
+                   nrepeat = 10,nsplit = .8,cores = 1)
 tictoc::toc()
 ## 32.56 sec elapsed
 ```
@@ -232,9 +232,9 @@ You can set more optional numbers to the `kappa` vector and a higher value of th
 
 ``` r
 tictoc::tic()
-b2 = bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
-               data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
-               nrepeat = 10,nsplit = .8,cores = 6)
+b2 = gos_bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
+                   data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
+                   nrepeat = 10,nsplit = .8,cores = 6)
 tictoc::toc()
 ## 9.86 sec elapsed
 ```
