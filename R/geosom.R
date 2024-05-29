@@ -209,6 +209,7 @@ geosom_plot = \(gsom,type,superclass,...){
 #' Defaul is `FALSE`.
 #'
 #' @return No return value, called for side effects.
+#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -216,10 +217,10 @@ geosom_plot = \(gsom,type,superclass,...){
 #' set.seed(2004)
 #' g = geosom(data = pmc, coords = c("centroidx","centroidy"),
 #' wt = 3,grid = geosomgrid(6,10),normalize = TRUE)
-#' geosom_bestsupperclass(g)
+#' geosom_bestsuperclass(g)
 #' }
 
-geosom_bestsupperclass = \(gsom, nclass= 2,method = "pam",
+geosom_bestsuperclass = \(gsom, nclass= 2,method = "pam",
                     hmethod= "complete",bindcoord = FALSE){
   stopifnot("Input `gsom` argument must be `kohonen` object!" = inherits(gsom,"kohonen"))
   if (bindcoord) {

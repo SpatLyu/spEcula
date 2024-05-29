@@ -29,6 +29,10 @@ Depends:
     R (>= 4.2.0)
 LazyData: true
 Suggests: 
+    sf,
+    terra,
+    ggspatial,
+    tmap,
     knitr,
     rmarkdown,
     skimr,

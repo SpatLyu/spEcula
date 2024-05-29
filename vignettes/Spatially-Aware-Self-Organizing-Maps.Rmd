@@ -151,7 +151,7 @@ htmlwidgets::saveWidget(geosom_plot(g,type = "Circular",
 ### Choosing the number of superclasses
 
 ```{r, fig.width=6, fig.height=5} 
-geosom_bestsupperclass(g)
+geosom_bestsuperclass(g)
 ```
 
 ### Get and viz the geosom cluster label
