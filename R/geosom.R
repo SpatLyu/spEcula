@@ -6,7 +6,7 @@
 #'
 #' @param data A data.frame or tibble
 #' @param coords The coordinate column name in the `data`.
-#' @param wt A decimal number from 0 to 1,the weight of spatial coordination.
+#' @param wt The weight of spatial coordination and the weight of the non-spatial attribute is 1.
 #' @param grid A grid for the codebook vectors: see `geosomgrid`.
 #' @param normalize (optional)Boolean, indicating whether non-spatial feature data should
 #' be normal standardization,default is `True`.
@@ -89,6 +89,11 @@ geosom_quality = \(gsom){
 #' @param method (optional)The clustering algorithms used on the map’s prototypes,two methods are
 #' implemented in `spEcula`, PAM(k-medians) and hierarchical clustering.When method is `pam`,PAM
 #' (k-medians) is used,otherwise hierarchical clustering.Default is `pam`.
+#' @param hmethod For hierarchicical clustering, the clustering method, by
+#' default "complete". See the \code{stats::hclust} documentation for more
+#' details.
+#' @param bindcoord Does the cluster of superclass in GeoSOM consider spatial coordination.
+#' Defaul is `FALSE`.
 #'
 #' @return A numeric vector representing the superclass.
 #' @export
@@ -98,15 +103,23 @@ geosom_quality = \(gsom){
 #' wt = 3,grid = geosomgrid(6,10),normalize = TRUE)
 #' g_superclass = geosom_superclass(g,12)
 #' g_superclass
-geosom_superclass = \(gsom,k,method = 'pam'){
+geosom_superclass = \(gsom,k,method = 'pam',hmethod= "complete",
+                      bindcoord = FALSE){
   stopifnot("Input `gsom` argument must be `kohonen` object!" = inherits(gsom,"kohonen"))
+  if (bindcoord) {
+    codebook = cbind(as.data.frame(gsom$codes[[1]]),
+                     as.data.frame(scale(gsom$codes[[2]])))
+  } else {
+    codebook = gsom$codes[[1]]
+  }
+
   switch(method,
          'pam' = {
-           super_pam = cluster::pam(gsom$codes[[1]], k)
+           super_pam = cluster::pam(codebook,k)
            superclasses = as.vector(super_pam$clustering)
          },
          'hclust' = {
-           super_hclust = stats::hclust(stats::dist(gsom$codes[[1]]), "complete")
+           super_hclust = stats::hclust(stats::dist(codebook),hmethod)
            superclasses = as.vector(stats::cutree(super_hclust, k))
          })
   return(superclasses)
@@ -118,7 +131,7 @@ geosom_superclass = \(gsom,k,method = 'pam'){
 #' Get the cluster label(result) of GeoSOM model.
 #'
 #' @param gsom A `kohonen` object,get from `geosom()`.
-#' @param gsc A numeric vector get form `geosom_superclass()`
+#' @param superclass A numeric vector get form `geosom_superclass()`
 #'
 #' @return A numeric vector representing the cluster label.
 #' @export
@@ -130,8 +143,8 @@ geosom_superclass = \(gsom,k,method = 'pam'){
 #' g_superclass = geosom_superclass(g,12)
 #' g_label = geosom_clusterlabel(g,g_superclass)
 #' g_label
-geosom_clusterlabel = \(gsom,gsc){
-  return(gsc[gsom$unit.classif])
+geosom_clusterlabel = \(gsom,superclass){
+  return(superclass[gsom$unit.classif])
 }
 
 #' @title Interactive GeoSOM plots
@@ -169,4 +182,58 @@ geosom_plot = \(gsom,type,superclass,...){
                             superclass = superclass,
                             ...))
 
+}
+
+#' @title Screeplot of GeoSOM superclasses
+#' @description
+#'
+#' The screeplot, helps deciding the optimal number of superclasses. Available
+#' for both PAM(`pam`) and hierarchical clustering(`hclust`).
+#'
+#' @param gsom \code{kohonen} object, a SOM created by the \code{spEcula::geosom}
+#'   function.
+#' @param nclass number of superclasses to be visualized in the screeplot.
+#'   Default is 2.
+#' @param method Method used for clustering. Hierarchical clustering
+#'   ("hclust") and Partitioning around medoids ("pam") can be used.
+#'   Default is Partitioning around medoids.
+#' @param hmethod For hierarchicical clustering, the clustering method, by
+#'   default "complete". See the \code{stats::hclust} documentation for more
+#'   details.
+#' @param bindcoord Does the cluster of superclass in GeoSOM consider spatial coordination.
+#' Defaul is `FALSE`.
+#'
+#' @return No return value, called for side effects.
+#'
+#' @examples
+
+bestsupperclass = \(som, nclass= 2,method = "pam",
+                    hmethod= "complete",bindcoord = FALSE){
+  stopifnot("Input `gsom` argument must be `kohonen` object!" = inherits(gsom,"kohonen"))
+  if (bindcoord) {
+    codebook = cbind(as.data.frame(gsom$codes[[1]]),
+                     as.data.frame(scale(gsom$codes[[2]])))
+  } else {
+    codebook = gsom$codes[[1]]
+  }
+
+  if (method == "hclust")
+    ok.hclust = stats::hclust(stats::dist(codebook), hmethod)
+
+  ncells = nrow(codebook)
+  nvalues = max(nclass, min(ncells, max(ceiling(sqrt(ncells)), 10)))
+  clust.var = sapply(1:nvalues, function(k) {
+    if (method == "hclust") {
+      clust = stats::cutree(ok.hclust, k)
+    } else if (method == "pam")
+      clust = cluster::pam(codebook, k)$clustering
+    clust.means = do.call(rbind, by(codebook, clust, colMeans))[clust, ]
+    mean(rowSums((codebook - clust.means)^2))
+  })
+  unexpl = 100 * round(clust.var /
+                          (sum(apply(codebook, 2, var)) * (ncells - 1) / ncells), 3)
+  plot(unexpl, t= "b", ylim= c(0, 100),
+       xlab= "Nb. Superclasses", ylab= "% Unexpl. Variance")
+  grid()
+  abline(h= unexpl[nclass], col= 2)
 }
