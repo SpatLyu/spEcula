@@ -113,8 +113,8 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
 #' Song, Y. (2022). Geographically Optimal Similarity. Mathematical Geosciences. doi: 10.1007/s11004-022-10036-8.
 #'
 #' @usage
-#' bestkappa(formula,data = NULL,kappa=seq(0.05,1,0.05),
-#'           nrepeat = 10,nsplit = 0.5,cores = 1)
+#' gos_bestkappa(formula,data = NULL,kappa=seq(0.05,1,0.05),
+#'               nrepeat = 10,nsplit = 0.5,cores = 1)
 #'
 #' @param formula A formula of GOS model
 #' @param data A data.frame or tible of observation data
@@ -149,16 +149,16 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
 #' data(zn)
 #' data(grid)
 #' system.time({
-#'   b1 = bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
-#'                  data = zn,kappa = c(0.01, 0.05, 0.1, 0.2, 0.5, 1),
-#'                  nrepeat = 2,cores = 1)
+#'   b1 = gos_bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
+#'                      data = zn,kappa = c(0.01, 0.05, 0.1, 0.2, 0.5, 1),
+#'                      nrepeat = 2,cores = 1)
 #' })
 #' b1$bestkappa
 #' b1$plot
 #' }
 #' @export
 
-bestkappa = \(formula, data = NULL, kappa = seq(0.05,1,0.05),
+gos_bestkappa = \(formula, data = NULL, kappa = seq(0.05,1,0.05),
               nrepeat = 10,nsplit = 0.5,cores = 1){
   doclust = FALSE
   if (inherits(cores, "cluster")) {

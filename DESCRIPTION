@@ -14,6 +14,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Imports: 
   stats,
+  graphics,
   parallel,
   tibble, 
   dplyr,
@@ -23,7 +24,6 @@ Imports:
   DescTools,
   kohonen,
   aweSOM,
-  htmlwidgets,
   cluster
 Depends: 
     R (>= 4.2.0)
@@ -36,6 +36,7 @@ Suggests:
     moments,
     cowplot,
     viridis,
+    htmlwidgets,
     PerformanceAnalytics,
     tictoc
 VignetteBuilder: knitr

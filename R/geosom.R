@@ -17,6 +17,7 @@
 #'
 #' @examples
 #' data(pmc)
+#' set.seed(2004)
 #' g = geosom(data = pmc, coords = c("centroidx","centroidy"),
 #' wt = 3,grid = geosomgrid(6,10),normalize = TRUE)
 geosom = \(data,coords,wt,grid,normalize = TRUE,...) {
@@ -65,11 +66,13 @@ geosomgrid = \(xdim,ydim,topo = "hexagonal",
 #'
 #' @param gsom A `kohonen` object,get from `geosom()`.
 #'
-#' @return
+#' @return A list containing quality measures : quantization error, share of explained variance,
+#' topographic error and Kaski-Lagus error.
 #' @export
 #'
 #' @examples
 #' data(pmc)
+#' set.seed(2004)
 #' g = geosom(data = pmc, coords = c("centroidx","centroidy"),
 #' wt = 3,grid = geosomgrid(6,10),normalize = TRUE)
 #' geosom_quality(g)
@@ -99,6 +102,7 @@ geosom_quality = \(gsom){
 #' @export
 #' @examples
 #' data(pmc)
+#' set.seed(2004)
 #' g = geosom(data = pmc, coords = c("centroidx","centroidy"),
 #' wt = 3,grid = geosomgrid(6,10),normalize = TRUE)
 #' g_superclass = geosom_superclass(g,12)
@@ -165,12 +169,13 @@ geosom_clusterlabel = \(gsom,superclass){
 #' @param superclass A numeric vector get form `geosom_superclass()`.
 #' @param ... Other arguments passed to `aweSOM::aweSOMplot()`.
 #'
-#' @return
+#' @return An object of class htmlwidget.
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' data(pmc)
+#' set.seed(2004)
 #' g = geosom(data = pmc, coords = c("centroidx","centroidy"),
 #' wt = 3,grid = geosomgrid(6,10),normalize = TRUE)
 #' g_superclass = geosom_superclass(g,12)
@@ -206,8 +211,15 @@ geosom_plot = \(gsom,type,superclass,...){
 #' @return No return value, called for side effects.
 #'
 #' @examples
+#' \dontrun{
+#' data(pmc)
+#' set.seed(2004)
+#' g = geosom(data = pmc, coords = c("centroidx","centroidy"),
+#' wt = 3,grid = geosomgrid(6,10),normalize = TRUE)
+#' geosom_bestsupperclass(g)
+#' }
 
-bestsupperclass = \(som, nclass= 2,method = "pam",
+geosom_bestsupperclass = \(gsom, nclass= 2,method = "pam",
                     hmethod= "complete",bindcoord = FALSE){
   stopifnot("Input `gsom` argument must be `kohonen` object!" = inherits(gsom,"kohonen"))
   if (bindcoord) {
@@ -221,7 +233,7 @@ bestsupperclass = \(som, nclass= 2,method = "pam",
     ok.hclust = stats::hclust(stats::dist(codebook), hmethod)
 
   ncells = nrow(codebook)
-  nvalues = max(nclass, min(ncells, max(ceiling(sqrt(ncells)), 10)))
+  nvalues = max(nclass, min(ncells, max(ceiling(sqrt(ncells)), 59)))
   clust.var = sapply(1:nvalues, function(k) {
     if (method == "hclust") {
       clust = stats::cutree(ok.hclust, k)
@@ -231,9 +243,9 @@ bestsupperclass = \(som, nclass= 2,method = "pam",
     mean(rowSums((codebook - clust.means)^2))
   })
   unexpl = 100 * round(clust.var /
-                          (sum(apply(codebook, 2, var)) * (ncells - 1) / ncells), 3)
+                          (sum(apply(codebook, 2, stats::var)) * (ncells - 1) / ncells), 3)
   plot(unexpl, t= "b", ylim= c(0, 100),
        xlab= "Nb. Superclasses", ylab= "% Unexpl. Variance")
-  grid()
-  abline(h= unexpl[nclass], col= 2)
+  graphics::grid()
+  graphics::abline(h= unexpl[nclass], col= 2)
 }
