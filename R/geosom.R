@@ -18,7 +18,7 @@
 #' @examples
 #' data(pmc)
 #' g = geosom(data = pmc, coords = c("centroidx","centroidy"),
-#' wt = 5,grid = geosomgrid(6,6),normalize = TRUE)
+#' wt = 3,grid = geosomgrid(6,10),normalize = TRUE)
 geosom = \(data,coords,wt,grid,normalize = TRUE,...) {
   geodata = data.matrix(data[,(names(data) %in% coords)])
   data = data.matrix(data[,!(names(data) %in% coords)])
@@ -60,7 +60,8 @@ geosomgrid = \(xdim,ydim,topo = "hexagonal",
 #' @title GeoSOM quality measures
 #' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
 #' @description
-#' Computes several quality measures on a trained GeoSOM.
+#' Computes several quality measures on a trained GeoSOM.This function is a wrapper
+#' of `aweSOM::somQuality()`.
 #'
 #' @param gsom A `kohonen` object,get from `geosom()`.
 #'
@@ -94,7 +95,7 @@ geosom_quality = \(gsom){
 #' @examples
 #' data(pmc)
 #' g = geosom(data = pmc, coords = c("centroidx","centroidy"),
-#' wt = 5,grid = geosomgrid(6,6),normalize = TRUE)
+#' wt = 3,grid = geosomgrid(6,10),normalize = TRUE)
 #' g_superclass = geosom_superclass(g,12)
 #' g_superclass
 geosom_superclass = \(gsom,k,method = 'pam'){
@@ -125,7 +126,7 @@ geosom_superclass = \(gsom,k,method = 'pam'){
 #' @examples
 #' data(pmc)
 #' g = geosom(data = pmc, coords = c("centroidx","centroidy"),
-#' wt = 5,grid = geosomgrid(6,6),normalize = TRUE)
+#' wt = 3,grid = geosomgrid(6,10),normalize = TRUE)
 #' g_superclass = geosom_superclass(g,12)
 #' g_label = geosom_clusterlabel(g,g_superclass)
 #' g_label
@@ -133,4 +134,39 @@ geosom_clusterlabel = \(gsom,gsc){
   return(gsc[gsom$unit.classif])
 }
 
-geosom_plot = \(gsom,)
+#' @title Interactive GeoSOM plots
+#' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
+#' @description
+#' Plot interactive visualizations of GeoSOM, as an html page. The plot can represent general map
+#' informations, or selected categorical or numeric variables (not necessarily the ones used during training).
+#' Hover over the map to focus on the selected cell or variable, and display further information.This function
+#' is a wrapper of `aweSOM::aweSOMplot()`.
+#'
+#' @param gsom A `kohonen` object,get from `geosom()`.
+#' @param type Character, the plot type. The default "Hitmap" is a population map.
+#' "Cloud" plots the observations as a scatterplot within each cell (see Details).
+#' "UMatrix" plots the average distance of each cell to its neighbors, on a color scale.
+#' "Circular" (barplot), "Barplot", "Boxplot", "Radar" and "Line" are for numeric variables.
+#' "Color" (heat map) is for a single numeric variable. "Pie" (pie chart) and "CatBarplot"
+#' are for a single categorical (factor) variable.
+#' @param superclass A numeric vector get form `geosom_superclass()`.
+#' @param ... Other arguments passed to `aweSOM::aweSOMplot()`.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' data(pmc)
+#' g = geosom(data = pmc, coords = c("centroidx","centroidy"),
+#' wt = 3,grid = geosomgrid(6,10),normalize = TRUE)
+#' g_superclass = geosom_superclass(g,12)
+#' geosom_plot(g,type = "Circular",superclass = g_superclass)
+#' }
+geosom_plot = \(gsom,type,superclass,...){
+  return(aweSOM::aweSOMplot(som = gsom,type = type,
+                            data = gsom$data[[1]],
+                            superclass = superclass,
+                            ...))
+
+}
