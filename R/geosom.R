@@ -49,9 +49,9 @@ geosom = \(data,coords,wt,grid,normalize = TRUE,...) {
 #' @param xdim X dimensions of the grid
 #' @param ydim Y dimensions of the grid.
 #' @param topo (optional)Choose between a `hexagonal` or `rectangular` topology,default is `hexagonal`.
-#' @param neighbourhood.fct (optional)Choose between bubble and gaussian neighbourhoods when training a
-#' GeoSOM."bubble" or"gaussian"(default).
-#' @param toroidal (optional)Logical, whether the grid is toroidal or not.Default is `FALSE`.
+#' @param neighbourhood.fct (optional)Choose between `bubble` and `gaussian` neighbourhoods when training a
+#' GeoSOM."bubble" or "gaussian"(default).
+#' @param toroidal (optional)Logical, whether the grid is `toroidal` or not.Default is `FALSE`.
 #'
 #' @return An object of class "somgrid", with elements pts, and the input arguments to the function.
 #' @importFrom kohonen somgrid
@@ -95,13 +95,13 @@ geosom_quality = \(gsom){
 #' @param wt The weight vector of spatial coordination.
 #' @param xdim X dimensions of the grid, a numeric vector.
 #' @param ydim Y dimensions of the grid, a numeric vector.
-#' @param topo (optional)Default use `hexagonal` and `rectangular`.
-#' @param neighbourhood.fct (optional)Default use bubble and gaussian neighbourhoods when training a
-#' GeoSOM.
+#' @param topo (optional) Default use `hexagonal` and `rectangular`.
+#' @param neighbourhood.fct (optional) Default use `bubble` and `gaussian` neighbourhoods together
+#' when training a GeoSOM model.
 #' @param cores positive integer(default is 1). If cores > 1, a 'parallel' package
 #' cluster with that many cores is created and used. You can also supply a cluster
 #' object.
-#' @param ... (optional)Other arguments passed to `geosom()`.
+#' @param ... (optional) Other arguments passed to `geosom()`.
 #'
 #' @return A list with the optimal parameter in the provided parameter combination and
 #' the corresponding error.

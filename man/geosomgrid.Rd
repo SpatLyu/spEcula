@@ -19,9 +19,10 @@ geosomgrid(
 
 \item{topo}{(optional)Choose between a \code{hexagonal} or \code{rectangular} topology,default is \code{hexagonal}.}
 
-\item{neighbourhood.fct}{(optional)}
+\item{neighbourhood.fct}{(optional)Choose between \code{bubble} and \code{gaussian} neighbourhoods when training a
+GeoSOM."bubble" or "gaussian"(default).}
 
-\item{toroidal}{(optional)}
+\item{toroidal}{(optional)Logical, whether the grid is \code{toroidal} or not.Default is \code{FALSE}.}
 }
 \value{
 An object of class "somgrid", with elements pts, and the input arguments to the function.

@@ -1,6 +1,6 @@
 Package: spEcula
 Title: Spatial Inference And Spatial Prediction With R
-Version: 0.1.0.9999
+Version: 0.1.1
 Authors@R: c(
     person("Wenbo", "Lv", , "lyu.geosocial@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0002-6003-3800")),
@@ -19,6 +19,7 @@ Imports:
   tibble, 
   dplyr,
   purrr,
+  tidyr,
   ggplot2,
   ggrepel,
   DescTools,

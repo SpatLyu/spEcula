@@ -11,7 +11,8 @@ geosom(data, coords, wt, grid, normalize = TRUE, ...)
 
 \item{coords}{The coordinate column name in the \code{data}.}
 
-\item{wt}{The weight of spatial coordination and the weight of the non-spatial attribute is 1.}
+\item{wt}{The weight of spatial coordination and the weight of the non-spatial attribute is 1.
+If wt is 0,now it equal to som model.}
 
 \item{grid}{A grid for the codebook vectors: see \code{geosomgrid}.}
 
