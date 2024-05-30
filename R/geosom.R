@@ -7,6 +7,7 @@
 #' @param data A data.frame or tibble
 #' @param coords The coordinate column name in the `data`.
 #' @param wt The weight of spatial coordination and the weight of the non-spatial attribute is 1.
+#' If wt is 0,now it equal to som model.
 #' @param grid A grid for the codebook vectors: see `geosomgrid`.
 #' @param normalize (optional)Boolean, indicating whether non-spatial feature data should
 #' be normal standardization,default is `True`.
@@ -48,7 +49,7 @@ geosom = \(data,coords,wt,grid,normalize = TRUE,...) {
 #' @param xdim X dimensions of the grid
 #' @param ydim Y dimensions of the grid.
 #' @param topo (optional)Choose between a `hexagonal` or `rectangular` topology,default is `hexagonal`.
-#' @param neighbourhood.fct (optional)Choose between bubble and gaussian neighbourhoods when training a 
+#' @param neighbourhood.fct (optional)Choose between bubble and gaussian neighbourhoods when training a
 #' GeoSOM."bubble" or"gaussian"(default).
 #' @param toroidal (optional)Logical, whether the grid is toroidal or not.Default is `FALSE`.
 #'
@@ -84,6 +85,35 @@ geosom_quality = \(gsom){
   return(aweSOM::somQuality(gsom, gsom$data[[1]]))
 }
 
+#' @title Best param for geosom model
+#' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
+#' @description
+#' Function for determining the best parameter for the geosom model
+#'
+#' @param data A data.frame or tibble
+#' @param coords The coordinate column name in the `data`.
+#' @param wt The weight vector of spatial coordination.
+#' @param xdim X dimensions of the grid, a numeric vector.
+#' @param ydim Y dimensions of the grid, a numeric vector.
+#' @param topo (optional)Default use `hexagonal` and `rectangular`.
+#' @param neighbourhood.fct (optional)Default use bubble and gaussian neighbourhoods when training a
+#' GeoSOM.
+#' @param cores positive integer(default is 1). If cores > 1, a 'parallel' package
+#' cluster with that many cores is created and used. You can also supply a cluster
+#' object.
+#' @param ... (optional)Other arguments passed to `geosom()`.
+#'
+#' @return A list with the optimal parameter in the provided parameter combination and
+#' the corresponding error.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' data(pmc)
+#' set.seed(2004)
+#' geosom_bestparam(data = pmc, coords = c("centroidx","centroidy"),
+#' wt = seq(0.1,5,by = 0.1),xdim = 3:10, ydim = 3:10,cores = 6)
+#' }
 geosom_bestparam = \(data,coords,wt,xdim,ydim,
                      topo = c("rectangular", "hexagonal"),
                      neighbourhood.fct = c("bubble", "gaussian"),
@@ -96,36 +126,59 @@ geosom_bestparam = \(data,coords,wt,xdim,ydim,
     cores = parallel::makeCluster(cores)
     on.exit(parallel::stopCluster(cores), add=TRUE)
   }
-  
+
+  coordf = data.matrix(data[,(names(data) %in% coords)])
+  feadf = data.matrix(data[,!(names(data) %in% coords)])
+
+  geosom_est = \(data,geodata,wt,grid,normalize = TRUE,...) {
+    spatial.weight = c(1, wt)
+    if (normalize) {
+      data = scale(data)
+    }
+
+    if (wt == 0) {
+      res_som = kohonen::supersom(list(data), grid,
+                                  normalizeDataLayers=FALSE, ...)
+    } else {
+      res_som = kohonen::supersom(list(data, geodata), grid,
+                                  user.weights = spatial.weight,
+                                  normalizeDataLayers = FALSE, ...)
+    }
+    return(res_som)
+  }
+
   calcul_geosom = \(paramgeosom){
     wt = paramgeosom[[1]]
     grid = geosomgrid(paramgeosom[[2]],paramgeosom[[3]],
                       paramgeosom[[4]],paramgeosom[[5]])
-    gsom = geosom(data,coords,wt,grid,...)
+    gsom = geosom_est(feadf,coordf,wt,grid,...)
     gp = geosom_quality(gsom)
     gerr = c(gp$err.quant,gp$err.varratio,gp$err.topo,gp$err.kaski)
     names(gerr) = c('err_quant','err_varratio','err_topo','err_kaski')
     return(gerr)
   }
-  
+
   paradf = tidyr::crossing("wt" = wt,
                            "xdim" = xdim,
                            "ydim" = ydim,
                            "topo" = topo,
                            "neighbourhoodfct" = neighbourhood.fct)
   parak = split(paradf, seq_len(nrow(paradf)))
-  
+
   if (doclust) {
-    parallel::clusterExport(cores,c('geosom','geosomgrid','geosom_quality'))
+    parallel::clusterExport(cores,c('geosomgrid','geosom_quality'))
     out_g = parallel::parLapply(cores,parak,calcul_geosom)
     out_g = tibble::as_tibble(do.call(rbind, out_g))
   } else {
     out_g = purrr::map_dfr(parak,calcul_geosom)
   }
-  
-  out_g = dplyr::bind_cols(paradf,out_g) %>% 
-    dplyr::arrange(dplyr::desc())
-    
+
+  out_g = dplyr::bind_cols(paradf,out_g) %>%
+    dplyr::arrange(dplyr::desc(err_kaski)) %>%
+    dplyr::arrange(dplyr::desc(err_quant)) %>%
+    dplyr::arrange(dplyr::desc(err_topo)) %>%
+    dplyr::arrange(err_varratio)
+  return(as.list(out_g[1,]))
 }
 
 #' @title Superclasses of GeoSOM
