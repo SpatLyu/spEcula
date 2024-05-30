@@ -150,7 +150,7 @@ Now, let's see the transformed `zn` variable in `Zn` data and see the skewness:
 hist(zn$Zn)
 ```
 
-![plot of chunk skewness](figure/skewness-1.png)
+![](figure/skewness-1.png)
 
 ``` r
 moments::skewness(zn$Zn)
@@ -164,7 +164,7 @@ All right, let's move on to the next step to see variable correlation:
 PerformanceAnalytics::chart.Correlation(zn[, c(3:12)],pch = 19)
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+![](figure/unnamed-chunk-5-1.png)
 
 and test multicollinearity use vif:
 
@@ -225,7 +225,7 @@ b1$cvmean
 b1$plot
 ```
 
-![plot of chunk b1](figure/b1-1.png)
+![](figure/b1-1.png)
 
 You can set more optional numbers to the `kappa` vector and a higher value of the cross-validation repeat times `nrepeat` with a multi-core parallel(set `cores` bigger).
 
@@ -274,7 +274,7 @@ b2$cvmean
 b2$plot
 ```
 
-![plot of chunk b2](figure/b2-1.png)
+![](figure/b2-1.png)
 
 ### Spatial prediction use GOS model
 
@@ -327,4 +327,4 @@ plot_grid(f1,f2,nrow = 1,label_fontfamily = 'serif',
 p
 ```
 
-![plot of chunk gosresult](figure/gosresult-1.png)
+![](figure/gosresult-1.png)
