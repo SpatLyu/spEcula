@@ -13,6 +13,7 @@
 #' @param ... Other arguments passed to `kohonen::supersom()`,see `?kohonen::supersom()`.
 #'
 #' @return An object of class "kohonen" with components.
+#' @importFrom kohonen supersom
 #' @export
 #'
 #' @examples
@@ -47,10 +48,12 @@ geosom = \(data,coords,wt,grid,normalize = TRUE,...) {
 #' @param xdim X dimensions of the grid
 #' @param ydim Y dimensions of the grid.
 #' @param topo (optional)Choose between a `hexagonal` or `rectangular` topology,default is `hexagonal`.
-#' @param neighbourhood.fct (optional)
-#' @param toroidal (optional)
+#' @param neighbourhood.fct (optional)Choose between bubble and gaussian neighbourhoods when training a 
+#' GeoSOM."bubble" or"gaussian"(default).
+#' @param toroidal (optional)Logical, whether the grid is toroidal or not.Default is `FALSE`.
 #'
 #' @return An object of class "somgrid", with elements pts, and the input arguments to the function.
+#' @importFrom kohonen somgrid
 #' @export
 geosomgrid = \(xdim,ydim,topo = "hexagonal",
                neighbourhood.fct = "gaussian",
@@ -68,6 +71,7 @@ geosomgrid = \(xdim,ydim,topo = "hexagonal",
 #'
 #' @return A list containing quality measures : quantization error, share of explained variance,
 #' topographic error and Kaski-Lagus error.
+#' @importFrom aweSOM somQuality
 #' @export
 #'
 #' @examples
@@ -78,6 +82,50 @@ geosomgrid = \(xdim,ydim,topo = "hexagonal",
 #' geosom_quality(g)
 geosom_quality = \(gsom){
   return(aweSOM::somQuality(gsom, gsom$data[[1]]))
+}
+
+geosom_bestparam = \(data,coords,wt,xdim,ydim,
+                     topo = c("rectangular", "hexagonal"),
+                     neighbourhood.fct = c("bubble", "gaussian"),
+                     cores = 1,...){
+  doclust = FALSE
+  if (inherits(cores, "cluster")) {
+    doclust = TRUE
+  } else if (cores > 1) {
+    doclust = TRUE
+    cores = parallel::makeCluster(cores)
+    on.exit(parallel::stopCluster(cores), add=TRUE)
+  }
+  
+  calcul_geosom = \(paramgeosom){
+    wt = paramgeosom[[1]]
+    grid = geosomgrid(paramgeosom[[2]],paramgeosom[[3]],
+                      paramgeosom[[4]],paramgeosom[[5]])
+    gsom = geosom(data,coords,wt,grid,...)
+    gp = geosom_quality(gsom)
+    gerr = c(gp$err.quant,gp$err.varratio,gp$err.topo,gp$err.kaski)
+    names(gerr) = c('err_quant','err_varratio','err_topo','err_kaski')
+    return(gerr)
+  }
+  
+  paradf = tidyr::crossing("wt" = wt,
+                           "xdim" = xdim,
+                           "ydim" = ydim,
+                           "topo" = topo,
+                           "neighbourhoodfct" = neighbourhood.fct)
+  parak = split(paradf, seq_len(nrow(paradf)))
+  
+  if (doclust) {
+    parallel::clusterExport(cores,c('geosom','geosomgrid','geosom_quality'))
+    out_g = parallel::parLapply(cores,parak,calcul_geosom)
+    out_g = tibble::as_tibble(do.call(rbind, out_g))
+  } else {
+    out_g = purrr::map_dfr(parak,calcul_geosom)
+  }
+  
+  out_g = dplyr::bind_cols(paradf,out_g) %>% 
+    dplyr::arrange(dplyr::desc())
+    
 }
 
 #' @title Superclasses of GeoSOM
@@ -99,6 +147,8 @@ geosom_quality = \(gsom){
 #' Defaul is `FALSE`.
 #'
 #' @return A numeric vector representing the superclass.
+#' @importFrom cluster pam
+#' @importFrom stats dist hclust cutree
 #' @export
 #' @examples
 #' data(pmc)
@@ -170,6 +220,7 @@ geosom_clusterlabel = \(gsom,superclass){
 #' @param ... Other arguments passed to `aweSOM::aweSOMplot()`.
 #'
 #' @return An object of class htmlwidget.
+#' @importFrom aweSOM aweSOMplot
 #' @export
 #'
 #' @examples

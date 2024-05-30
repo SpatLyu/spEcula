@@ -206,7 +206,7 @@ gos_bestkappa = \(formula, data = NULL, kappa = seq(0.05,1,0.05),
   }
 
   cv.out = out_rmse %>%
-    dplyr::summarise(rmse = mean(rmse,na.rm = T),
+    dplyr::summarise("rmse" = mean(rmse,na.rm = T),
                      .by = kappa)
 
   k = which(cv.out$rmse == min(cv.out$rmse))[1]
