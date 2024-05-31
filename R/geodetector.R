@@ -7,7 +7,7 @@
 #' @param y Variable Y, continuous numeric vector.
 #' @param x Covariate X, \code{factor} or \code{character}.
 #'
-#' @return A numeric vector contains the Q-statistic and the p-value.
+#' @return A list contains the Q-statistic and the p-value.
 #' @importFrom stats var pf
 #' @importFrom tibble tibble
 #' @importFrom magrittr `%>%`
@@ -34,7 +34,7 @@ factor_detector = \(y,x){
   lambda = (v1 - v2) / (var(y) * (N - 1) / N)
   p0 = stats::pf(Fv, df1 = (L - 1), df2 = (N - L), ncp = lambda)
   sig = 1 - p0
-  qv.sig = c("Q-statistic" = qv, "P-value" = sig)
+  qv.sig = list("Q-statistic" = qv, "P-value" = sig)
   return(qv.sig)
 }
 
@@ -49,16 +49,16 @@ factor_detector = \(y,x){
 #' @param x1 Covariate \eqn{X_1}, \code{factor} or \code{character}.
 #' @param x2 Covariate \eqn{X_2}, \code{factor} or \code{character}.
 #'
-#' @return A vector contains the Q statistic when the factors \eqn{X_1} and \eqn{X_1} act on \eqn{Y} alone
+#' @return A list contains the Q statistic when the factors \eqn{X_1} and \eqn{X_1} act on \eqn{Y} alone
 #' and the Q statistic when the two interact on \eqn{Y} together with the result type of the interaction detector.
 #'
 #' @export
 #' @example
 interaction_detector = \(y,x1,x2){
   x12 = paste0(x1,x2,'_')
-  pv1 = factor_detector(y,x1)[1]
-  pv2 = factor_detector(y,x2)[1]
-  pv12 = factor_detector(y,x12)[1]
+  pv1 = factor_detector(y,x1)[[1]]
+  pv2 = factor_detector(y,x2)[[1]]
+  pv12 = factor_detector(y,x12)[[1]]
 
   if (qv12 < min(qv1, qv2)) {
     interaction = c("Weaken, nonlinear")
@@ -71,11 +71,11 @@ interaction_detector = \(y,x1,x2){
   } else {
     interaction = c("Enhance, nonlinear")
   }
-
-  return(c("Variable1 Q-statistics" = pv1,
-           "Variable2 Q-statistics" = pv2,
-           "Variable1 and Variable2 interact Q-statistics" = pv12,
-           "Interaction" = interaction))
+  interd = list(pv1,pv2,pv12,interaction)
+  names(interd) = c("Variable1 Q-statistics","Variable2 Q-statistics",
+                    "Variable1 and Variable2 interact Q-statistics",
+                    "Interaction")
+  return(interd)
 }
 
 #' @title risk detector
@@ -87,7 +87,7 @@ interaction_detector = \(y,x1,x2){
 #' @param y2 Dependent variable \code{Y} of subregion 2 for risk detection.
 #' @param alpha (optional) Confidence level of the interval,default is 0.95.
 #'
-#' @return A vector contains student t-test statistics, degrees of freedom, p-values, and whether has risk (Yes or No).
+#' @return A list contains student t-test statistics, degrees of freedom, p-values, and whether has risk (Yes or No).
 #' @importFrom stats t.test
 #' @export
 #'
@@ -96,20 +96,14 @@ risk_detector = \(y1,y2,alpha = 0.95){
   tryCatch({
     tt = stats::t.test(y1,y2,conf.level = alpha)
     risk = ifelse(tt$p.value < (1 - alpha), "Yes", "No")
-    return(
-      c("T-statistic" = tt$statistic,
-        "Degree-freedom" = tt$parameter,
-        "P-value" = tt$p.value,
-        "Risk" = risk)
-    )
+    risk = factor(risk,levels = c("Yes", "No"), labels = c("Yes", "No"))
+    riskd = list(tt$statistic,tt$parameter,tt$p.value,risk)
   }, error = function(y1,y2){
-    return(
-      c("T-statistic" = 0,
-        "Degree-freedom" = min(c(length(y1),length(y2))) - 1,
-        "P-value" = 1,
-        "Risk" = NA)
-      )
+    riskd = list(0,min(c(length(y1),length(y2))) - 1,1,NA)
   })
+
+  names(riskd) = c("T-statistic","Degree-freedom","P-value","Risk")
+  return(riskd)
 }
 
 #' @title ecological detector
@@ -122,22 +116,21 @@ risk_detector = \(y1,y2,alpha = 0.95){
 #' @param x2 Covariate \eqn{X_2}, \code{factor} or \code{character}.
 #' @param alpha (optional) Confidence level of the interval,default is 0.95.
 #'
-#' @return A vector contains \code{F} statistics, p-values, and is there a significant difference between the
+#' @return A list contains \code{F} statistics, p-values, and is there a significant difference between the
 #' two factors \eqn{X_1} and \eqn{X_2} on the spatial distribution of the attribute \eqn{Y}
 #' @importFrom stats pf
 #' @export
 #'
 #' @examples
 ecological_detector = \(y,x1,x2,alpha = 0.95){
-  q1 = factor_detector(y,x1)[1]
-  q2 = factor_detector(y,x2)[1]
+  q1 = factor_detector(y,x1)[[1]]
+  q2 = factor_detector(y,x2)[[1]]
   fv = (1 - q1) / (1 - q2)
   n = length(y)
   p0 = stats::pf(fv, df1 = n - 1, df2 = n - 1, lower.tail = FALSE)
   eco = ifelse(p0 < (1 - alpha), "Yes", "No")
-  return(
-    c("F-statistic" = fv,
-      "P-value" = p0,
-      "Ecological" = eco)
-  )
+  eco = factor(eco,levels = c("Yes", "No"),labels = c("Yes", "No"))
+  ecod = list(fv,p0,eco)
+  names(ecod) = c("F-statistic","P-value","Ecological")
+  return(ecod)
 }
