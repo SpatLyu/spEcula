@@ -1,26 +1,38 @@
-
-
+#' @title factor detector
+#' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
+#' @description
+#' The factor detector q-statistic measures the spatial stratified heterogeneity of a variable Y,
+#' or the determinant power of a covariate X of Y.
+#'
+#' @param x Covariate X, \code{factor} or \code{character}.
+#' @param y Variable Y, continuous numeric variable.
+#'
+#' @return A numeric vector containing the Q-statistic and the p-value.
+#' @importFrom stats var pf
+#' @importFrom tibble tibble
+#' @importFrom magrittr `%>%`
+#' @importFrom dplyr group_by n filter ungroup mutate
+#' @export
 factor_detector = \(x,y){
-  gdf = tibble::tibble(x = x, y = y)
-  onestrata = gdf %>%
-    dplyr::summarise(n = dplyr::n(),.by = x) %>%
-    dplyr::filter(n > 1) %>%
-    dplyr::pull(x)
-  gdf = dplyr::filter(gdf,x %in% onestrata)
+  gdf = tibble::tibble(x = x, y = y) %>%
+    dplyr::group_by(x) %>%
+    dplyr::filter(dplyr::n() > 1) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(x = factor(x))
   x = gdf$x
   y = gdf$y
   rss = \(y) (length(y) - 1) * stats::var(y)
-  qv = 1 - sum(tapply(y, x, rss))/rss(y)
-  v1 = length(x) - 1
-  v2 = length(y) - length(x)
-  Fv = (v2 * qv)/(v1 * (1 - qv))
-  m0 = tapply(y, x, mean)
-  m1 = sum(m0^2)
-  m2 = sum(m0 * sqrt(count.x))^2/ny
-  lambda = (m1 - m2) / (var(y) * (ny - 1) / ny)
-  p0 = pf(Fv, df1 = v1, df2 = v2, ncp = lambda)
+  qv = 1 - sum(tapply(y, x, rss)) / rss(y)
+  N = length(y)
+  L = length(levels(x))
+  Fv = ((N - L) * qv) / ((L - 1) * (1 - qv))
+  hmean = tapply(y, x, mean)
+  Nh = tapply(y, x, length)
+  v1 = sum(hmean ^ 2)
+  v2 = sum(sqrt(Nh) * hmean)^2 / N
+  lambda = (v1 - v2) / (var(y) * (N - 1) / N)
+  p0 = stats::pf(Fv, df1 = (L - 1), df2 = (N - L), ncp = lambda)
   sig = 1 - p0
-  # return
-  qv.sig <- c(qv = qv, sig = sig)
+  qv.sig = c('Q statistic' = qv, 'P value' = sig)
   return(qv.sig)
 }
