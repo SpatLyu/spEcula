@@ -1,13 +1,13 @@
 Package: spEcula
 Title: Spatial Methods In R
-Version: 0.1.1
+Version: 0.1.1.9999
 Authors@R: c(
     person("Wenbo", "Lv", , "lyu.geosocial@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0002-6003-3800")),
     person("Yangyang", "Lei", , "2237768656@qq.com", role = c("aut"),
            comment = c(ORCID = "0009-0002-6518-3613"))      
     )
-Description: Spatial Inference and Spatial Prediction based on Spatial Dependence, Spatial Heterogeneity and Geographical Similarity.
+Description: Spatial Inference and Spatial Prediction based on Spatial Dependence, Spatial Heterogeneity and Geographical Similarity With R.
 License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -28,15 +28,18 @@ Imports:
   aweSOM,
   cluster
 Depends: 
-    R (>= 4.2.0)
+    R (>= 4.1.0)
 LazyData: true
 Suggests: 
     sf,
     terra,
     ggspatial,
+    tidyverse,
+    tidyterra,
     tmap,
     knitr,
     rmarkdown,
+    fs,
     skimr,
     car,
     moments,
