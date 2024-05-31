@@ -83,7 +83,6 @@ interaction_detector = \(y,x1,x2){
 #' @description
 #' Determine whether there is a significant difference between the attribute means of two subregions.
 #'
-#'
 #' @param y1 Dependent variable \code{Y} of subregion 1 for risk detection.
 #' @param y2 Dependent variable \code{Y} of subregion 2 for risk detection.
 #' @param alpha (optional) Confidence level of the interval,default is 0.95.
@@ -96,8 +95,7 @@ interaction_detector = \(y,x1,x2){
 risk_detector = \(y1,y2,alpha = 0.95){
   tryCatch({
     tt = stats::t.test(y1,y2,conf.level = alpha)
-    risk = ifelse(tt$p.value < (1 - alpha), "Y", "N")
-    risk = factor(risk, levels = c("Y", "N"))
+    risk = ifelse(tt$p.value < (1 - alpha), "Yes", "No")
     return(
       c("T-statistic" = tt$statistic,
         "Degree-freedom" = tt$parameter,
@@ -112,4 +110,34 @@ risk_detector = \(y1,y2,alpha = 0.95){
         "Risk" = NA)
       )
   })
+}
+
+#' @title ecological detector
+#' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
+#' @description
+#' Compare the effects of two factors \eqn{X_1} and \eqn{X_2} on the spatial distribution of the attribute \eqn{Y}.
+#'
+#' @param y Dependent variable, continuous numeric vector.
+#' @param x1 Covariate \eqn{X_1}, \code{factor} or \code{character}.
+#' @param x2 Covariate \eqn{X_2}, \code{factor} or \code{character}.
+#' @param alpha (optional) Confidence level of the interval,default is 0.95.
+#'
+#' @return A vector contains \code{F} statistics, p-values, and is there a significant difference between the
+#' two factors \eqn{X_1} and \eqn{X_2} on the spatial distribution of the attribute \eqn{Y}
+#' @importFrom stats pf
+#' @export
+#'
+#' @examples
+ecological_detector = \(y,x1,x2,alpha = 0.95){
+  q1 = factor_detector(y,x1)[1]
+  q2 = factor_detector(y,x2)[1]
+  fv = (1 - q1) / (1 - q2)
+  n = length(y)
+  p0 = stats::pf(fv, df1 = n - 1, df2 = n - 1, lower.tail = FALSE)
+  eco = ifelse(p0 < (1 - alpha), "Yes", "No")
+  return(
+    c("F-statistic" = fv,
+      "P-value" = p0,
+      "Ecological" = eco)
+  )
 }
