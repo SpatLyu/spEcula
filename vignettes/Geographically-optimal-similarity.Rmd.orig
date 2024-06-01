@@ -67,7 +67,7 @@ moments::skewness(zn$Zn)
 
 All right, let's move on to the next step to see variable correlation:
 
-```{r warning=FALSE,fig.width=7.5,fig.height=7.5}
+```{r correlation,warning=FALSE,fig.width=7.5,fig.height=7.5}
 PerformanceAnalytics::chart.Correlation(zn[, c(3:12)],pch = 19)
 ```
 

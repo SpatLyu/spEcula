@@ -66,9 +66,9 @@ interaction_detector = \(y,x1,x2){
   if (qv12 < min(qv1, qv2)) {
     interaction = c("Weaken, nonlinear")
   } else if (qv12 >= min(qv1, qv2) & qv12 <= max(qv1, qv2)) {
-    interaction = c("Weaken, uni-")
+    interaction = c("Weaken, uni-nonlinear")
   } else if (qv12 > max(qv1, qv2) & (qv12 < qv1 + qv2)) {
-    interaction = c("Enhance, bi-")
+    interaction = c("Enhance, bi-bivariate")
   } else if (qv12 == qv1 + qv2) {
     interaction = c("Independent")
   } else {

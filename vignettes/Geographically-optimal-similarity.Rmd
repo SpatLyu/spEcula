@@ -8,6 +8,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+
+
 ##  GOS model <img src="../man/figures/logo.png" align="right" height="75"/>
 
 This vignette explains how to run a `GOS` model in `spEcula` package.
@@ -20,6 +22,7 @@ This vignette explains how to run a `GOS` model in `spEcula` package.
 ### Load data and package
 
 use `zn` data to train the `gos` model,use `grid` data to predict.
+
 
 ``` r
 library(spEcula)
@@ -161,7 +164,7 @@ All right, let's move on to the next step to see variable correlation:
 PerformanceAnalytics::chart.Correlation(zn[, c(3:12)],pch = 19)
 ```
 
-![](figure/unnamed-chunk-5-1.png)
+![](figure/correlation-1.png)
 
 and test multicollinearity use vif:
 
@@ -184,7 +187,7 @@ b1 = gos_bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
                    data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
                    nrepeat = 10,nsplit = .8,cores = 1)
 tictoc::toc()
-## 32.35 sec elapsed
+## 31.12 sec elapsed
 ```
 
 ``` r
@@ -233,7 +236,7 @@ b2 = gos_bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
                    data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
                    nrepeat = 10,nsplit = .8,cores = 6)
 tictoc::toc()
-## 10.25 sec elapsed
+## 10.05 sec elapsed
 ```
 
 ``` r
@@ -281,7 +284,7 @@ tictoc::tic()
 g = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
         data = zn, newdata = grid, kappa = 0.07,cores = 6)
 tictoc::toc()
-## 10.64 sec elapsed
+## 10.9 sec elapsed
 ```
 
 back transformation using transformation parameters that have used Box-cos transformation
