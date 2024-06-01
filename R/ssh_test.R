@@ -9,7 +9,13 @@
 #' `interaction`, `risk`, `ecological`.
 #' @param ... (optional) Specifies the size of the alpha (confidence level).Default is `0.95`.
 #'
-#' @return A tibble of the corresponding result is stored under the corresponding detector type
+#' @return A tibble of the corresponding result is stored under the corresponding detector type.
+#' @importFrom stats as.formula
+#' @importFrom utils combn
+#' @importFrom magrittr `%>%`
+#' @importFrom purrr map_dfr
+#' @importFrom tibble as_tibble
+#' @importFrom dplyr mutate select arrange desc everything
 #' @export
 #'
 #' @examples
