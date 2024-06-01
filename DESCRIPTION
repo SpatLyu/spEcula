@@ -46,6 +46,8 @@ Suggests:
     cowplot,
     viridis,
     mapview,
+    readxl,
+    writexl,
     htmlwidgets,
     PerformanceAnalytics,
     tictoc

@@ -42,7 +42,7 @@
 gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
   doclust = FALSE
   tau = 1 - kappa
-  formula = as.formula(formula)
+  formula = stats::as.formula(formula)
   formula.vars = all.vars(formula)
   response = data[, formula.vars[1], drop = TRUE]
   no = nrow(data)
@@ -134,6 +134,7 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
 #'
 #' @return A list of the result of the best kappa and the computation process curve.
 #'
+#' @importFrom stats as.formula
 #' @importFrom DescTools RMSE
 #' @importFrom dplyr %>% summarise
 #' @importFrom parallel makeCluster stopCluster clusterExport parLapply
@@ -170,6 +171,7 @@ gos_bestkappa = \(formula, data = NULL, kappa = seq(0.05,1,0.05),
   }
 
   no = nrow(data)
+  formula = stats::as.formula(formula)
   namey = all.vars(formula)[1]
 
   calcvrmse = \(paramp){# The function is wrapped this way to use `parallel::parLapply`.
