@@ -36,3 +36,12 @@
 #' @docType data
 #' @keywords dataset 2011 Portugal Census
 "pmc"
+
+#' @title NTDs data
+#' @description
+#' See Geodetecor Model Vignette
+#'
+#' @name NTDs
+#' @format \code{NTDs}: A tibble with 185 rows and 5 variables.
+#' @docType data
+"NTDs"

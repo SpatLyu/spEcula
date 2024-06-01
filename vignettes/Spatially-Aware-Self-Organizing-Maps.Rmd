@@ -78,7 +78,6 @@ g_bestparam
 ### Build GeoSOM model
 
 ```{r Build-and-assess-geosom-model}
-
 g = geosom(data = pmc, coords = c("centroidx","centroidy"), wt = .9,
            grid = geosomgrid(4,4,topo = "rectangular",
                              neighbourhood.fct = "gaussian"))

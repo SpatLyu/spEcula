@@ -35,7 +35,7 @@ devtools::install_github("SpatLyu/spEcula",build_vignettes = T,dep = T)
 
   `geosimilarity` package has achieved `gos` model,but when data is larger,`geosimilarity` may be slow. I develop the parallelized `gos` model in `spEcula`,which can change the `cores` argument in `gos()` and `bestkappa` function to parallel computation.
 
-```{r example}
+```{r example_gos}
 library(spEcula)
 data(zn)
 data(grid)
@@ -74,5 +74,61 @@ plot_grid(f1,f2,nrow = 1,label_fontfamily = 'serif',
           label_fontface = 'plain',label_size = 10,
           hjust = -1.5,align = 'hv')  -> p
 p
+```
+
+### Spatially-aware Self-Organizing Maps(GeoSOM) model
+
+```{r example_geosom}
+data(pmc)
+
+set.seed(20220724)
+tictoc::tic()
+geosom_bestparam(data = pmc, 
+                 coords = c("centroidx","centroidy"),
+                 wt = c(seq(0.1,1,by = 0.1),2:5),
+                 xdim = 4:10, ydim = 4:10,cores = 6) -> g_bestparam
+tictoc::toc()
+```
+
+build geosom model
+
+```{r Build-and-assess-geosom-model}
+g = geosom(data = pmc, coords = c("centroidx","centroidy"), wt = .9,
+           grid = geosomgrid(4,4,topo = "rectangular",
+                             neighbourhood.fct = "gaussian"))
+```
+
+```{r}
+g_superclass = geosom_superclass(g,6,method = 'pam')
+g_superclass
+```
+
+```{r}
+g_label = geosom_clusterlabel(g,g_superclass)
+g_label
+```
+
+```{r fig.width=7.5, fig.height=5}
+library(sf)
+library(dplyr)
+
+pmc %>% 
+  mutate(zone = as.factor(g_label)) %>% 
+  st_as_sf(coords = c("centroidx","centroidy")) %>% 
+  ggplot() +
+  geom_sf(aes(col = zone),size = 1.25,shape = 17) +
+  scale_color_discrete(type = 'viridis') +
+  theme_bw() +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank())
+```
+
+### Geographic detectors(geodetector) model
+
+```{r example_gd}
+data(NTDs)
+
+ssh.test(incidence ~ watershed + elevation + soiltype,
+         data = NTDs,type = 'factor')
 ```
 
