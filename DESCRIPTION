@@ -27,6 +27,7 @@ Imports:
   pander,
   knitr,
   DescTools,
+  BAMMtools,
   kohonen,
   aweSOM,
   cluster
