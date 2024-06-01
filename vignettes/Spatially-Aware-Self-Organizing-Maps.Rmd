@@ -1,6 +1,6 @@
 ---
 title: "Spatially-aware Self-Organizing Maps(GeoSOM) Model in R package spEcula"
-author: "Wenbo Lv & Yangyang Lei"
+author: "Wenbo Lv"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Spatially-Aware-Self-Organizing-Maps}

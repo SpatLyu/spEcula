@@ -13,7 +13,7 @@
 #' @importFrom magrittr `%>%`
 #' @importFrom dplyr group_by n filter ungroup mutate
 #' @export
-#' @example
+#' @examples
 #' factor_detector(x = c('x',rep('y',3),rep('z',3)),y = 1:7)
 factor_detector = \(y,x){
   gdf = tibble::tibble(x = x, y = y) %>%
@@ -54,7 +54,7 @@ factor_detector = \(y,x){
 #' and the Q statistic when the two interact on \eqn{Y} together with the result type of the interaction detector.
 #'
 #' @export
-#' @example
+#' @examples
 #' interaction_detector(y = 1:7,x1 = c('x',rep('y',3),rep('z',3)),
 #' x2 = c(rep('a',2),rep('b',2),rep('c',3)))
 interaction_detector = \(y,x1,x2){
@@ -90,7 +90,7 @@ interaction_detector = \(y,x1,x2){
 #' @param x Covariate X, \code{factor} or \code{character}.
 #' @param alpha (optional) Confidence level of the interval,default is `0.95`.
 #'
-#' @return A tibble contains different combinations of covariate \code{X's} level and student t-test statistics,
+#' @return A tibble contains different combinations of covariate \code{X} level and student t-test statistics,
 #' degrees of freedom, p-values, and whether has risk (Yes or No).
 #'
 #' @importFrom stats t.test

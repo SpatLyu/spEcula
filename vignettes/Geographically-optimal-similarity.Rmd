@@ -1,6 +1,6 @@
 ---
 title: "Geographically Optimal Similarity Model in R package spEcula"
-author: "Wenbo Lv & Yangyang Lei"
+author: "Wenbo Lv"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Geographically-optimal-similarity}

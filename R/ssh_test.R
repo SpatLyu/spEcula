@@ -103,3 +103,121 @@ ssh.test = \(formula,data,type = 'factor',...){
   )
   return(res)
 }
+
+
+#' @title print factor detector
+#' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
+#' @description
+#' S3 method to format output for factor detector in `ssh.test`.
+#'
+#' @param x Return by `ssh.test`.
+#' @param ... Other arguments.
+#'
+#' @return Formatted string output
+#' @importFrom pander pander
+#' @export
+print.factor_detector = \(x, ...) {
+  cat("Spatial Stratified Heterogeneity Test \n",
+      "\n          Factor detector         \n")
+  pander::pander(x$factor)
+}
+
+#' @title print interaction detector
+#' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
+#' @description
+#' S3 method to format output for interaction detector in `ssh.test`.
+#'
+#' @param x Return by `ssh.test`.
+#' @param ... Other arguments.
+#'
+#' @return Formatted string output
+#' @importFrom magrittr `%>%`
+#' @importFrom pander pander
+#' @importFrom dplyr mutate select
+#' @export
+print.interaction_detector = \(x, ...) {
+  cat("Spatial Stratified Heterogeneity Test \n",
+      "\n         Interaction detector          \n")
+  x = x$interaction %>%
+    dplyr::mutate(`Interactive variable` = paste0(variable1,' ∩ ',variable2)) %>%
+    dplyr::select(`Interactive variable`,Interaction)
+  pander::pander(x)
+}
+
+#' @title print risk detector
+#' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
+#' @description
+#' S3 method to format output for risk detector in `ssh.test`.
+#'
+#' @param x Return by `ssh.test`.
+#' @param ... Other arguments.
+#'
+#' @return Formatted string output
+#' @importFrom magrittr `%>%`
+#' @importFrom knitr kable
+#' @importFrom tidyr pivot_wider
+#' @importFrom dplyr mutate select count pull filter all_of
+#' @export
+print.risk_detector = \(x, ...) {
+  cat("Spatial Stratified Heterogeneity Test \n",
+      "\n             Risk detector             \n")
+  x = dplyr::select(x$risk,variable,zone1,zone2,Risk)
+  xvar = x %>%
+    dplyr::count(variable) %>%
+    dplyr::pull(variable)
+  rd2mat = \(x,zonevar){
+    matt = x %>%
+      dplyr::filter(variable == zonevar) %>%
+      dplyr::select(-variable) %>%
+      tidyr::pivot_wider(names_from = zone2,
+                         values_from = Risk)
+    matname = matt$zone1
+    matt = dplyr::select(matt,zone1,dplyr::all_of(matname)) %>%
+      dplyr::select(-zone1) %>%
+      as.matrix()
+    rownames(matt) = matname
+    return(matt)
+  }
+  cat('\n')
+  for (i in xvar){
+    cat('--------------------------------------\n')
+    cat(sprintf("Variable %s:",i))
+    print(knitr::kable(rd2mat(x,i), format = "markdown"))
+    #cat('--------------------------------------\n')
+  }
+}
+
+#' @title print ecological detector
+#' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
+#' @description
+#' S3 method to format output for ecological detector in `ssh.test`.
+#'
+#' @param x Return by `ssh.test`.
+#' @param ... Other arguments.
+#'
+#' @return Formatted string output
+#' @importFrom magrittr `%>%`
+#' @importFrom knitr kable
+#' @importFrom tidyr pivot_wider
+#' @importFrom dplyr select all_of
+#' @export
+print.ecological_detector = \(x, ...) {
+  cat("Spatial Stratified Heterogeneity Test \n",
+      "\n          ecological detector          \n")
+  x = dplyr::select(x$ecological,
+                    dplyr::all_of(c('variable1','variable2','Ecological')))
+  ed2mat = \(x){
+    matt = x %>%
+      tidyr::pivot_wider(names_from = "variable2",
+                         values_from = "Ecological")
+    matname = matt$variable1
+    matt = matt %>%
+      dplyr::select(-variable1) %>%
+      as.matrix()
+    rownames(matt) = matname
+    return(matt)
+  }
+  cat('\n')
+  cat('--------------------------------------\n')
+  print(knitr::kable(ed2mat(x), format = "markdown"))
+}
