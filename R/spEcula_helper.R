@@ -22,5 +22,3 @@
 inverse_bcPower = \(z,alpha){
   return((z * alpha + 1) ^ (1 / alpha))
 }
-
-

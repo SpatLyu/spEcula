@@ -88,7 +88,7 @@ interaction_detector = \(y,x1,x2){
 #'
 #' @param y Variable Y, continuous numeric vector.
 #' @param x Covariate X, \code{factor} or \code{character}.
-#' @param alpha (optional) Confidence level of the interval,default is 0.95.
+#' @param alpha (optional) Confidence level of the interval,default is `0.95`.
 #'
 #' @return A tibble contains different combinations of covariate \code{X's} level and student t-test statistics,
 #' degrees of freedom, p-values, and whether has risk (Yes or No).
@@ -106,11 +106,11 @@ interaction_detector = \(y,x1,x2){
 risk_detector = \(y,x,alpha = 0.95){
    x = factor(x)
    gdf = tibble::tibble(x = x, y = y)
-   paradf = tidyr::crossing(x1 = levels(x),
-                            x2 = levels(x)) %>%
-     dplyr::filter(x1 != x2)
-   x1 = paradf$x1
-   x2 = paradf$x2
+   paradf = tidyr::crossing(zone1 = levels(x),
+                            zone2 = levels(x)) %>%
+     dplyr::filter(zone1 != zone2)
+   x1 = paradf$zone1
+   x2 = paradf$zone2
 
    twounit_risk_detector = \(n1,n2,cutoff = 0.95){
      y1 = dplyr::filter(gdf, x == n1) %>% dplyr::pull(y)
@@ -144,7 +144,7 @@ risk_detector = \(y,x,alpha = 0.95){
 #' @param y Dependent variable, continuous numeric vector.
 #' @param x1 Covariate \eqn{X_1}, \code{factor} or \code{character}.
 #' @param x2 Covariate \eqn{X_2}, \code{factor} or \code{character}.
-#' @param alpha (optional) Confidence level of the interval,default is 0.95.
+#' @param alpha (optional) Confidence level of the interval,default is `0.95`.
 #'
 #' @return A list contains \code{F} statistics, p-values, and is there a significant difference between the
 #' two factors \eqn{X_1} and \eqn{X_2} on the spatial distribution of the attribute \eqn{Y}
