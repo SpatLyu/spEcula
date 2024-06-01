@@ -14,6 +14,7 @@
 #' @importFrom dplyr group_by n filter ungroup mutate
 #' @export
 #' @example
+#' factor_detector(x = c('x',rep('y',3),rep('z',3)),y = 1:7)
 factor_detector = \(y,x){
   gdf = tibble::tibble(x = x, y = y) %>%
     dplyr::group_by(x) %>%
@@ -30,12 +31,12 @@ factor_detector = \(y,x){
   hmean = tapply(y, x, mean)
   Nh = tapply(y, x, length)
   v1 = sum(hmean ^ 2)
-  v2 = sum(sqrt(Nh) * hmean)^2 / N
+  v2 = (sum(sqrt(Nh) * hmean)) ^ 2 / N
   lambda = (v1 - v2) / (var(y) * (N - 1) / N)
-  p0 = stats::pf(Fv, df1 = (L - 1), df2 = (N - L), ncp = lambda)
-  sig = 1 - p0
-  qv.sig = list("Q-statistic" = qv, "P-value" = sig)
-  return(qv.sig)
+  pv = stats::pf(Fv, df1 = (L - 1), df2 = (N - L),
+                 ncp = lambda, lower.tail = FALSE)
+  fd = list("Q-statistic" = qv, "P-value" = pv)
+  return(fd)
 }
 
 #' @title interaction detector
@@ -54,11 +55,13 @@ factor_detector = \(y,x){
 #'
 #' @export
 #' @example
+#' interaction_detector(y = 1:7,x1 = c('x',rep('y',3),rep('z',3)),
+#' x2 = c(rep('a',2),rep('b',2),rep('c',3)))
 interaction_detector = \(y,x1,x2){
   x12 = paste0(x1,x2,'_')
-  pv1 = factor_detector(y,x1)[[1]]
-  pv2 = factor_detector(y,x2)[[1]]
-  pv12 = factor_detector(y,x12)[[1]]
+  qv1 = factor_detector(y,x1)[[1]]
+  qv2 = factor_detector(y,x2)[[1]]
+  qv12 = factor_detector(y,x12)[[1]]
 
   if (qv12 < min(qv1, qv2)) {
     interaction = c("Weaken, nonlinear")
@@ -71,7 +74,7 @@ interaction_detector = \(y,x1,x2){
   } else {
     interaction = c("Enhance, nonlinear")
   }
-  interd = list(pv1,pv2,pv12,interaction)
+  interd = list(qv1,qv2,qv12,interaction)
   names(interd) = c("Variable1 Q-statistics","Variable2 Q-statistics",
                     "Variable1 and Variable2 interact Q-statistics",
                     "Interaction")
@@ -92,11 +95,14 @@ interaction_detector = \(y,x1,x2){
 #'
 #' @importFrom stats t.test
 #' @importFrom tidyr crossing
-#' @importFrom dplyr filter pull
 #' @importFrom tibble tibble
+#' @importFrom magrittr `%>%`
+#' @importFrom purrr map2_dfr
+#' @importFrom dplyr filter pull bind_cols
 #' @export
 #'
 #' @examples
+#' risk_detector(x = c('x',rep('y',3),rep('z',3)),y = 1:7)
 risk_detector = \(y,x,alpha = 0.95){
    x = factor(x)
    gdf = tibble::tibble(x = x, y = y)
@@ -106,27 +112,27 @@ risk_detector = \(y,x,alpha = 0.95){
    x1 = paradf$x1
    x2 = paradf$x2
 
-   twounit_risk_detector = \(y1,y2,alpha){
-     tryCatch({
-       tt = stats::t.test(y1,y2,conf.level = alpha)
-       risk = ifelse(tt$p.value < (1 - alpha), "Yes", "No")
-       risk = factor(risk,levels = c("Yes", "No"), labels = c("Yes", "No"))
-       riskd = list(tt$statistic,tt$parameter,tt$p.value,risk)
-     }, error = function(y1,y2){
-       riskd = list(0,min(c(length(y1),length(y2))) - 1,1,NA)
+   twounit_risk_detector = \(n1,n2,cutoff = 0.95){
+     y1 = dplyr::filter(gdf, x == n1) %>% dplyr::pull(y)
+     y2 = dplyr::filter(gdf, x == n2) %>% dplyr::pull(y)
+     df0 = min(c(length(y1),length(y2))) - 1
+     tt = tryCatch({
+       stats::t.test(y1,y2,conf.level = cutoff)
+     }, error = function(e){
+       list("statistic" = 0,
+            "parameter" = df0,
+            "p.value" = 1)
      })
 
+     risk = ifelse(tt$p.value < (1 - cutoff), "Yes", "No")
+     risk = factor(risk,levels = c("Yes", "No"), labels = c("Yes", "No"))
+     riskd = list(tt$statistic,tt$parameter,tt$p.value,risk)
      names(riskd) = c("T-statistic","Degree-freedom","P-value","Risk")
      return(riskd)
    }
 
-   calcul_rd = \(n1,n1,cutoff = 0.95){
-     y1 = dplyr::filter(x == n1) %>% dplyr::pull(y)
-     y2 = dplyr::filter(x == n2) %>% dplyr::pull(y)
-     return(twounit_risk_detector(y1,y2,cutoff))
-   }
-
-   rd = purrr::map2_dfr(x1,x2,calcul_rd,cutoff = alpha)
+   rd = purrr::map2_dfr(x1,x2,twounit_risk_detector,cutoff = alpha) %>%
+     dplyr::bind_cols(paradf,.)
    return(rd)
 }
 
@@ -146,6 +152,8 @@ risk_detector = \(y,x,alpha = 0.95){
 #' @export
 #'
 #' @examples
+#' ecological_detector(y = 1:7,x1 = c('x',rep('y',3),rep('z',3)),
+#' x2 = c(rep('a',2),rep('b',2),rep('c',3)))
 ecological_detector = \(y,x1,x2,alpha = 0.95){
   q1 = factor_detector(y,x1)[[1]]
   q2 = factor_detector(y,x2)[[1]]
