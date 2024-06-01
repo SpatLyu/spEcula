@@ -83,27 +83,51 @@ interaction_detector = \(y,x1,x2){
 #' @description
 #' Determine whether there is a significant difference between the attribute means of two subregions.
 #'
-#' @param y1 Dependent variable \code{Y} of subregion 1 for risk detection.
-#' @param y2 Dependent variable \code{Y} of subregion 2 for risk detection.
+#' @param y Variable Y, continuous numeric vector.
+#' @param x Covariate X, \code{factor} or \code{character}.
 #' @param alpha (optional) Confidence level of the interval,default is 0.95.
 #'
-#' @return A list contains student t-test statistics, degrees of freedom, p-values, and whether has risk (Yes or No).
+#' @return A tibble contains different combinations of covariate \code{X's} level and student t-test statistics,
+#' degrees of freedom, p-values, and whether has risk (Yes or No).
+#'
 #' @importFrom stats t.test
+#' @importFrom tidyr crossing
+#' @importFrom dplyr filter pull
+#' @importFrom tibble tibble
 #' @export
 #'
 #' @examples
-risk_detector = \(y1,y2,alpha = 0.95){
-  tryCatch({
-    tt = stats::t.test(y1,y2,conf.level = alpha)
-    risk = ifelse(tt$p.value < (1 - alpha), "Yes", "No")
-    risk = factor(risk,levels = c("Yes", "No"), labels = c("Yes", "No"))
-    riskd = list(tt$statistic,tt$parameter,tt$p.value,risk)
-  }, error = function(y1,y2){
-    riskd = list(0,min(c(length(y1),length(y2))) - 1,1,NA)
-  })
+risk_detector = \(y,x,alpha = 0.95){
+   x = factor(x)
+   gdf = tibble::tibble(x = x, y = y)
+   paradf = tidyr::crossing(x1 = levels(x),
+                            x2 = levels(x)) %>%
+     dplyr::filter(x1 != x2)
+   x1 = paradf$x1
+   x2 = paradf$x2
 
-  names(riskd) = c("T-statistic","Degree-freedom","P-value","Risk")
-  return(riskd)
+   twounit_risk_detector = \(y1,y2,alpha){
+     tryCatch({
+       tt = stats::t.test(y1,y2,conf.level = alpha)
+       risk = ifelse(tt$p.value < (1 - alpha), "Yes", "No")
+       risk = factor(risk,levels = c("Yes", "No"), labels = c("Yes", "No"))
+       riskd = list(tt$statistic,tt$parameter,tt$p.value,risk)
+     }, error = function(y1,y2){
+       riskd = list(0,min(c(length(y1),length(y2))) - 1,1,NA)
+     })
+
+     names(riskd) = c("T-statistic","Degree-freedom","P-value","Risk")
+     return(riskd)
+   }
+
+   calcul_rd = \(n1,n1,cutoff = 0.95){
+     y1 = dplyr::filter(x == n1) %>% dplyr::pull(y)
+     y2 = dplyr::filter(x == n2) %>% dplyr::pull(y)
+     return(twounit_risk_detector(y1,y2,cutoff))
+   }
+
+   rd = purrr::map2_dfr(x1,x2,calcul_rd,cutoff = alpha)
+   return(rd)
 }
 
 #' @title ecological detector
