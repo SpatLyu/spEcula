@@ -36,14 +36,22 @@ st_unidisc = \(x,k,method = "quantile",factor = FALSE,...){
 #' @param y Variable Y, continuous numeric vector.
 #' @param x Covariate X, continuous numeric vector.
 #' @param k A vector of number of classes for discretization.
-#' @param method A vector of methods for discretization.
+#' @param method (optional) A vector of methods for discretization,default is all can
+#' used in `spEcula`.
 #' @param cores positive integer(default is 1). If cores > 1, a 'parallel' package
 #' cluster with that many cores is created and used. You can also supply a cluster
 #' object.
+#' @param return_disc (optional) Whether or not return discretized result used the optimal parameter.
+#' Default is `TRUE`.
 #' @param ... (optional) Other arguments passed to `st_unidisc()`.
 #'
 #' @return A list with the optimal parameter in the provided parameter combination with `k`
 #' and `method`.
+#' @importFrom parallel makeCluster stopCluster clusterExport parLapply
+#' @importFrom tidyr crossing
+#' @importFrom tibble as_tibble
+#' @importFrom purrr map_dfr
+#' @importFrom dplyr bind_cols arrange desc
 #' @export
 #'
 #' @examples
@@ -52,7 +60,7 @@ st_unidisc = \(x,k,method = "quantile",factor = FALSE,...){
 #' }
 gd_bestunidisc = \(y,x,k,method = c("fixed","sd","equal","pretty","quantile","kmeans","hclust",
                                     "bclust","fisher","jenks","dpih","headtails","maximum","box"),
-                   cores = 1,...){
+                   cores = 1,return_disc = TRUE,...){
   doclust = FALSE
   if (inherits(cores, "cluster")) {
     doclust = TRUE
@@ -85,5 +93,11 @@ gd_bestunidisc = \(y,x,k,method = c("fixed","sd","equal","pretty","quantile","km
 
   out_g = dplyr::bind_cols(paradf,out_g) %>%
     dplyr::arrange(dplyr::desc(qstatistic))
-  return(as.list(out_g[1,]))
+  out_g = as.list(out_g[1,])
+
+  if(return_disc){
+    resdisc = st_unidisc(x,k = out_g$`k`,method = out_g$`method`,...)
+    out_g = append(out_g,list("disv" = resdisc))
+  }
+  return(out_g)
 }
