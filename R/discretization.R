@@ -7,7 +7,7 @@
 #' @param k (optional) Number of classes required, if missing, `grDevices::nclass.Sturges()` is used;
 #' see also the "dpih" and "headtails" styles for automatic choice of the number of classes.
 #' @param method Chosen classify style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans",
-#' "hclust", "bclust", "fisher", "jenks", "dpih", "headtails", or "maximum".Default is `quantile`.
+#' "hclust", "bclust", "fisher", "jenks", "dpih", "headtails", "maximum", or "box".Default is `quantile`.
 #' @param factor (optional) Default is `FALSE`, if `TRUE` returns cols as a factor with intervals as
 #' labels rather than integers.
 #' @param ... (optional) Other arguments passed to `classInt::classify_intervals()`,
@@ -23,7 +23,67 @@
 #'          2459, 2934, 6399, 8578, 8537, 4840, 12132, 3734, 4372, 9073,
 #'          7508, 5203)
 #' st_unidisc(xvar,k = 6,method = 'sd')
-st_unidisc = \(x,k,method,factor = FALSE,...){
+st_unidisc = \(x,k,method = "quantile",factor = FALSE,...){
   return(classInt::classify_intervals(x,k,style = method,
                                       ...,factor = factor))
+}
+
+#' @title Best univariate discretize parameters based on geodetector q-statistic
+#' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
+#' @description
+#' Function for determining the best univariate discretize parameters based on geodetector q-statistic.
+#'
+#' @param y Variable Y, continuous numeric vector.
+#' @param x Covariate X, continuous numeric vector.
+#' @param k A vector of number of classes for discretization.
+#' @param method A vector of methods for discretization.
+#' @param cores positive integer(default is 1). If cores > 1, a 'parallel' package
+#' cluster with that many cores is created and used. You can also supply a cluster
+#' object.
+#' @param ... (optional) Other arguments passed to `st_unidisc()`.
+#'
+#' @return A list with the optimal parameter in the provided parameter combination with `k`
+#' and `method`.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'
+#' }
+gd_bestunidisc = \(y,x,k,method = c("fixed","sd","equal","pretty","quantile","kmeans","hclust",
+                                    "bclust","fisher","jenks","dpih","headtails","maximum","box"),
+                   cores = 1,...){
+  doclust = FALSE
+  if (inherits(cores, "cluster")) {
+    doclust = TRUE
+  } else if (cores > 1) {
+    doclust = TRUE
+    cores = parallel::makeCluster(cores)
+    on.exit(parallel::stopCluster(cores), add=TRUE)
+  }
+
+  calcul_disc = \(paramgd){
+    x = st_unidisc(x, k = paramgd[[1]],
+                   method = paramgd[[2]],...)
+    fd = factor_detector(y,x)
+    q = fd[[1]]
+    names(q) = "qstatistic"
+    return(q)
+  }
+
+  paradf = tidyr::crossing("k" = k,
+                           "method" = method)
+  parak = split(paradf, seq_len(nrow(paradf)))
+
+  if (doclust) {
+    parallel::clusterExport(cores,c('st_unidisc','factor_detector'))
+    out_g = parallel::parLapply(cores,parak,calcul_disc)
+    out_g = tibble::as_tibble(do.call(rbind, out_g))
+  } else {
+    out_g = purrr::map_dfr(parak,calcul_disc)
+  }
+
+  out_g = dplyr::bind_cols(paradf,out_g) %>%
+    dplyr::arrange(dplyr::desc(qstatistic))
+  return(as.list(out_g[1,]))
 }
