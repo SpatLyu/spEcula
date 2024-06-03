@@ -56,3 +56,4 @@ Suggests:
     tictoc
 VignetteBuilder: knitr
 Config/build/clean-inst-doc: FALSE
+URL: https://spatlyu.github.io/spEcula/
