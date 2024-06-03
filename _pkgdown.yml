@@ -33,12 +33,7 @@ jobs:
 
 home:
   title: >
-    spEcula | Spatial methods in R
-
-navbar:
-  structure:
-    right:
-      - github
+    spEcula | Spatial Methods In R
 
 authors:
   Wenbo Lv:
