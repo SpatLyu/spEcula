@@ -104,7 +104,6 @@ ssh.test = \(formula,data,type = 'factor',...){
   return(res)
 }
 
-
 #' @title print factor detector
 #' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
 #' @description
