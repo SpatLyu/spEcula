@@ -5,25 +5,24 @@
 \title{Best univariate discretize parameters based on geodetector q-statistic}
 \usage{
 gd_bestunidisc(
-  y,
-  x,
-  k,
-  method = c("fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust",
-    "fisher", "jenks", "dpih", "headtails", "maximum", "box"),
+  formula,
+  data,
+  discnum,
+  discmethod = NULL,
   cores = 1,
   return_disc = TRUE,
   ...
 )
 }
 \arguments{
-\item{y}{Variable Y, continuous numeric vector.}
+\item{formula}{A formula of spatial stratified heterogeneity test.}
 
-\item{x}{Covariate X, continuous numeric vector.}
+\item{data}{A data.frame or tibble of observation data.}
 
-\item{k}{A vector of number of classes for discretization.}
+\item{discnum}{A vector of number of classes for discretization.}
 
-\item{method}{(optional) A vector of methods for discretization,default is all can
-used in \code{spEcula}.}
+\item{discmethod}{(optional) A vector of methods for discretization,default is used
+\code{c("sd","equal","pretty","quantile","fisher","headtails","maximum","box")}in \code{spEcula}.}
 
 \item{cores}{positive integer(default is 1). If cores > 1, a 'parallel' package
 cluster with that many cores is created and used. You can also supply a cluster
@@ -35,15 +34,24 @@ Default is \code{TRUE}.}
 \item{...}{(optional) Other arguments passed to \code{st_unidisc()}.}
 }
 \value{
-A list with the optimal parameter in the provided parameter combination with \code{k}
-and \code{method}.
+A list with the optimal parameter in the provided parameter combination with \code{k},
+\code{method} and \code{disc}(when \code{return_disc} is \code{TRUE}).
 }
 \description{
 Function for determining the best univariate discretize parameters based on geodetector q-statistic.
 }
 \examples{
 \dontrun{
-
+library(terra)
+library(tidyverse)
+fvcpath = system.file("extdata", "FVC.zip",package = 'spEcula')
+fvc = terra::rast(paste0("/vsizip/",fvcpath))
+fvc = as_tibble(terra::as.data.frame(fvc,na.rm = T))
+g = gd_bestunidisc(fvc ~ .,data = select(fvc,-lulc),discnum = 2:15,cores = 6)
+new.fvc = g$disv
+new.fvc = bind_cols(select(fvc,fvc,lulc),new.fvc)
+ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
+ssh.test(fvc ~ .,data = new.fvc,type = 'interaction')
 }
 }
 \author{

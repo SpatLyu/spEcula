@@ -24,7 +24,7 @@
 #'          7508, 5203)
 #' st_unidisc(xvar,k = 6,method = 'sd')
 st_unidisc = \(x,k,method = "quantile",factor = FALSE,...){
-  return(classInt::classify_intervals(x,k,style = method,
+  return(classInt::classify_intervals(var = x,n = k,style = method,
                                       ...,factor = factor))
 }
 
@@ -33,11 +33,11 @@ st_unidisc = \(x,k,method = "quantile",factor = FALSE,...){
 #' @description
 #' Function for determining the best univariate discretize parameters based on geodetector q-statistic.
 #'
-#' @param y Variable Y, continuous numeric vector.
-#' @param x Covariate X, continuous numeric vector.
-#' @param k A vector of number of classes for discretization.
-#' @param method (optional) A vector of methods for discretization,default is all can
-#' used in `spEcula`.
+#' @param formula A formula of spatial stratified heterogeneity test.
+#' @param data A data.frame or tibble of observation data.
+#' @param discnum A vector of number of classes for discretization.
+#' @param discmethod (optional) A vector of methods for discretization,default is used
+#' `c("sd","equal","pretty","quantile","fisher","headtails","maximum","box")`in `spEcula`.
 #' @param cores positive integer(default is 1). If cores > 1, a 'parallel' package
 #' cluster with that many cores is created and used. You can also supply a cluster
 #' object.
@@ -45,21 +45,31 @@ st_unidisc = \(x,k,method = "quantile",factor = FALSE,...){
 #' Default is `TRUE`.
 #' @param ... (optional) Other arguments passed to `st_unidisc()`.
 #'
-#' @return A list with the optimal parameter in the provided parameter combination with `k`
-#' and `method`.
+#' @return A list with the optimal parameter in the provided parameter combination with `k`,
+#' `method` and `disc`(when `return_disc` is `TRUE`).
+#' @importFrom stats as.formula
 #' @importFrom parallel makeCluster stopCluster clusterExport parLapply
 #' @importFrom tidyr crossing
+#' @importFrom magrittr `%>%`
 #' @importFrom tibble as_tibble
-#' @importFrom purrr map_dfr
-#' @importFrom dplyr bind_cols arrange desc
+#' @importFrom purrr map_dfr pmap_dfc set_names
+#' @importFrom dplyr bind_cols slice_max group_by ungroup select
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#'
+#' library(terra)
+#' library(tidyverse)
+#' fvcpath = system.file("extdata", "FVC.zip",package = 'spEcula')
+#' fvc = terra::rast(paste0("/vsizip/",fvcpath))
+#' fvc = as_tibble(terra::as.data.frame(fvc,na.rm = T))
+#' g = gd_bestunidisc(fvc ~ .,data = select(fvc,-lulc),discnum = 2:15,cores = 6)
+#' new.fvc = g$disv
+#' new.fvc = bind_cols(select(fvc,fvc,lulc),new.fvc)
+#' ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
+#' ssh.test(fvc ~ .,data = new.fvc,type = 'interaction')
 #' }
-gd_bestunidisc = \(y,x,k,method = c("fixed","sd","equal","pretty","quantile","kmeans","hclust",
-                                    "bclust","fisher","jenks","dpih","headtails","maximum","box"),
+gd_bestunidisc = \(formula,data,discnum,discmethod = NULL,
                    cores = 1,return_disc = TRUE,...){
   doclust = FALSE
   if (inherits(cores, "cluster")) {
@@ -69,19 +79,33 @@ gd_bestunidisc = \(y,x,k,method = c("fixed","sd","equal","pretty","quantile","km
     cores = parallel::makeCluster(cores)
     on.exit(parallel::stopCluster(cores), add=TRUE)
   }
+  if (is.null(discmethod)) {
+    discmethod = c("sd","equal","pretty","quantile","fisher","headtails","maximum","box")
+  }
+
+  formula = stats::as.formula(formula)
+  formula.vars = all.vars(formula)
+  response = data[, formula.vars[1], drop = TRUE]
+  if (formula.vars[2] == "."){
+    explanatory = data[,-which(colnames(data) == formula.vars[1])]
+  } else {
+    explanatory = subset(data, TRUE, match(formula.vars[-1], colnames(data)))
+  }
+
+  discname = names(explanatory)
+  paradf = tidyr::crossing("x" = discname,
+                           "k" = discnum,
+                           "method" = discmethod)
+  parak = split(paradf, seq_len(nrow(paradf)))
 
   calcul_disc = \(paramgd){
-    x = st_unidisc(x, k = paramgd[[1]],
-                   method = paramgd[[2]],...)
-    fd = factor_detector(y,x)
+    xdisc = st_unidisc(explanatory[,paramgd[[1]],drop = TRUE],
+                       k = paramgd[[2]],method = paramgd[[3]],...)
+    fd = factor_detector(response,xdisc)
     q = fd[[1]]
     names(q) = "qstatistic"
     return(q)
   }
-
-  paradf = tidyr::crossing("k" = k,
-                           "method" = method)
-  parak = split(paradf, seq_len(nrow(paradf)))
 
   if (doclust) {
     parallel::clusterExport(cores,c('st_unidisc','factor_detector'))
@@ -92,11 +116,18 @@ gd_bestunidisc = \(y,x,k,method = c("fixed","sd","equal","pretty","quantile","km
   }
 
   out_g = dplyr::bind_cols(paradf,out_g) %>%
-    dplyr::arrange(dplyr::desc(qstatistic))
-  out_g = as.list(out_g[1,])
+    dplyr::group_by(x) %>%
+    dplyr::slice_max(order_by = qstatistic,
+                     with_ties = FALSE) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-qstatistic) %>%
+    as.list()
 
   if(return_disc){
-    resdisc = st_unidisc(x,k = out_g$`k`,method = out_g$`method`,...)
+    resdisc = purrr::pmap_dfc(out_g,
+                              \(x,k,method) st_unidisc(x = explanatory[,x,drop = TRUE],
+                                                       k = k,method = method,...)) %>%
+      purrr::set_names(out_g[[1]])
     out_g = append(out_g,list("disv" = resdisc))
   }
   return(out_g)
