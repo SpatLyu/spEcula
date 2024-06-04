@@ -40,7 +40,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 10.18 sec elapsed
+## 11.03 sec elapsed
 ```
 
 ``` r
@@ -69,11 +69,9 @@ g1
 library(ggplot2)
 library(cowplot)
 library(viridis)
-## Loading required package: viridisLite
 ```
 
 ``` r
-
 f1 = ggplot(grid, aes(x = Lon, y = Lat, fill = pred)) +
   geom_tile() +
   scale_fill_viridis(option="magma", direction = -1) + 
@@ -94,7 +92,136 @@ plot_grid(f1,f2,nrow = 1,label_fontfamily = 'serif',
 p
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+### Geographic detectors(geodetector) model
+
+``` r
+library(sf)
+library(terra)
+library(tidyverse)
+library(spEcula)
+fvcpath = system.file("extdata", "FVC.zip",package = 'spEcula')
+fvc = terra::rast(paste0("/vsizip/",fvcpath))
+fvc = as_tibble(terra::as.data.frame(fvc,na.rm = T))
+head(fvc)
+## # A tibble: 6 × 13
+##     fvc premax premin presum tmpmax tmpmin tmpavg    pop   ntl  lulc  elev slope
+##   <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 0.198   163.   7.95  3956.   20.8  -7.53   8.05  1.90   6.60    10 1758.  2.65
+## 2 0.193   161.   6.80  3892.   20.7  -7.55   8.02  1.20   4.91    10 1754.  3.45
+## 3 0.192   160.   5.24  3842.   20.9  -7.48   8.15  0.547  3.75    10 1722.  3.96
+## 4 0.189   159.   5     3808.   21.1  -7.39   8.35  0.542  3.99    10 1672.  2.90
+## 5 0.208   164.   9.98  4051.   20.6  -7.59   7.97 10.4    7.10    10 1780.  1.94
+## 6 0.196   163.   8.15  3973.   20.7  -7.53   8.03  9.31   6.56    10 1755.  3.01
+## # ℹ 1 more variable: aspect <dbl>
+```
+
+``` r
+tictoc::tic()
+g = gd_bestunidisc(fvc ~ .,data = select(fvc,-lulc),discnum = 2:15,cores = 6)
+tictoc::toc()
+## 18.45 sec elapsed
+```
+
+``` r
+new.fvc = bind_cols(select(fvc,fvc,lulc),g$disv)
+ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
+## Spatial Stratified Heterogeneity Test 
+##  
+##           Factor detector
+```
+
+| variable | Q-statistic |  P-value  |
+|:--------:|:-----------:|:---------:|
+|  presum  |   0.6401    | 9.029e-10 |
+|   lulc   |   0.5533    | 9.106e-10 |
+|  premin  |   0.4432    | 4.286e-10 |
+|  tmpmin  |   0.4059    | 6.318e-10 |
+|  tmpmax  |   0.2227    | 5.586e-10 |
+|   elev   |    0.209    |  1.5e-10  |
+|  tmpavg  |   0.1951    | 6.666e-10 |
+|  slope   |   0.1943    | 7.057e-10 |
+|   pop    |   0.1856    | 3.221e-10 |
+|  premax  |   0.1341    | 6.351e-10 |
+|   ntl    |   0.02156   | 8.297e-10 |
+|  aspect  |   0.00741   | 5.448e-10 |
+
+``` r
+ssh.test(fvc ~ .,data = new.fvc,type = 'interaction')
+## Spatial Stratified Heterogeneity Test 
+##  
+##          Interaction detector
+```
+
+| Interactive variable |    Interaction     |
+|:--------------------:|:------------------:|
+|    lulc ∩ aspect     | Enhance, nonlinear |
+|     lulc ∩ elev      |    Enhance, bi-    |
+|      lulc ∩ ntl      | Enhance, nonlinear |
+|      lulc ∩ pop      |    Enhance, bi-    |
+|    lulc ∩ premax     |    Enhance, bi-    |
+|    lulc ∩ premin     |    Enhance, bi-    |
+|    lulc ∩ presum     |    Enhance, bi-    |
+|     lulc ∩ slope     |    Enhance, bi-    |
+|    lulc ∩ tmpavg     |    Enhance, bi-    |
+|    lulc ∩ tmpmax     |    Enhance, bi-    |
+|    lulc ∩ tmpmin     |    Enhance, bi-    |
+|    aspect ∩ elev     | Enhance, nonlinear |
+|     aspect ∩ ntl     | Enhance, nonlinear |
+|     aspect ∩ pop     | Enhance, nonlinear |
+|   aspect ∩ premax    | Enhance, nonlinear |
+|   aspect ∩ premin    | Enhance, nonlinear |
+|   aspect ∩ presum    |    Weaken, uni-    |
+|    aspect ∩ slope    | Enhance, nonlinear |
+|   aspect ∩ tmpavg    | Enhance, nonlinear |
+|   aspect ∩ tmpmax    | Enhance, nonlinear |
+|   aspect ∩ tmpmin    | Enhance, nonlinear |
+|      elev ∩ ntl      | Enhance, nonlinear |
+|      elev ∩ pop      |    Enhance, bi-    |
+|    elev ∩ premax     | Enhance, nonlinear |
+|    elev ∩ premin     |    Weaken, uni-    |
+|    elev ∩ presum     |    Enhance, bi-    |
+|     elev ∩ slope     |    Enhance, bi-    |
+|    elev ∩ tmpavg     |    Enhance, bi-    |
+|    elev ∩ tmpmax     | Enhance, nonlinear |
+|    elev ∩ tmpmin     |    Enhance, bi-    |
+|      ntl ∩ pop       | Enhance, nonlinear |
+|     ntl ∩ premax     | Enhance, nonlinear |
+|     ntl ∩ premin     | Enhance, nonlinear |
+|     ntl ∩ presum     | Enhance, nonlinear |
+|     ntl ∩ slope      | Enhance, nonlinear |
+|     ntl ∩ tmpavg     | Enhance, nonlinear |
+|     ntl ∩ tmpmax     | Enhance, nonlinear |
+|     ntl ∩ tmpmin     | Enhance, nonlinear |
+|     pop ∩ premax     | Enhance, nonlinear |
+|     pop ∩ premin     |    Enhance, bi-    |
+|     pop ∩ presum     |    Enhance, bi-    |
+|     pop ∩ slope      |    Enhance, bi-    |
+|     pop ∩ tmpavg     | Enhance, nonlinear |
+|     pop ∩ tmpmax     | Enhance, nonlinear |
+|     pop ∩ tmpmin     |    Enhance, bi-    |
+|   premax ∩ premin    | Enhance, nonlinear |
+|   premax ∩ presum    |    Enhance, bi-    |
+|    premax ∩ slope    | Enhance, nonlinear |
+|   premax ∩ tmpavg    | Enhance, nonlinear |
+|   premax ∩ tmpmax    | Enhance, nonlinear |
+|   premax ∩ tmpmin    | Enhance, nonlinear |
+|   premin ∩ presum    |    Enhance, bi-    |
+|    premin ∩ slope    |    Enhance, bi-    |
+|   premin ∩ tmpavg    |    Enhance, bi-    |
+|   premin ∩ tmpmax    |    Enhance, bi-    |
+|   premin ∩ tmpmin    |    Enhance, bi-    |
+|    presum ∩ slope    |    Enhance, bi-    |
+|   presum ∩ tmpavg    |    Enhance, bi-    |
+|   presum ∩ tmpmax    |    Enhance, bi-    |
+|   presum ∩ tmpmin    |    Enhance, bi-    |
+|    slope ∩ tmpavg    |    Enhance, bi-    |
+|    slope ∩ tmpmax    |    Enhance, bi-    |
+|    slope ∩ tmpmin    |    Enhance, bi-    |
+|   tmpavg ∩ tmpmax    | Enhance, nonlinear |
+|   tmpavg ∩ tmpmin    | Enhance, nonlinear |
+|   tmpmax ∩ tmpmin    | Enhance, nonlinear |
 
 ### Spatially-aware Self-Organizing Maps(GeoSOM) model
 
@@ -108,7 +235,7 @@ geosom_bestparam(data = pmc,
                  wt = c(seq(0.1,1,by = 0.1),2:5),
                  xdim = 4:10, ydim = 4:10,cores = 6) -> g_bestparam
 tictoc::toc()
-## 44.37 sec elapsed
+## 44.63 sec elapsed
 ```
 
 build geosom model
@@ -140,22 +267,7 @@ g_label
 
 ``` r
 library(sf)
-## Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.3.1; sf_use_s2() is TRUE
-```
-
-``` r
 library(dplyr)
-## 
-## Attaching package: 'dplyr'
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-``` r
 
 pmc %>% 
   mutate(zone = as.factor(g_label)) %>% 
@@ -168,22 +280,4 @@ pmc %>%
         axis.ticks = element_blank())
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
-
-### Geographic detectors(geodetector) model
-
-``` r
-data(NTDs)
-
-ssh.test(incidence ~ watershed + elevation + soiltype,
-         data = NTDs,type = 'factor')
-## Spatial Stratified Heterogeneity Test 
-##  
-##           Factor detector
-```
-
-| variable  | Q-statistic |  P-value  |
-|:---------:|:-----------:|:---------:|
-| watershed |   0.6378    | 0.0001288 |
-| elevation |   0.6067    |  0.04338  |
-| soiltype  |   0.3857    |  0.3721   |
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
