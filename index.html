@@ -93,15 +93,19 @@
 <div class="page-header"><h1 id="specula-">spEcula <img src="reference/figures/logo.png" align="right" height="140"><a class="anchor" aria-label="anchor" href="#specula-"></a>
 </h1></div>
 <!-- badges: start -->
+<p><img src="https://www.r-pkg.org/badges/version/spEcula" alt="CRAN"><img src="https://spatlyu.r-universe.dev/badges/spEcula" alt="r-universe"></p>
 <!-- badges: end -->
 <p>The goal of <strong>spEcula</strong> is to make it easier to use R for spatial prediction based on <em>spatial dependence</em>, <em>spatial stratification heterogeneity</em> and <em>geographical configuration similarity</em>, and spatial statistical inference based on <strong>spatial relationships</strong> (the <strong>three laws of geography</strong>).</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of <code>spEcula</code> like so:</p>
+<p>You can install the development version of <code>spEcula</code> from <code>github</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SpatLyu/spEcula"</span>,build_vignettes <span class="op">=</span> <span class="cn">T</span>,dep <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<p>or install <code>spEcula</code> from <code>r-universe</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'spEcula'</span>, repos<span class="op">=</span><span class="st">'https://spatlyu.r-universe.dev'</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -110,7 +114,7 @@
 <h3 id="geographically-optimal-similarity-gos-model">Geographically Optimal Similarity (GOS) model<a class="anchor" aria-label="anchor" href="#geographically-optimal-similarity-gos-model"></a>
 </h3>
 <p><code>geosimilarity</code> package has achieved <code>gos</code> model,but when data is larger,<code>geosimilarity</code> may be slow. I develop the parallelized <code>gos</code> model in <code>spEcula</code>,which can change the <code>cores</code> argument in <code><a href="reference/gos.html">gos()</a></code> and <code>bestkappa</code> function to parallel computation.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SpatLyu/spEcula" class="external-link">spEcula</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">zn</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span></span>
@@ -120,8 +124,8 @@
 <span><span class="va">g1</span> <span class="op">=</span> <span class="fu"><a href="reference/gos.html">gos</a></span><span class="op">(</span><span class="va">Zn</span> <span class="op">~</span> <span class="va">Slope</span> <span class="op">+</span> <span class="va">Water</span> <span class="op">+</span> <span class="va">NDVI</span>  <span class="op">+</span> <span class="va">SOC</span> <span class="op">+</span> <span class="va">pH</span> <span class="op">+</span> <span class="va">Road</span> <span class="op">+</span> <span class="va">Mine</span>,</span>
 <span>         data <span class="op">=</span> <span class="va">zn</span>, newdata <span class="op">=</span> <span class="va">grid</span>, kappa <span class="op">=</span> <span class="fl">0.08</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 11.03 sec elapsed</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<span><span class="co">## 11.23 sec elapsed</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span><span class="op">)</span></span>
 <span><span class="va">grid</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="va">g1</span><span class="op">$</span><span class="va">pred</span></span>
 <span><span class="va">grid</span><span class="op">$</span><span class="va">uc99</span> <span class="op">=</span> <span class="va">g1</span><span class="op">$</span><span class="va">`uncertainty99`</span></span>
@@ -141,11 +145,11 @@
 <span><span class="co">## 10  24.5        0.0217        0.0217        0.0182         0.0141 </span></span>
 <span><span class="co">## # ℹ 13,122 more rows</span></span>
 <span><span class="co">## # ℹ 2 more variables: uncertainty99.9 &lt;dbl&gt;, uncertainty100 &lt;dbl&gt;</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/cowplot/" class="external-link">cowplot</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/" class="external-link">viridis</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f1</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">grid</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Lon</span>, y <span class="op">=</span> <span class="va">Lat</span>, fill <span class="op">=</span> <span class="va">pred</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_fill_viridis</a></span><span class="op">(</span>option<span class="op">=</span><span class="st">"magma"</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -169,7 +173,7 @@
 <div class="section level3">
 <h3 id="geographic-detectorsgeodetector-model">Geographic detectors(geodetector) model<a class="anchor" aria-label="anchor" href="#geographic-detectorsgeodetector-model"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
@@ -188,12 +192,12 @@
 <span><span class="co">## 5 0.208   164.   9.98  4051.   20.6  -7.59   7.97 10.4    7.10    10 1780.  1.94</span></span>
 <span><span class="co">## 6 0.196   163.   8.15  3973.   20.7  -7.53   8.03  9.31   6.56    10 1755.  3.01</span></span>
 <span><span class="co">## # ℹ 1 more variable: aspect &lt;dbl&gt;</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">tic</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">g</span> <span class="op">=</span> <span class="fu"><a href="reference/gd_bestunidisc.html">gd_bestunidisc</a></span><span class="op">(</span><span class="va">fvc</span> <span class="op">~</span> <span class="va">.</span>,data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">fvc</span>,<span class="op">-</span><span class="va">lulc</span><span class="op">)</span>,discnum <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">15</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 18.45 sec elapsed</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<span><span class="co">## 18.3 sec elapsed</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">new.fvc</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">fvc</span>,<span class="va">fvc</span>,<span class="va">lulc</span><span class="op">)</span>,<span class="va">g</span><span class="op">$</span><span class="va">disv</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/ssh.test.html">ssh.test</a></span><span class="op">(</span><span class="va">fvc</span> <span class="op">~</span> <span class="va">.</span>,data <span class="op">=</span> <span class="va">new.fvc</span>,type <span class="op">=</span> <span class="st">'factor'</span><span class="op">)</span></span>
 <span><span class="co">## Spatial Stratified Heterogeneity Test </span></span>
@@ -208,8 +212,8 @@
 <tbody>
 <tr class="odd">
 <td align="center">presum</td>
-<td align="center">0.6401</td>
-<td align="center">9.029e-10</td>
+<td align="center">0.6392</td>
+<td align="center">4.362e-10</td>
 </tr>
 <tr class="even">
 <td align="center">lulc</td>
@@ -218,18 +222,18 @@
 </tr>
 <tr class="odd">
 <td align="center">premin</td>
-<td align="center">0.4432</td>
-<td align="center">4.286e-10</td>
+<td align="center">0.4418</td>
+<td align="center">6.405e-10</td>
 </tr>
 <tr class="even">
 <td align="center">tmpmin</td>
-<td align="center">0.4059</td>
-<td align="center">6.318e-10</td>
+<td align="center">0.408</td>
+<td align="center">7.184e-10</td>
 </tr>
 <tr class="odd">
 <td align="center">tmpmax</td>
-<td align="center">0.2227</td>
-<td align="center">5.586e-10</td>
+<td align="center">0.2284</td>
+<td align="center">5.111e-10</td>
 </tr>
 <tr class="even">
 <td align="center">elev</td>
@@ -238,13 +242,13 @@
 </tr>
 <tr class="odd">
 <td align="center">tmpavg</td>
-<td align="center">0.1951</td>
-<td align="center">6.666e-10</td>
+<td align="center">0.197</td>
+<td align="center">6.598e-10</td>
 </tr>
 <tr class="even">
 <td align="center">slope</td>
-<td align="center">0.1943</td>
-<td align="center">7.057e-10</td>
+<td align="center">0.1936</td>
+<td align="center">6.136e-10</td>
 </tr>
 <tr class="odd">
 <td align="center">pop</td>
@@ -253,13 +257,13 @@
 </tr>
 <tr class="even">
 <td align="center">premax</td>
-<td align="center">0.1341</td>
-<td align="center">6.351e-10</td>
+<td align="center">0.1336</td>
+<td align="center">9.593e-10</td>
 </tr>
 <tr class="odd">
 <td align="center">ntl</td>
-<td align="center">0.02156</td>
-<td align="center">8.297e-10</td>
+<td align="center">0.0215</td>
+<td align="center">9.024e-10</td>
 </tr>
 <tr class="even">
 <td align="center">aspect</td>
@@ -268,7 +272,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ssh.test.html">ssh.test</a></span><span class="op">(</span><span class="va">fvc</span> <span class="op">~</span> <span class="va">.</span>,data <span class="op">=</span> <span class="va">new.fvc</span>,type <span class="op">=</span> <span class="st">'interaction'</span><span class="op">)</span></span>
 <span><span class="co">## Spatial Stratified Heterogeneity Test </span></span>
 <span><span class="co">##  </span></span>
@@ -377,7 +381,7 @@
 </tr>
 <tr class="odd">
 <td align="center">elev ∩ premin</td>
-<td align="center">Weaken, uni-</td>
+<td align="center">Enhance, bi-</td>
 </tr>
 <tr class="even">
 <td align="center">elev ∩ presum</td>
@@ -549,7 +553,7 @@
 <div class="section level3">
 <h3 id="spatially-aware-self-organizing-mapsgeosom-model">Spatially-aware Self-Organizing Maps(GeoSOM) model<a class="anchor" aria-label="anchor" href="#spatially-aware-self-organizing-mapsgeosom-model"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pmc</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20220724</span><span class="op">)</span></span>
@@ -559,17 +563,17 @@
 <span>                 wt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">1</span>,by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>,</span>
 <span>                 xdim <span class="op">=</span> <span class="fl">4</span><span class="op">:</span><span class="fl">10</span>, ydim <span class="op">=</span> <span class="fl">4</span><span class="op">:</span><span class="fl">10</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">g_bestparam</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 44.63 sec elapsed</span></span></code></pre></div>
+<span><span class="co">## 43.93 sec elapsed</span></span></code></pre></div>
 <p>build geosom model</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g</span> <span class="op">=</span> <span class="fu"><a href="reference/geosom.html">geosom</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pmc</span>, coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"centroidx"</span>,<span class="st">"centroidy"</span><span class="op">)</span>, wt <span class="op">=</span> <span class="fl">.9</span>,</span>
 <span>           grid <span class="op">=</span> <span class="fu"><a href="reference/geosomgrid.html">geosomgrid</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,topo <span class="op">=</span> <span class="st">"rectangular"</span>,</span>
 <span>                             neighbourhood.fct <span class="op">=</span> <span class="st">"gaussian"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g_superclass</span> <span class="op">=</span> <span class="fu"><a href="reference/geosom_superclass.html">geosom_superclass</a></span><span class="op">(</span><span class="va">g</span>,<span class="fl">6</span>,method <span class="op">=</span> <span class="st">'pam'</span><span class="op">)</span></span>
 <span><span class="va">g_superclass</span></span>
 <span><span class="co">##  [1] 1 2 2 2 3 1 2 2 3 3 4 5 3 4 4 6</span></span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g_label</span> <span class="op">=</span> <span class="fu"><a href="reference/geosom_clusterlabel.html">geosom_clusterlabel</a></span><span class="op">(</span><span class="va">g</span>,<span class="va">g_superclass</span><span class="op">)</span></span>
 <span><span class="va">g_label</span></span>
 <span><span class="co">##   [1] 2 2 3 4 2 6 5 2 2 5 6 2 3 3 6 6 5 3 2 6 2 4 2 4 5 1 1 2 2 1 3 3 2 4 4 2 2</span></span>
@@ -580,7 +584,7 @@
 <span><span class="co">## [186] 3 3 2 1 1 4 4 4 6 2 2 1 1 3 4 4 1 3 2 3 3 2 2 2 3 2 6 1 6 2 3 1 2 1 3 5 3</span></span>
 <span><span class="co">## [223] 4 2 5 5 1 6 6 5 2 2 4 3 3 1 6 1 2 1 3 2 2 3 1 2 2 1 2 3 5 4 1 4 1 2 6 1 3</span></span>
 <span><span class="co">## [260] 5 2 1 1 3 2 1 2 3 3 6 3 1 4 3 3 1 1 1</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
