@@ -18,17 +18,27 @@ knitr::opts_chunk$set(
 # spEcula <img src="man/figures/logo.png" align="right" height="140"/>
 
 <!-- badges: start -->
+
+![CRAN](https://www.r-pkg.org/badges/version/spEcula)
+![r-universe](https://spatlyu.r-universe.dev/badges/spEcula)
+
 <!-- badges: end -->
 
 The goal of **spEcula** is to make it easier to use R for spatial prediction based on *spatial dependence*, *spatial stratification heterogeneity* and *geographical configuration similarity*, and spatial statistical inference based on **spatial relationships** (the **three laws of geography**).
 
 ## Installation
 
-You can install the development version of `spEcula` like so:
+You can install the development version of `spEcula` from `github`:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("SpatLyu/spEcula",build_vignettes = T,dep = T)
+```
+
+or install `spEcula` from `r-universe`:
+
+```r
+install.packages('spEcula', repos='https://spatlyu.r-universe.dev')
 ```
 
 ## Example

@@ -4,6 +4,10 @@
 # spEcula <img src="man/figures/logo.png" align="right" height="140"/>
 
 <!-- badges: start -->
+
+![CRAN](https://www.r-pkg.org/badges/version/spEcula)
+![r-universe](https://spatlyu.r-universe.dev/badges/spEcula)
+
 <!-- badges: end -->
 
 The goal of **spEcula** is to make it easier to use R for spatial
@@ -14,11 +18,17 @@ laws of geography**).
 
 ## Installation
 
-You can install the development version of `spEcula` like so:
+You can install the development version of `spEcula` from `github`:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("SpatLyu/spEcula",build_vignettes = T,dep = T)
+```
+
+or install `spEcula` from `r-universe`:
+
+``` r
+install.packages('spEcula', repos='https://spatlyu.r-universe.dev')
 ```
 
 ## Example
@@ -40,7 +50,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 11.03 sec elapsed
+## 11.23 sec elapsed
 ```
 
 ``` r
@@ -121,7 +131,7 @@ head(fvc)
 tictoc::tic()
 g = gd_bestunidisc(fvc ~ .,data = select(fvc,-lulc),discnum = 2:15,cores = 6)
 tictoc::toc()
-## 18.45 sec elapsed
+## 18.3 sec elapsed
 ```
 
 ``` r
@@ -134,17 +144,17 @@ ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
 
 | variable | Q-statistic |  P-value  |
 |:--------:|:-----------:|:---------:|
-|  presum  |   0.6401    | 9.029e-10 |
+|  presum  |   0.6392    | 4.362e-10 |
 |   lulc   |   0.5533    | 9.106e-10 |
-|  premin  |   0.4432    | 4.286e-10 |
-|  tmpmin  |   0.4059    | 6.318e-10 |
-|  tmpmax  |   0.2227    | 5.586e-10 |
+|  premin  |   0.4418    | 6.405e-10 |
+|  tmpmin  |    0.408    | 7.184e-10 |
+|  tmpmax  |   0.2284    | 5.111e-10 |
 |   elev   |    0.209    |  1.5e-10  |
-|  tmpavg  |   0.1951    | 6.666e-10 |
-|  slope   |   0.1943    | 7.057e-10 |
+|  tmpavg  |    0.197    | 6.598e-10 |
+|  slope   |   0.1936    | 6.136e-10 |
 |   pop    |   0.1856    | 3.221e-10 |
-|  premax  |   0.1341    | 6.351e-10 |
-|   ntl    |   0.02156   | 8.297e-10 |
+|  premax  |   0.1336    | 9.593e-10 |
+|   ntl    |   0.0215    | 9.024e-10 |
 |  aspect  |   0.00741   | 5.448e-10 |
 
 ``` r
@@ -180,7 +190,7 @@ ssh.test(fvc ~ .,data = new.fvc,type = 'interaction')
 |      elev ∩ ntl      | Enhance, nonlinear |
 |      elev ∩ pop      |    Enhance, bi-    |
 |    elev ∩ premax     | Enhance, nonlinear |
-|    elev ∩ premin     |    Weaken, uni-    |
+|    elev ∩ premin     |    Enhance, bi-    |
 |    elev ∩ presum     |    Enhance, bi-    |
 |     elev ∩ slope     |    Enhance, bi-    |
 |    elev ∩ tmpavg     |    Enhance, bi-    |
@@ -235,7 +245,7 @@ geosom_bestparam(data = pmc,
                  wt = c(seq(0.1,1,by = 0.1),2:5),
                  xdim = 4:10, ydim = 4:10,cores = 6) -> g_bestparam
 tictoc::toc()
-## 44.63 sec elapsed
+## 43.93 sec elapsed
 ```
 
 build geosom model
