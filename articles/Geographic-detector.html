@@ -140,7 +140,7 @@ discrete variables.</p>
 <span></span>
 <span><span class="va">f1</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">disease</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">incidence</span><span class="op">)</span>,lwd <span class="op">=</span> <span class="fl">.1</span>,color <span class="op">=</span> <span class="st">'grey'</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_fill_viridis</a></span><span class="op">(</span>option<span class="op">=</span><span class="st">"mako"</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_fill_viridis</a></span><span class="op">(</span>option<span class="op">=</span><span class="st">"mako"</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
 <span>    axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -153,9 +153,9 @@ discrete variables.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="va">f2</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">watershed</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">watershed</span><span class="op">)</span>,lwd <span class="op">=</span> <span class="fl">.1</span>,color <span class="op">=</span> <span class="st">'grey'</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_whitebox.html" class="external-link">scale_fill_whitebox_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_whitebox.html" class="external-link">scale_fill_whitebox_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
 <span>    axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    axis.ticks <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -167,7 +167,7 @@ discrete variables.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="va">f3</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">elevation</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">elevation</span><span class="op">)</span>,lwd <span class="op">=</span> <span class="fl">.1</span>,color <span class="op">=</span> <span class="st">'grey'</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_hypso.html" class="external-link">scale_fill_hypso_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_hypso.html" class="external-link">scale_fill_hypso_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
 <span>    axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -180,7 +180,7 @@ discrete variables.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="va">f4</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">soiltype</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">soiltype</span><span class="op">)</span>,lwd <span class="op">=</span> <span class="fl">.1</span>,color <span class="op">=</span> <span class="st">'grey'</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_wiki.html" class="external-link">scale_fill_wiki_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_wiki.html" class="external-link">scale_fill_wiki_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
 <span>    axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -191,7 +191,7 @@ discrete variables.</p>
 <span>    legend.position.inside <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">.25</span><span class="op">)</span>,</span>
 <span>    legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">'transparent'</span>,color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span>  </span>
+<span></span>
 <span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="va">f1</span>,<span class="va">f2</span>,<span class="va">f3</span>,<span class="va">f4</span>, nrow <span class="op">=</span> <span class="fl">2</span>,label_fontfamily <span class="op">=</span> <span class="st">'serif'</span>,</span>
 <span>          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'('</span>,<span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,<span class="st">')'</span><span class="op">)</span>,</span>
 <span>          label_fontface <span class="op">=</span> <span class="st">'plain'</span>,label_size <span class="op">=</span> <span class="fl">10</span>,</span>
@@ -200,14 +200,14 @@ discrete variables.</p>
 <p><img src="figure/NTDs_map-1.png"></p>
 <p>Attribute spatial join</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">NTDs</span> <span class="op">=</span> <span class="va">disease</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_centroid</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">watershed</span><span class="op">[</span>,<span class="st">"watershed"</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">elevation</span><span class="op">[</span>,<span class="st">"elevation"</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">soiltype</span><span class="op">[</span>,<span class="st">"soiltype"</span><span class="op">]</span><span class="op">)</span> </span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">NTDs</span> <span class="op">=</span> <span class="va">disease</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_centroid</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">watershed</span><span class="op">[</span>,<span class="st">"watershed"</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">elevation</span><span class="op">[</span>,<span class="st">"elevation"</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">soiltype</span><span class="op">[</span>,<span class="st">"soiltype"</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p>Check whether has <code>NA</code> in <code>NTDs</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">NTDs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">NTDs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">if_any</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,<span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Simple feature collection with 4 features and 5 fields</span></span>
 <span><span class="co">## Geometry type: POINT</span></span>
@@ -222,7 +222,7 @@ discrete variables.</p>
 <span><span class="co">## 3 166        6.43 (311439.1 3990674)         4        NA        2</span></span>
 <span><span class="co">## 4 188        6.26 (301567.5 3991906)        NA         2        3</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">NTDs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">NTDs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">if_all</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,<span class="op">~</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">NTDs</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -435,7 +435,7 @@ argument is <code>0.95</code>.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="optimal-parameters-geographic-detector">optimal parameters geographic detector<a class="anchor" aria-label="anchor" href="#optimal-parameters-geographic-detector"></a>
+<h2 id="optimal-parameters-geographic-detectoropgd">optimal parameters geographic detector(OPGD)<a class="anchor" aria-label="anchor" href="#optimal-parameters-geographic-detectoropgd"></a>
 </h2>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
@@ -453,24 +453,25 @@ argument is <code>0.95</code>.</p>
 <span><span class="co">## max values  : 0.9596695, 249.9284, 82.74928, 8549.112, 26.781870,   1.322163, ...</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fvc</span><span class="op">)</span></span>
-<span><span class="co">##  [1] "fvc"    "premax" "premin" "presum" "tmpmax" "tmpmin" "tmpavg" "pop"    "ntl"    "lulc"  </span></span>
-<span><span class="co">## [11] "elev"   "slope"  "aspect"</span></span></code></pre></div>
+<span><span class="co">##  [1] "fvc"    "premax" "premin" "presum" "tmpmax" "tmpmin" "tmpavg" "pop"   </span></span>
+<span><span class="co">##  [9] "ntl"    "lulc"   "elev"   "slope"  "aspect"</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="convert-data-from-spatraster-to-tiibble">Convert data from <code>SpatRaster</code> to
-<code>tiibble</code><a class="anchor" aria-label="anchor" href="#convert-data-from-spatraster-to-tiibble"></a>
+<h3 id="convert-data-from-spatraster-to-tibble">Convert data from <code>SpatRaster</code> to
+<code>tibble</code><a class="anchor" aria-label="anchor" href="#convert-data-from-spatraster-to-tibble"></a>
 </h3>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fvc</span> <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">fvc</span>,na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fvc</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 6 × 13</span></span>
-<span><span class="co">##     fvc premax premin presum tmpmax tmpmin tmpavg    pop   ntl  lulc  elev slope aspect</span></span>
-<span><span class="co">##   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 0.198   163.   7.95  3956.   20.8  -7.53   8.05  1.90   6.60    10 1758.  2.65  176. </span></span>
-<span><span class="co">## 2 0.193   161.   6.80  3892.   20.7  -7.55   8.02  1.20   4.91    10 1754.  3.45  170. </span></span>
-<span><span class="co">## 3 0.192   160.   5.24  3842.   20.9  -7.48   8.15  0.547  3.75    10 1722.  3.96  139. </span></span>
-<span><span class="co">## 4 0.189   159.   5     3808.   21.1  -7.39   8.35  0.542  3.99    10 1672.  2.90  111. </span></span>
-<span><span class="co">## 5 0.208   164.   9.98  4051.   20.6  -7.59   7.97 10.4    7.10    10 1780.  1.94   99.5</span></span>
-<span><span class="co">## 6 0.196   163.   8.15  3973.   20.7  -7.53   8.03  9.31   6.56    10 1755.  3.01   99.6</span></span></code></pre></div>
+<span><span class="co">##     fvc premax premin presum tmpmax tmpmin tmpavg    pop   ntl  lulc  elev</span></span>
+<span><span class="co">##   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">## 1 0.198   163.   7.95  3956.   20.8  -7.53   8.05  1.90   6.60    10 1758.</span></span>
+<span><span class="co">## 2 0.193   161.   6.80  3892.   20.7  -7.55   8.02  1.20   4.91    10 1754.</span></span>
+<span><span class="co">## 3 0.192   160.   5.24  3842.   20.9  -7.48   8.15  0.547  3.75    10 1722.</span></span>
+<span><span class="co">## 4 0.189   159.   5     3808.   21.1  -7.39   8.35  0.542  3.99    10 1672.</span></span>
+<span><span class="co">## 5 0.208   164.   9.98  4051.   20.6  -7.59   7.97 10.4    7.10    10 1780.</span></span>
+<span><span class="co">## 6 0.196   163.   8.15  3973.   20.7  -7.53   8.03  9.31   6.56    10 1755.</span></span>
+<span><span class="co">## # ℹ 2 more variables: slope &lt;dbl&gt;, aspect &lt;dbl&gt;</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="determine-optimal-discretization-parameters">Determine optimal discretization parameters<a class="anchor" aria-label="anchor" href="#determine-optimal-discretization-parameters"></a>
@@ -483,34 +484,34 @@ q-statistic.</p>
 <code class="sourceCode R"><span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">tic</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">g</span> <span class="op">=</span> <span class="fu"><a href="../reference/gd_bestunidisc.html">gd_bestunidisc</a></span><span class="op">(</span><span class="va">fvc</span> <span class="op">~</span> <span class="va">.</span>,data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">fvc</span>,<span class="op">-</span><span class="va">lulc</span><span class="op">)</span>,discnum <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">15</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 18.41 sec elapsed</span></span></code></pre></div>
+<span><span class="co">## 18.81 sec elapsed</span></span></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g</span></span>
 <span><span class="co">## $x</span></span>
-<span><span class="co">##  [1] "aspect" "elev"   "ntl"    "pop"    "premax" "premin" "presum" "slope"  "tmpavg" "tmpmax"</span></span>
-<span><span class="co">## [11] "tmpmin"</span></span>
+<span><span class="co">##  [1] "aspect" "elev"   "ntl"    "pop"    "premax" "premin" "presum" "slope" </span></span>
+<span><span class="co">##  [9] "tmpavg" "tmpmax" "tmpmin"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $k</span></span>
-<span><span class="co">##  [1] 15 15 14 15 15 15 15 15 15 15 15</span></span>
+<span><span class="co">##  [1] 15 15 15 15 15 12 15 12 15 15 15</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $method</span></span>
-<span><span class="co">##  [1] "equal"    "quantile" "fisher"   "quantile" "fisher"   "fisher"   "fisher"   "fisher"  </span></span>
-<span><span class="co">##  [9] "quantile" "quantile" "fisher"  </span></span>
+<span><span class="co">##  [1] "equal"    "quantile" "fisher"   "quantile" "fisher"   "fisher"  </span></span>
+<span><span class="co">##  [7] "fisher"   "fisher"   "quantile" "quantile" "fisher"  </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $disv</span></span>
 <span><span class="co">## # A tibble: 136,243 × 11</span></span>
 <span><span class="co">##    aspect  elev   ntl   pop premax premin presum slope tmpavg tmpmax tmpmin</span></span>
 <span><span class="co">##     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;</span></span>
 <span><span class="co">##  1      8    12     3     1      7      1      1     4      4      8      2</span></span>
-<span><span class="co">##  2      8    12     2     1      7      1      1     6      4      8      2</span></span>
-<span><span class="co">##  3      6    12     2     1      6      1      1     7      4      9      2</span></span>
-<span><span class="co">##  4      5    12     2     1      6      1      1     5      5     10      2</span></span>
+<span><span class="co">##  2      8    12     2     1      7      1      1     5      4      8      2</span></span>
+<span><span class="co">##  3      6    12     2     1      6      1      1     5      4      9      2</span></span>
+<span><span class="co">##  4      5    12     2     1      6      1      1     4      5     10      2</span></span>
 <span><span class="co">##  5      5    13     3     4      7      2      1     3      4      8      2</span></span>
-<span><span class="co">##  6      5    12     3     3      7      1      1     5      4      8      2</span></span>
-<span><span class="co">##  7      6    12     2     1      7      1      1     7      4      9      2</span></span>
-<span><span class="co">##  8      7    12     2     1      6      1      1     6      5     10      2</span></span>
-<span><span class="co">##  9      8    12     2     1      6      1      1     4      5     10      2</span></span>
-<span><span class="co">## 10      7    12     3     1      6      1      1     5      5     10      2</span></span>
+<span><span class="co">##  6      5    12     3     3      7      2      1     4      4      8      2</span></span>
+<span><span class="co">##  7      6    12     2     1      7      1      1     6      4      9      3</span></span>
+<span><span class="co">##  8      7    12     2     1      6      1      1     5      5     10      3</span></span>
+<span><span class="co">##  9      8    12     2     1      6      1      1     3      5     10      3</span></span>
+<span><span class="co">## 10      7    12     2     1      6      1      1     4      5     10      3</span></span>
 <span><span class="co">## # ℹ 136,233 more rows</span></span></code></pre></div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">new.fvc</span> <span class="op">=</span> <span class="va">g</span><span class="op">$</span><span class="va">disv</span></span>
@@ -519,15 +520,15 @@ q-statistic.</p>
 <span><span class="co">##    aspect  elev   ntl   pop premax premin presum slope tmpavg tmpmax tmpmin</span></span>
 <span><span class="co">##     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;</span></span>
 <span><span class="co">##  1      8    12     3     1      7      1      1     4      4      8      2</span></span>
-<span><span class="co">##  2      8    12     2     1      7      1      1     6      4      8      2</span></span>
-<span><span class="co">##  3      6    12     2     1      6      1      1     7      4      9      2</span></span>
-<span><span class="co">##  4      5    12     2     1      6      1      1     5      5     10      2</span></span>
+<span><span class="co">##  2      8    12     2     1      7      1      1     5      4      8      2</span></span>
+<span><span class="co">##  3      6    12     2     1      6      1      1     5      4      9      2</span></span>
+<span><span class="co">##  4      5    12     2     1      6      1      1     4      5     10      2</span></span>
 <span><span class="co">##  5      5    13     3     4      7      2      1     3      4      8      2</span></span>
-<span><span class="co">##  6      5    12     3     3      7      1      1     5      4      8      2</span></span>
-<span><span class="co">##  7      6    12     2     1      7      1      1     7      4      9      2</span></span>
-<span><span class="co">##  8      7    12     2     1      6      1      1     6      5     10      2</span></span>
-<span><span class="co">##  9      8    12     2     1      6      1      1     4      5     10      2</span></span>
-<span><span class="co">## 10      7    12     3     1      6      1      1     5      5     10      2</span></span>
+<span><span class="co">##  6      5    12     3     3      7      2      1     4      4      8      2</span></span>
+<span><span class="co">##  7      6    12     2     1      7      1      1     6      4      9      3</span></span>
+<span><span class="co">##  8      7    12     2     1      6      1      1     5      5     10      3</span></span>
+<span><span class="co">##  9      8    12     2     1      6      1      1     3      5     10      3</span></span>
+<span><span class="co">## 10      7    12     2     1      6      1      1     4      5     10      3</span></span>
 <span><span class="co">## # ℹ 136,233 more rows</span></span></code></pre></div>
 <p>The <code>new.fvc</code> is the discrete result of the optimal
 discretization parameter based on the Q statistic of the geographic
@@ -537,19 +538,20 @@ col in <code>fvc</code> tibble now.</p>
 <code class="sourceCode R"><span><span class="va">new.fvc</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">fvc</span>,<span class="va">fvc</span>,<span class="va">lulc</span><span class="op">)</span>,<span class="va">new.fvc</span><span class="op">)</span></span>
 <span><span class="va">new.fvc</span></span>
 <span><span class="co">## # A tibble: 136,243 × 13</span></span>
-<span><span class="co">##      fvc  lulc aspect  elev   ntl   pop premax premin presum slope tmpavg tmpmax tmpmin</span></span>
-<span><span class="co">##    &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;</span></span>
-<span><span class="co">##  1 0.198    10      8    12     3     1      7      1      1     4      4      8      2</span></span>
-<span><span class="co">##  2 0.193    10      8    12     2     1      7      1      1     6      4      8      2</span></span>
-<span><span class="co">##  3 0.192    10      6    12     2     1      6      1      1     7      4      9      2</span></span>
-<span><span class="co">##  4 0.189    10      5    12     2     1      6      1      1     5      5     10      2</span></span>
-<span><span class="co">##  5 0.208    10      5    13     3     4      7      2      1     3      4      8      2</span></span>
-<span><span class="co">##  6 0.196    10      5    12     3     3      7      1      1     5      4      8      2</span></span>
-<span><span class="co">##  7 0.191    10      6    12     2     1      7      1      1     7      4      9      2</span></span>
-<span><span class="co">##  8 0.185    10      7    12     2     1      6      1      1     6      5     10      2</span></span>
-<span><span class="co">##  9 0.174    10      8    12     2     1      6      1      1     4      5     10      2</span></span>
-<span><span class="co">## 10 0.166    10      7    12     3     1      6      1      1     5      5     10      2</span></span>
-<span><span class="co">## # ℹ 136,233 more rows</span></span></code></pre></div>
+<span><span class="co">##      fvc  lulc aspect  elev   ntl   pop premax premin presum slope tmpavg</span></span>
+<span><span class="co">##    &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt;  &lt;int&gt;</span></span>
+<span><span class="co">##  1 0.198    10      8    12     3     1      7      1      1     4      4</span></span>
+<span><span class="co">##  2 0.193    10      8    12     2     1      7      1      1     5      4</span></span>
+<span><span class="co">##  3 0.192    10      6    12     2     1      6      1      1     5      4</span></span>
+<span><span class="co">##  4 0.189    10      5    12     2     1      6      1      1     4      5</span></span>
+<span><span class="co">##  5 0.208    10      5    13     3     4      7      2      1     3      4</span></span>
+<span><span class="co">##  6 0.196    10      5    12     3     3      7      2      1     4      4</span></span>
+<span><span class="co">##  7 0.191    10      6    12     2     1      7      1      1     6      4</span></span>
+<span><span class="co">##  8 0.185    10      7    12     2     1      6      1      1     5      5</span></span>
+<span><span class="co">##  9 0.174    10      8    12     2     1      6      1      1     3      5</span></span>
+<span><span class="co">## 10 0.166    10      7    12     2     1      6      1      1     4      5</span></span>
+<span><span class="co">## # ℹ 136,233 more rows</span></span>
+<span><span class="co">## # ℹ 2 more variables: tmpmax &lt;int&gt;, tmpmin &lt;int&gt;</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="run-geodetector">Run geodetector<a class="anchor" aria-label="anchor" href="#run-geodetector"></a>
@@ -575,8 +577,8 @@ function.</p>
 <tbody>
 <tr class="odd">
 <td align="center">presum</td>
-<td align="center">0.6417</td>
-<td align="center">4.477e-10</td>
+<td align="center">0.6406</td>
+<td align="center">5.831e-10</td>
 </tr>
 <tr class="even">
 <td align="center">lulc</td>
@@ -585,13 +587,13 @@ function.</p>
 </tr>
 <tr class="odd">
 <td align="center">premin</td>
-<td align="center">0.443</td>
-<td align="center">6.081e-10</td>
+<td align="center">0.4361</td>
+<td align="center">5.258e-10</td>
 </tr>
 <tr class="even">
 <td align="center">tmpmin</td>
-<td align="center">0.4054</td>
-<td align="center">3.477e-10</td>
+<td align="center">0.4048</td>
+<td align="center">6.012e-10</td>
 </tr>
 <tr class="odd">
 <td align="center">tmpmax</td>
@@ -610,8 +612,8 @@ function.</p>
 </tr>
 <tr class="even">
 <td align="center">slope</td>
-<td align="center">0.1934</td>
-<td align="center">5.098e-10</td>
+<td align="center">0.193</td>
+<td align="center">8.314e-10</td>
 </tr>
 <tr class="odd">
 <td align="center">pop</td>
@@ -620,13 +622,13 @@ function.</p>
 </tr>
 <tr class="even">
 <td align="center">premax</td>
-<td align="center">0.135</td>
-<td align="center">2.861e-10</td>
+<td align="center">0.1326</td>
+<td align="center">6.272e-10</td>
 </tr>
 <tr class="odd">
 <td align="center">ntl</td>
-<td align="center">0.02152</td>
-<td align="center">5.086e-10</td>
+<td align="center">0.02147</td>
+<td align="center">7.455e-10</td>
 </tr>
 <tr class="even">
 <td align="center">aspect</td>
