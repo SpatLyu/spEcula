@@ -1,5 +1,5 @@
 ---
-title: "Geographic detectors(geodetector) Model in R package spEcula"
+title: "Geographic detectors(geodetector) Model"
 author: "Wenbo Lv"
 vignette: >
   %\VignetteIndexEntry{Geographi-detector}
