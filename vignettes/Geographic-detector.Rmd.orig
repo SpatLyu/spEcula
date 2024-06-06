@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-##  GeoDetector model <img src="../man/figures/logo.png" align="right" height="75"/>
-
 This vignette explains how to run a `geodetector` model in `spEcula` package.
 
 ```{r echo=FALSE, out.width='75%', fig.align="center",fig.cap="Schematic overview of Geographic detectors(geodetector) model"}
@@ -59,7 +57,7 @@ library(cowplot)
 
 f1 = ggplot(data = disease) +
   geom_sf(aes(fill = incidence),lwd = .1,color = 'grey') +
-  viridis::scale_fill_viridis(option="mako", direction = -1) + 
+  viridis::scale_fill_viridis(option="mako", direction = -1) +
   theme_bw() +
   theme(
     axis.text = element_blank(),
@@ -72,9 +70,9 @@ f1 = ggplot(data = disease) +
   )
 f2 = ggplot(data = watershed) +
   geom_sf(aes(fill = watershed),lwd = .1,color = 'grey') +
-  tidyterra::scale_fill_whitebox_c() + 
+  tidyterra::scale_fill_whitebox_c() +
   coord_sf(crs = NULL) +
-  theme_bw() + 
+  theme_bw() +
   theme(
     axis.text = element_blank(),
     axis.ticks = element_blank(),
@@ -86,7 +84,7 @@ f2 = ggplot(data = watershed) +
   )
 f3 = ggplot(data = elevation) +
   geom_sf(aes(fill = elevation),lwd = .1,color = 'grey') +
-  tidyterra::scale_fill_hypso_c() + 
+  tidyterra::scale_fill_hypso_c() +
   theme_bw() +
   theme(
     axis.text = element_blank(),
@@ -99,7 +97,7 @@ f3 = ggplot(data = elevation) +
   )
 f4 = ggplot(data = soiltype) +
   geom_sf(aes(fill = soiltype),lwd = .1,color = 'grey') +
-  tidyterra::scale_fill_wiki_c() + 
+  tidyterra::scale_fill_wiki_c() +
   theme_bw() +
   theme(
     axis.text = element_blank(),
@@ -110,7 +108,7 @@ f4 = ggplot(data = soiltype) +
     legend.position.inside = c(.1,.25),
     legend.background = element_rect(fill = 'transparent',color = NA)
   )
-  
+
 plot_grid(f1,f2,f3,f4, nrow = 2,label_fontfamily = 'serif',
           labels = paste0('(',letters[1:4],')'),
           label_fontface = 'plain',label_size = 10,
@@ -121,22 +119,22 @@ p
 Attribute spatial join
 
 ```{r}
-NTDs = disease %>% 
-  st_centroid() %>% 
-  st_join(watershed[,"watershed"]) %>% 
-  st_join(elevation[,"elevation"]) %>% 
-  st_join(soiltype[,"soiltype"]) 
+NTDs = disease %>%
+  st_centroid() %>%
+  st_join(watershed[,"watershed"]) %>%
+  st_join(elevation[,"elevation"]) %>%
+  st_join(soiltype[,"soiltype"])
 ```
 
 Check whether has `NA` in `NTDs`:
 
 ```{r}
-NTDs %>% 
+NTDs %>%
   dplyr::filter(if_any(everything(),~is.na(.x)))
 ```
 
 ```{r}
-NTDs %>% 
+NTDs %>%
   dplyr::filter(if_all(everything(),~!is.na(.x))) -> NTDs
 ```
 

@@ -15,8 +15,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-##  GOS model <img src="../man/figures/logo.png" align="right" height="75"/>
-
 This vignette explains how to run a `GOS` model in `spEcula` package.
 
 ```{r echo=FALSE, out.width='75%', fig.align="center",fig.cap="Schematic overview of geographically optimal similarity (GOS) model"}

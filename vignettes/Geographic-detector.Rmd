@@ -7,10 +7,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
-
-##  GeoDetector model <img src="../man/figures/logo.png" align="right" height="75"/>
-
 This vignette explains how to run a `geodetector` model in `spEcula` package.
 
 <div class="figure" style="text-align: center">

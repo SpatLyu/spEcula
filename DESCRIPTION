@@ -16,7 +16,6 @@ RoxygenNote: 7.3.1
 Imports: 
   stats,
   utils,
-  graphics,
   parallel,
   tibble, 
   dplyr,
@@ -28,10 +27,7 @@ Imports:
   pander,
   knitr,
   DescTools,
-  classInt,
-  kohonen,
-  aweSOM,
-  cluster
+  classInt
 Depends: 
     R (>= 4.1.0)
 LazyData: true

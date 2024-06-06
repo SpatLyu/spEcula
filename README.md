@@ -50,7 +50,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 11.23 sec elapsed
+## 12.52 sec elapsed
 ```
 
 ``` r
@@ -131,7 +131,7 @@ head(fvc)
 tictoc::tic()
 g = gd_bestunidisc(fvc ~ .,data = select(fvc,-lulc),discnum = 2:15,cores = 6)
 tictoc::toc()
-## 18.3 sec elapsed
+## 22.82 sec elapsed
 ```
 
 ``` r
@@ -144,17 +144,17 @@ ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
 
 | variable | Q-statistic |  P-value  |
 |:--------:|:-----------:|:---------:|
-|  presum  |   0.6392    | 4.362e-10 |
+|  presum  |   0.6424    | 3.712e-10 |
 |   lulc   |   0.5533    | 9.106e-10 |
-|  premin  |   0.4418    | 6.405e-10 |
-|  tmpmin  |    0.408    | 7.184e-10 |
+|  premin  |   0.4423    | 7.392e-10 |
+|  tmpmin  |   0.4028    | 5.13e-10  |
 |  tmpmax  |   0.2284    | 5.111e-10 |
 |   elev   |    0.209    |  1.5e-10  |
-|  tmpavg  |    0.197    | 6.598e-10 |
-|  slope   |   0.1936    | 6.136e-10 |
+|  tmpavg  |   0.1976    | 9.163e-10 |
+|  slope   |   0.1943    | 7.094e-10 |
 |   pop    |   0.1856    | 3.221e-10 |
-|  premax  |   0.1336    | 9.593e-10 |
-|   ntl    |   0.0215    | 9.024e-10 |
+|  premax  |   0.1336    | 2.489e-10 |
+|   ntl    |   0.02157   | 8.377e-10 |
 |  aspect  |   0.00741   | 5.448e-10 |
 
 ``` r
@@ -232,62 +232,3 @@ ssh.test(fvc ~ .,data = new.fvc,type = 'interaction')
 |   tmpavg ∩ tmpmax    | Enhance, nonlinear |
 |   tmpavg ∩ tmpmin    | Enhance, nonlinear |
 |   tmpmax ∩ tmpmin    | Enhance, nonlinear |
-
-### Spatially-aware Self-Organizing Maps(GeoSOM) model
-
-``` r
-data(pmc)
-
-set.seed(20220724)
-tictoc::tic()
-geosom_bestparam(data = pmc, 
-                 coords = c("centroidx","centroidy"),
-                 wt = c(seq(0.1,1,by = 0.1),2:5),
-                 xdim = 4:10, ydim = 4:10,cores = 6) -> g_bestparam
-tictoc::toc()
-## 43.93 sec elapsed
-```
-
-build geosom model
-
-``` r
-g = geosom(data = pmc, coords = c("centroidx","centroidy"), wt = .9,
-           grid = geosomgrid(4,4,topo = "rectangular",
-                             neighbourhood.fct = "gaussian"))
-```
-
-``` r
-g_superclass = geosom_superclass(g,6,method = 'pam')
-g_superclass
-##  [1] 1 2 2 2 3 1 2 2 3 3 4 5 3 4 4 6
-```
-
-``` r
-g_label = geosom_clusterlabel(g,g_superclass)
-g_label
-##   [1] 2 2 3 4 2 6 5 2 2 5 6 2 3 3 6 6 5 3 2 6 2 4 2 4 5 1 1 2 2 1 3 3 2 4 4 2 2
-##  [38] 4 2 2 1 4 5 2 6 3 5 2 4 1 1 3 1 2 2 1 4 2 3 1 2 5 2 3 2 4 1 6 6 3 1 2 3 2
-##  [75] 2 2 2 4 3 4 4 4 2 2 1 2 4 4 1 6 1 4 2 2 3 2 3 3 4 3 4 3 2 2 3 5 3 1 3 2 6
-## [112] 6 1 2 5 6 5 2 2 1 2 3 2 2 3 3 2 2 4 2 2 3 1 6 3 2 2 3 3 3 1 5 1 6 1 4 1 4
-## [149] 2 5 4 2 4 4 3 2 2 1 4 2 6 5 5 3 6 2 1 2 3 2 6 2 1 5 3 2 1 2 2 2 3 3 3 2 2
-## [186] 3 3 2 1 1 4 4 4 6 2 2 1 1 3 4 4 1 3 2 3 3 2 2 2 3 2 6 1 6 2 3 1 2 1 3 5 3
-## [223] 4 2 5 5 1 6 6 5 2 2 4 3 3 1 6 1 2 1 3 2 2 3 1 2 2 1 2 3 5 4 1 4 1 2 6 1 3
-## [260] 5 2 1 1 3 2 1 2 3 3 6 3 1 4 3 3 1 1 1
-```
-
-``` r
-library(sf)
-library(dplyr)
-
-pmc %>% 
-  mutate(zone = as.factor(g_label)) %>% 
-  st_as_sf(coords = c("centroidx","centroidy")) %>% 
-  ggplot() +
-  geom_sf(aes(col = zone),size = 1.25,shape = 17) +
-  scale_color_discrete(type = 'viridis') +
-  theme_bw() +
-  theme(axis.text = element_blank(),
-        axis.ticks = element_blank())
-```
-
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
