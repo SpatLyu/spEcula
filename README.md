@@ -35,11 +35,6 @@ install.packages('spEcula', repos='https://spatlyu.r-universe.dev')
 
 ### Geographically Optimal Similarity (GOS) model
 
-`geosimilarity` package has achieved `gos` model,but when data is
-larger,`geosimilarity` may be slow. I develop the parallelized `gos`
-model in `spEcula`,which can change the `cores` argument in `gos()` and
-`bestkappa` function to parallel computation.
-
 ``` r
 library(spEcula)
 data(zn)
@@ -50,7 +45,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 12.52 sec elapsed
+## 12.5 sec elapsed
 ```
 
 ``` r
@@ -102,7 +97,7 @@ plot_grid(f1,f2,nrow = 1,label_fontfamily = 'serif',
 p
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-gos_result-1.png" width="100%" />
 
 ### Geographic detectors(geodetector) model
 
@@ -131,7 +126,7 @@ head(fvc)
 tictoc::tic()
 g = gd_bestunidisc(fvc ~ .,data = select(fvc,-lulc),discnum = 2:15,cores = 6)
 tictoc::toc()
-## 22.82 sec elapsed
+## 22.36 sec elapsed
 ```
 
 ``` r
@@ -144,17 +139,17 @@ ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
 
 | variable | Q-statistic |  P-value  |
 |:--------:|:-----------:|:---------:|
-|  presum  |   0.6424    | 3.712e-10 |
+|  presum  |   0.6404    | 9.584e-10 |
 |   lulc   |   0.5533    | 9.106e-10 |
-|  premin  |   0.4423    | 7.392e-10 |
-|  tmpmin  |   0.4028    | 5.13e-10  |
+|  premin  |   0.4361    | 4.635e-10 |
+|  tmpmin  |   0.3984    | 5.662e-10 |
 |  tmpmax  |   0.2284    | 5.111e-10 |
 |   elev   |    0.209    |  1.5e-10  |
-|  tmpavg  |   0.1976    | 9.163e-10 |
-|  slope   |   0.1943    | 7.094e-10 |
+|  tmpavg  |   0.1953    | 7.356e-10 |
+|  slope   |   0.1929    | 5.022e-10 |
 |   pop    |   0.1856    | 3.221e-10 |
-|  premax  |   0.1336    | 2.489e-10 |
-|   ntl    |   0.02157   | 8.377e-10 |
+|  premax  |   0.1315    | 6.083e-10 |
+|   ntl    |   0.0214    | 8.234e-10 |
 |  aspect  |   0.00741   | 5.448e-10 |
 
 ``` r

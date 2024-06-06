@@ -45,8 +45,6 @@ install.packages('spEcula', repos='https://spatlyu.r-universe.dev')
 
 ### Geographically Optimal Similarity (GOS) model
 
-  `geosimilarity` package has achieved `gos` model,but when data is larger,`geosimilarity` may be slow. I develop the parallelized `gos` model in `spEcula`,which can change the `cores` argument in `gos()` and `bestkappa` function to parallel computation.
-
 ```{r example_gos}
 library(spEcula)
 data(zn)
@@ -70,7 +68,7 @@ library(viridis)
 ```
 
 
-```{r fig.width=9.5,fig.height=3.5}
+```{r gos_result,fig.width=9.5,fig.height=3.5}
 f1 = ggplot(grid, aes(x = Lon, y = Lat, fill = pred)) +
   geom_tile() +
   scale_fill_viridis(option="magma", direction = -1) + 
