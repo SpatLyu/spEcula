@@ -354,19 +354,20 @@ ed99
 
 ``` r
 library(terra)
-fvcpath = system.file("extdata", "FVC.zip",package = 'spEcula')
-fvc = terra::rast(paste0("/vsizip/",fvcpath))
+fvcpath = "https://github.com/SpatLyu/rdevdata/raw/main/FVC.tif"
+fvc = terra::rast(paste0("/vsicurl/",fvcpath))
 fvc
 ## class       : SpatRaster 
 ## dimensions  : 418, 568, 13  (nrow, ncol, nlyr)
 ## resolution  : 1000, 1000  (x, y)
 ## extent      : -92742.16, 475257.8, 3591385, 4009385  (xmin, xmax, ymin, ymax)
 ## coord. ref. : Asia_North_Albers_Equal_Area_Conic 
-## source      : FVC.zip 
+## source      : FVC.tif 
 ## names       :       fvc,   premax,   premin,   presum,    tmpmax,     tmpmin, ... 
 ## min values  : 0.1363270, 109.8619,  2.00000, 3783.904,  9.289694, -11.971293, ... 
 ## max values  : 0.9596695, 249.9284, 82.74928, 8549.112, 26.781870,   1.322163, ...
 ```
+
 
 ``` r
 names(fvc)
@@ -375,6 +376,7 @@ names(fvc)
 ```
 
 ### Convert data from `SpatRaster` to `tibble`
+
 
 
 ``` r
@@ -401,7 +403,7 @@ We can use `gd_bestunidisc` to discretize them based on geodetector q-statistic.
 tictoc::tic()
 g = gd_bestunidisc(fvc ~ .,data = select(fvc,-lulc),discnum = 2:15,cores = 6)
 tictoc::toc()
-## 23.26 sec elapsed
+## 18.26 sec elapsed
 ```
 
 
@@ -412,7 +414,7 @@ g
 ## [10] "tmpmax" "tmpmin"
 ## 
 ## $k
-##  [1] 15 15 14 15 15 13 14 14 15 15 15
+##  [1] 15 15 15 15 14 15 15 13 15 15 15
 ## 
 ## $method
 ##  [1] "equal"    "quantile" "fisher"   "quantile" "fisher"   "fisher"   "fisher"  
@@ -422,16 +424,16 @@ g
 ## # A tibble: 136,243 × 11
 ##    aspect  elev   ntl   pop premax premin presum slope tmpavg tmpmax tmpmin
 ##     <int> <int> <int> <int>  <int>  <int>  <int> <int>  <int>  <int>  <int>
-##  1      8    12     3     1      7      2      1     4      4      8      2
-##  2      8    12     2     1      7      1      1     5      4      8      2
-##  3      6    12     2     1      6      1      1     6      4      9      3
-##  4      5    12     2     1      6      1      1     4      5     10      3
+##  1      8    12     3     1      7      1      1     4      4      8      2
+##  2      8    12     2     1      6      1      1     5      4      8      2
+##  3      6    12     2     1      6      1      1     6      4      9      2
+##  4      5    12     2     1      6      1      1     4      5     10      2
 ##  5      5    13     3     4      7      2      1     3      4      8      2
-##  6      5    12     3     3      7      2      1     4      4      8      2
-##  7      6    12     2     1      7      1      1     6      4      9      3
+##  6      5    12     3     3      7      2      1     5      4      8      2
+##  7      6    12     2     1      6      1      1     6      4      9      3
 ##  8      7    12     2     1      6      1      1     5      5     10      3
 ##  9      8    12     2     1      6      1      1     3      5     10      3
-## 10      7    12     2     1      6      1      1     4      5     10      3
+## 10      7    12     3     1      6      1      1     5      5     10      3
 ## # ℹ 136,233 more rows
 ```
 
@@ -441,16 +443,16 @@ new.fvc
 ## # A tibble: 136,243 × 11
 ##    aspect  elev   ntl   pop premax premin presum slope tmpavg tmpmax tmpmin
 ##     <int> <int> <int> <int>  <int>  <int>  <int> <int>  <int>  <int>  <int>
-##  1      8    12     3     1      7      2      1     4      4      8      2
-##  2      8    12     2     1      7      1      1     5      4      8      2
-##  3      6    12     2     1      6      1      1     6      4      9      3
-##  4      5    12     2     1      6      1      1     4      5     10      3
+##  1      8    12     3     1      7      1      1     4      4      8      2
+##  2      8    12     2     1      6      1      1     5      4      8      2
+##  3      6    12     2     1      6      1      1     6      4      9      2
+##  4      5    12     2     1      6      1      1     4      5     10      2
 ##  5      5    13     3     4      7      2      1     3      4      8      2
-##  6      5    12     3     3      7      2      1     4      4      8      2
-##  7      6    12     2     1      7      1      1     6      4      9      3
+##  6      5    12     3     3      7      2      1     5      4      8      2
+##  7      6    12     2     1      6      1      1     6      4      9      3
 ##  8      7    12     2     1      6      1      1     5      5     10      3
 ##  9      8    12     2     1      6      1      1     3      5     10      3
-## 10      7    12     2     1      6      1      1     4      5     10      3
+## 10      7    12     3     1      6      1      1     5      5     10      3
 ## # ℹ 136,233 more rows
 ```
 
@@ -463,16 +465,16 @@ new.fvc
 ## # A tibble: 136,243 × 13
 ##      fvc  lulc aspect  elev   ntl   pop premax premin presum slope tmpavg tmpmax tmpmin
 ##    <dbl> <dbl>  <int> <int> <int> <int>  <int>  <int>  <int> <int>  <int>  <int>  <int>
-##  1 0.198    10      8    12     3     1      7      2      1     4      4      8      2
-##  2 0.193    10      8    12     2     1      7      1      1     5      4      8      2
-##  3 0.192    10      6    12     2     1      6      1      1     6      4      9      3
-##  4 0.189    10      5    12     2     1      6      1      1     4      5     10      3
+##  1 0.198    10      8    12     3     1      7      1      1     4      4      8      2
+##  2 0.193    10      8    12     2     1      6      1      1     5      4      8      2
+##  3 0.192    10      6    12     2     1      6      1      1     6      4      9      2
+##  4 0.189    10      5    12     2     1      6      1      1     4      5     10      2
 ##  5 0.208    10      5    13     3     4      7      2      1     3      4      8      2
-##  6 0.196    10      5    12     3     3      7      2      1     4      4      8      2
-##  7 0.191    10      6    12     2     1      7      1      1     6      4      9      3
+##  6 0.196    10      5    12     3     3      7      2      1     5      4      8      2
+##  7 0.191    10      6    12     2     1      6      1      1     6      4      9      3
 ##  8 0.185    10      7    12     2     1      6      1      1     5      5     10      3
 ##  9 0.174    10      8    12     2     1      6      1      1     3      5     10      3
-## 10 0.166    10      7    12     2     1      6      1      1     4      5     10      3
+## 10 0.166    10      7    12     3     1      6      1      1     5      5     10      3
 ## # ℹ 136,233 more rows
 ```
 
@@ -491,13 +493,13 @@ ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
 ------------------------------------
  variable   Q-statistic    P-value  
 ---------- ------------- -----------
-  presum      0.6386      5.849e-10 
+  presum      0.6406      6.684e-10 
 
    lulc       0.5533      9.106e-10 
 
-  premin      0.4369      6.816e-10 
+  premin      0.4427      4.262e-10 
 
-  tmpmin      0.4079      4.628e-10 
+  tmpmin      0.4068      3.583e-10 
 
   tmpmax      0.2284      5.111e-10 
 
@@ -505,13 +507,13 @@ ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
 
   tmpavg       0.197      6.833e-10 
 
-  slope       0.1924      5.101e-10 
+  slope       0.1911      7.183e-10 
 
    pop        0.1856      3.221e-10 
 
-  premax      0.1335      9.392e-10 
+  premax      0.1323      4.211e-10 
 
-   ntl        0.02148     9.707e-10 
+   ntl        0.02156     5.865e-10 
 
   aspect      0.00741     5.448e-10 
 ------------------------------------

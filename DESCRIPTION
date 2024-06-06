@@ -52,4 +52,3 @@ Suggests:
     PerformanceAnalytics,
     tictoc
 VignetteBuilder: knitr
-Config/build/clean-inst-doc: FALSE

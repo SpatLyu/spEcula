@@ -189,17 +189,21 @@ ed99
 
 ## optimal parameters geographic detector(OPGD)
 
-```{r}
+``` {r}
 library(terra)
-fvcpath = system.file("extdata", "FVC.zip",package = 'spEcula')
-fvc = terra::rast(paste0("/vsizip/",fvcpath))
+fvcpath = "https://github.com/SpatLyu/rdevdata/raw/main/FVC.tif"
+fvc = terra::rast(paste0("/vsicurl/",fvcpath))
 fvc
+```
+
+``` {r}
 names(fvc)
 ```
 
 ### Convert data from `SpatRaster` to `tibble`
 
-```{r}
+
+``` {r}
 fvc = as_tibble(terra::as.data.frame(fvc,na.rm = T))
 head(fvc)
 ```

@@ -45,7 +45,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 12.5 sec elapsed
+## 10 sec elapsed
 ```
 
 ``` r
@@ -106,8 +106,8 @@ library(sf)
 library(terra)
 library(tidyverse)
 library(spEcula)
-fvcpath = system.file("extdata", "FVC.zip",package = 'spEcula')
-fvc = terra::rast(paste0("/vsizip/",fvcpath))
+fvcpath = "https://github.com/SpatLyu/rdevdata/raw/main/FVC.tif"
+fvc = terra::rast(paste0("/vsicurl/",fvcpath))
 fvc = as_tibble(terra::as.data.frame(fvc,na.rm = T))
 head(fvc)
 ## # A tibble: 6 × 13
@@ -126,7 +126,7 @@ head(fvc)
 tictoc::tic()
 g = gd_bestunidisc(fvc ~ .,data = select(fvc,-lulc),discnum = 2:15,cores = 6)
 tictoc::toc()
-## 22.36 sec elapsed
+## 17.41 sec elapsed
 ```
 
 ``` r
@@ -139,17 +139,17 @@ ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
 
 | variable | Q-statistic |  P-value  |
 |:--------:|:-----------:|:---------:|
-|  presum  |   0.6404    | 9.584e-10 |
+|  presum  |   0.6412    | 4.51e-10  |
 |   lulc   |   0.5533    | 9.106e-10 |
-|  premin  |   0.4361    | 4.635e-10 |
-|  tmpmin  |   0.3984    | 5.662e-10 |
-|  tmpmax  |   0.2284    | 5.111e-10 |
+|  premin  |   0.4426    | 6.505e-10 |
+|  tmpmin  |   0.4011    | 3.85e-10  |
+|  tmpmax  |    0.223    | 5.874e-10 |
 |   elev   |    0.209    |  1.5e-10  |
-|  tmpavg  |   0.1953    | 7.356e-10 |
-|  slope   |   0.1929    | 5.022e-10 |
+|  tmpavg  |    0.197    | 6.833e-10 |
+|  slope   |    0.193    | 8.951e-10 |
 |   pop    |   0.1856    | 3.221e-10 |
-|  premax  |   0.1315    | 6.083e-10 |
-|   ntl    |   0.0214    | 8.234e-10 |
+|  premax  |   0.1341    | 8.861e-10 |
+|   ntl    |   0.02152   | 5.293e-10 |
 |  aspect  |   0.00741   | 5.448e-10 |
 
 ``` r
