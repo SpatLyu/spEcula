@@ -635,7 +635,7 @@ pH, Road, and Mine.</p>
 <span>                   data <span class="op">=</span> <span class="va">zn</span>,kappa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="fl">0.01</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">1</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                   nrepeat <span class="op">=</span> <span class="fl">10</span>,nsplit <span class="op">=</span> <span class="fl">.8</span>,cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 31.12 sec elapsed</span></span></code></pre></div>
+<span><span class="co">## 35.78 sec elapsed</span></span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">b1</span><span class="op">$</span><span class="va">bestkappa</span></span>
 <span><span class="co">## [1] 0.07</span></span></code></pre></div>
@@ -676,7 +676,7 @@ bigger).</p>
 <span>                   data <span class="op">=</span> <span class="va">zn</span>,kappa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="fl">0.01</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">1</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                   nrepeat <span class="op">=</span> <span class="fl">10</span>,nsplit <span class="op">=</span> <span class="fl">.8</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 10.05 sec elapsed</span></span></code></pre></div>
+<span><span class="co">## 12.83 sec elapsed</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">b2</span><span class="op">$</span><span class="va">bestkappa</span></span>
 <span><span class="co">## [1] 0.07</span></span></code></pre></div>
@@ -716,7 +716,7 @@ bigger).</p>
 <span><span class="va">g</span> <span class="op">=</span> <span class="fu"><a href="../reference/gos.html">gos</a></span><span class="op">(</span><span class="va">Zn</span> <span class="op">~</span> <span class="va">Slope</span> <span class="op">+</span> <span class="va">Water</span> <span class="op">+</span> <span class="va">NDVI</span>  <span class="op">+</span> <span class="va">SOC</span> <span class="op">+</span> <span class="va">pH</span> <span class="op">+</span> <span class="va">Road</span> <span class="op">+</span> <span class="va">Mine</span>,</span>
 <span>        data <span class="op">=</span> <span class="va">zn</span>, newdata <span class="op">=</span> <span class="va">grid</span>, kappa <span class="op">=</span> <span class="fl">0.07</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 10.9 sec elapsed</span></span></code></pre></div>
+<span><span class="co">## 14.69 sec elapsed</span></span></code></pre></div>
 <p>back transformation using transformation parameters that have used
 Box-cos transformation</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
