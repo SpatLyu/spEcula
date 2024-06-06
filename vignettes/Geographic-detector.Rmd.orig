@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 This vignette explains how to run a `geodetector` model in `spEcula` package.
 
-```{r echo=FALSE, out.width='75%', fig.align="center",fig.cap="Schematic overview of Geographic detectors(geodetector) model"}
+```{r echo=FALSE, out.width='75%', fig.align="center",fig.cap="Schematic diagram of Geographic detectors(geodetector) model"}
 knitr::include_graphics('../man/figures/gd_flowchart.png')
 ```
 

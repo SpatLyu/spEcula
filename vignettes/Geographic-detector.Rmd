@@ -10,8 +10,8 @@ vignette: >
 This vignette explains how to run a `geodetector` model in `spEcula` package.
 
 <div class="figure" style="text-align: center">
-<img src="../man/figures/gd_flowchart.png" alt="Schematic overview of Geographic detectors(geodetector) model" width="75%" />
-<p class="caption">Schematic overview of Geographic detectors(geodetector) model</p>
+<img src="../man/figures/gd_flowchart.png" alt="Schematic diagram of Geographic detectors(geodetector) model" width="75%" />
+<p class="caption">Schematic diagram of Geographic detectors(geodetector) model</p>
 </div>
 
 ## basical geographic detector
