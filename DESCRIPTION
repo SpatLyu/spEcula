@@ -26,8 +26,7 @@ Imports:
   ggrepel,
   pander,
   knitr,
-  DescTools,
-  classInt
+  DescTools
 Depends: 
     R (>= 4.1.0)
 LazyData: true
@@ -46,6 +45,7 @@ Suggests:
     cowplot,
     viridis,
     mapview,
+    classInt,
     readxl,
     writexl,
     htmlwidgets,

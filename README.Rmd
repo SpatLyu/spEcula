@@ -89,27 +89,16 @@ plot_grid(f1,f2,nrow = 1,label_fontfamily = 'serif',
 p
 ```
 
-### Geographic detectors(geodetector) model
+### Spatial Stratified Heterogeneity Test
 
-```{r example_gd}
-library(sf)
-library(terra)
-library(tidyverse)
+```{r example_ssh_test}
 library(spEcula)
-fvcpath = "https://github.com/SpatLyu/rdevdata/raw/main/FVC.tif"
-fvc = terra::rast(paste0("/vsicurl/",fvcpath))
-fvc = as_tibble(terra::as.data.frame(fvc,na.rm = T))
-head(fvc)
+data(NTDs)
+head(NTDs)
 ```
 
 ```{r}
-tictoc::tic()
-g = gd_bestunidisc(fvc ~ .,data = select(fvc,-lulc),discnum = 2:15,cores = 6)
-tictoc::toc()
-```
-
-```{r}
-new.fvc = bind_cols(select(fvc,fvc,lulc),g$disv)
-ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
-ssh.test(fvc ~ .,data = new.fvc,type = 'interaction')
+fd = ssh.test(incidence ~ watershed + elevation + soiltype,
+              data = NTDs,type = 'factor')
+fd
 ```

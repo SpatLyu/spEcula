@@ -1,8 +1,8 @@
 ---
-title: "Geographic detectors(geodetector) Model"
+title: "Spatial Stratified Heterogeneity Test"
 author: "Wenbo Lv"
 vignette: >
-  %\VignetteIndexEntry{Geographi-detector}
+  %\VignetteIndexEntry{ssh-test}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,13 +16,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette explains how to run a `geodetector` model in `spEcula` package.
+This vignette explains how to do `Spatial Stratified Heterogeneity Test` in `spEcula` package.
 
-```{r echo=FALSE, out.width='75%', fig.align="center",fig.cap="Schematic diagram of Geographic detectors(geodetector) model"}
+```{r echo=FALSE, out.width='75%', fig.align="center",fig.cap="Schematic diagram of Spatial Stratified Heterogeneity Test"}
 knitr::include_graphics('../man/figures/gd_flowchart.png')
 ```
-
-## basical geographic detector
 
 ### Load package and pre-processing data.
 
@@ -185,57 +183,4 @@ You can also change the significant interval by assign `alpha` argument,the defa
 ed99 = ssh.test(incidence ~ watershed + elevation + soiltype,
               data = NTDs,type = 'ecological',alpha = 0.99)
 ed99
-```
-
-## optimal parameters geographic detector(OPGD)
-
-``` {r}
-library(terra)
-fvcpath = "https://github.com/SpatLyu/rdevdata/raw/main/FVC.tif"
-fvc = terra::rast(paste0("/vsicurl/",fvcpath))
-fvc
-```
-
-``` {r}
-names(fvc)
-```
-
-### Convert data from `SpatRaster` to `tibble`
-
-
-``` {r}
-fvc = as_tibble(terra::as.data.frame(fvc,na.rm = T))
-head(fvc)
-```
-
-### Determine optimal discretization parameters
-
-Only `lulc` is a discrete category variable in the `fvc` data, we need to discretize others.
-We can use `gd_bestunidisc` to discretize them based on geodetector q-statistic.
-
-```{r}
-tictoc::tic()
-g = gd_bestunidisc(fvc ~ .,data = select(fvc,-lulc),discnum = 2:15,cores = 6)
-tictoc::toc()
-```
-
-```{r}
-g
-new.fvc = g$disv
-new.fvc
-```
-
-The `new.fvc`  is the discrete result of the optimal discretization parameter based on the Q statistic of the geographic detector,we can combine it with `fvc` and `lulc` col in `fvc` tibble now.
-
-```{r}
-new.fvc = bind_cols(select(fvc,fvc,lulc),new.fvc)
-new.fvc
-```
-
-### Run geodetector
-Then ,we can run geodetector model by `ssh.test()` function.
-
-```{r}
-ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
-ssh.test(fvc ~ .,data = new.fvc,type = 'interaction')
 ```

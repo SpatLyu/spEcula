@@ -45,7 +45,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 10 sec elapsed
+## 10.12 sec elapsed
 ```
 
 ``` r
@@ -99,131 +99,34 @@ p
 
 <img src="man/figures/README-gos_result-1.png" width="100%" />
 
-### Geographic detectors(geodetector) model
+### Spatial Stratified Heterogeneity Test
 
 ``` r
-library(sf)
-library(terra)
-library(tidyverse)
 library(spEcula)
-fvcpath = "https://github.com/SpatLyu/rdevdata/raw/main/FVC.tif"
-fvc = terra::rast(paste0("/vsicurl/",fvcpath))
-fvc = as_tibble(terra::as.data.frame(fvc,na.rm = T))
-head(fvc)
-## # A tibble: 6 × 13
-##     fvc premax premin presum tmpmax tmpmin tmpavg    pop   ntl  lulc  elev slope
-##   <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl>
-## 1 0.198   163.   7.95  3956.   20.8  -7.53   8.05  1.90   6.60    10 1758.  2.65
-## 2 0.193   161.   6.80  3892.   20.7  -7.55   8.02  1.20   4.91    10 1754.  3.45
-## 3 0.192   160.   5.24  3842.   20.9  -7.48   8.15  0.547  3.75    10 1722.  3.96
-## 4 0.189   159.   5     3808.   21.1  -7.39   8.35  0.542  3.99    10 1672.  2.90
-## 5 0.208   164.   9.98  4051.   20.6  -7.59   7.97 10.4    7.10    10 1780.  1.94
-## 6 0.196   163.   8.15  3973.   20.7  -7.53   8.03  9.31   6.56    10 1755.  3.01
-## # ℹ 1 more variable: aspect <dbl>
+data(NTDs)
+head(NTDs)
+## # A tibble: 6 × 5
+##   SP_ID incidence watershed elevation soiltype
+##   <chr>     <dbl>     <int>     <int>    <int>
+## 1 0          5.94         5         5        5
+## 2 1          5.87         5         5        4
+## 3 2          5.88         5         5        5
+## 4 3          5.98         5         5        5
+## 5 4          5.96         5         5        1
+## 6 5          5.66         5         5        4
 ```
 
 ``` r
-tictoc::tic()
-g = gd_bestunidisc(fvc ~ .,data = select(fvc,-lulc),discnum = 2:15,cores = 6)
-tictoc::toc()
-## 17.41 sec elapsed
-```
-
-``` r
-new.fvc = bind_cols(select(fvc,fvc,lulc),g$disv)
-ssh.test(fvc ~ .,data = new.fvc,type = 'factor')
+fd = ssh.test(incidence ~ watershed + elevation + soiltype,
+              data = NTDs,type = 'factor')
+fd
 ## Spatial Stratified Heterogeneity Test 
 ##  
 ##           Factor detector
 ```
 
-| variable | Q-statistic |  P-value  |
-|:--------:|:-----------:|:---------:|
-|  presum  |   0.6412    | 4.51e-10  |
-|   lulc   |   0.5533    | 9.106e-10 |
-|  premin  |   0.4426    | 6.505e-10 |
-|  tmpmin  |   0.4011    | 3.85e-10  |
-|  tmpmax  |    0.223    | 5.874e-10 |
-|   elev   |    0.209    |  1.5e-10  |
-|  tmpavg  |    0.197    | 6.833e-10 |
-|  slope   |    0.193    | 8.951e-10 |
-|   pop    |   0.1856    | 3.221e-10 |
-|  premax  |   0.1341    | 8.861e-10 |
-|   ntl    |   0.02152   | 5.293e-10 |
-|  aspect  |   0.00741   | 5.448e-10 |
-
-``` r
-ssh.test(fvc ~ .,data = new.fvc,type = 'interaction')
-## Spatial Stratified Heterogeneity Test 
-##  
-##          Interaction detector
-```
-
-| Interactive variable |    Interaction     |
-|:--------------------:|:------------------:|
-|    lulc ∩ aspect     | Enhance, nonlinear |
-|     lulc ∩ elev      |    Enhance, bi-    |
-|      lulc ∩ ntl      | Enhance, nonlinear |
-|      lulc ∩ pop      |    Enhance, bi-    |
-|    lulc ∩ premax     |    Enhance, bi-    |
-|    lulc ∩ premin     |    Enhance, bi-    |
-|    lulc ∩ presum     |    Enhance, bi-    |
-|     lulc ∩ slope     |    Enhance, bi-    |
-|    lulc ∩ tmpavg     |    Enhance, bi-    |
-|    lulc ∩ tmpmax     |    Enhance, bi-    |
-|    lulc ∩ tmpmin     |    Enhance, bi-    |
-|    aspect ∩ elev     | Enhance, nonlinear |
-|     aspect ∩ ntl     | Enhance, nonlinear |
-|     aspect ∩ pop     | Enhance, nonlinear |
-|   aspect ∩ premax    | Enhance, nonlinear |
-|   aspect ∩ premin    | Enhance, nonlinear |
-|   aspect ∩ presum    |    Weaken, uni-    |
-|    aspect ∩ slope    | Enhance, nonlinear |
-|   aspect ∩ tmpavg    | Enhance, nonlinear |
-|   aspect ∩ tmpmax    | Enhance, nonlinear |
-|   aspect ∩ tmpmin    | Enhance, nonlinear |
-|      elev ∩ ntl      | Enhance, nonlinear |
-|      elev ∩ pop      |    Enhance, bi-    |
-|    elev ∩ premax     | Enhance, nonlinear |
-|    elev ∩ premin     |    Enhance, bi-    |
-|    elev ∩ presum     |    Enhance, bi-    |
-|     elev ∩ slope     |    Enhance, bi-    |
-|    elev ∩ tmpavg     |    Enhance, bi-    |
-|    elev ∩ tmpmax     | Enhance, nonlinear |
-|    elev ∩ tmpmin     |    Enhance, bi-    |
-|      ntl ∩ pop       | Enhance, nonlinear |
-|     ntl ∩ premax     | Enhance, nonlinear |
-|     ntl ∩ premin     | Enhance, nonlinear |
-|     ntl ∩ presum     | Enhance, nonlinear |
-|     ntl ∩ slope      | Enhance, nonlinear |
-|     ntl ∩ tmpavg     | Enhance, nonlinear |
-|     ntl ∩ tmpmax     | Enhance, nonlinear |
-|     ntl ∩ tmpmin     | Enhance, nonlinear |
-|     pop ∩ premax     | Enhance, nonlinear |
-|     pop ∩ premin     |    Enhance, bi-    |
-|     pop ∩ presum     |    Enhance, bi-    |
-|     pop ∩ slope      |    Enhance, bi-    |
-|     pop ∩ tmpavg     | Enhance, nonlinear |
-|     pop ∩ tmpmax     | Enhance, nonlinear |
-|     pop ∩ tmpmin     |    Enhance, bi-    |
-|   premax ∩ premin    | Enhance, nonlinear |
-|   premax ∩ presum    |    Enhance, bi-    |
-|    premax ∩ slope    | Enhance, nonlinear |
-|   premax ∩ tmpavg    | Enhance, nonlinear |
-|   premax ∩ tmpmax    | Enhance, nonlinear |
-|   premax ∩ tmpmin    | Enhance, nonlinear |
-|   premin ∩ presum    |    Enhance, bi-    |
-|    premin ∩ slope    |    Enhance, bi-    |
-|   premin ∩ tmpavg    |    Enhance, bi-    |
-|   premin ∩ tmpmax    |    Enhance, bi-    |
-|   premin ∩ tmpmin    |    Enhance, bi-    |
-|    presum ∩ slope    |    Enhance, bi-    |
-|   presum ∩ tmpavg    |    Enhance, bi-    |
-|   presum ∩ tmpmax    |    Enhance, bi-    |
-|   presum ∩ tmpmin    |    Enhance, bi-    |
-|    slope ∩ tmpavg    |    Enhance, bi-    |
-|    slope ∩ tmpmax    |    Enhance, bi-    |
-|    slope ∩ tmpmin    |    Enhance, bi-    |
-|   tmpavg ∩ tmpmax    | Enhance, nonlinear |
-|   tmpavg ∩ tmpmin    | Enhance, nonlinear |
-|   tmpmax ∩ tmpmin    | Enhance, nonlinear |
+| variable  | Q-statistic |  P-value  |
+|:---------:|:-----------:|:---------:|
+| watershed |   0.6378    | 0.0001288 |
+| elevation |   0.6067    |  0.04338  |
+| soiltype  |   0.3857    |  0.3721   |
