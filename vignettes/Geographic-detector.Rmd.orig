@@ -187,7 +187,7 @@ ed99 = ssh.test(incidence ~ watershed + elevation + soiltype,
 ed99
 ```
 
-## optimal parameters geographic detector
+## optimal parameters geographic detector(OPGD)
 
 ```{r}
 library(terra)
@@ -197,7 +197,7 @@ fvc
 names(fvc)
 ```
 
-### Convert data from `SpatRaster` to `tiibble`
+### Convert data from `SpatRaster` to `tibble`
 
 ```{r}
 fvc = as_tibble(terra::as.data.frame(fvc,na.rm = T))
