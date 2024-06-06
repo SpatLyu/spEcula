@@ -10,9 +10,6 @@
     <loc>https://spatlyu.github.io/spEcula/articles/Geographically-optimal-similarity.html</loc>
   </url>
   <url>
-    <loc>https://spatlyu.github.io/spEcula/articles/Spatially-Aware-Self-Organizing-Maps.html</loc>
-  </url>
-  <url>
     <loc>https://spatlyu.github.io/spEcula/articles/index.html</loc>
   </url>
   <url>
@@ -34,30 +31,6 @@
     <loc>https://spatlyu.github.io/spEcula/reference/gd_bestunidisc.html</loc>
   </url>
   <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/geosom.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/geosom_bestparam.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/geosom_bestsuperclass.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/geosom_clusterlabel.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/geosom_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/geosom_quality.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/geosom_superclass.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/geosomgrid.html</loc>
-  </url>
-  <url>
     <loc>https://spatlyu.github.io/spEcula/reference/gos.html</loc>
   </url>
   <url>
@@ -74,9 +47,6 @@
   </url>
   <url>
     <loc>https://spatlyu.github.io/spEcula/reference/inverse_bcPower.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/pmc.html</loc>
   </url>
   <url>
     <loc>https://spatlyu.github.io/spEcula/reference/print.ecological_detector.html</loc>
