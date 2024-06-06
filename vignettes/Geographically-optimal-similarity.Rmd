@@ -8,6 +8,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+
+
 This vignette explains how to run a `GOS` model in `spEcula` package.
 
 <div class="figure" style="text-align: center">
@@ -183,7 +185,7 @@ b1 = gos_bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
                    data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
                    nrepeat = 10,nsplit = .8,cores = 1)
 tictoc::toc()
-## 31.12 sec elapsed
+## 35.78 sec elapsed
 ```
 
 ``` r
@@ -232,7 +234,7 @@ b2 = gos_bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
                    data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
                    nrepeat = 10,nsplit = .8,cores = 6)
 tictoc::toc()
-## 10.05 sec elapsed
+## 12.83 sec elapsed
 ```
 
 ``` r
@@ -280,7 +282,7 @@ tictoc::tic()
 g = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
         data = zn, newdata = grid, kappa = 0.07,cores = 6)
 tictoc::toc()
-## 10.9 sec elapsed
+## 14.69 sec elapsed
 ```
 
 back transformation using transformation parameters that have used Box-cos transformation
