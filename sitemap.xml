@@ -4,13 +4,13 @@
     <loc>https://spatlyu.github.io/spEcula/404.html</loc>
   </url>
   <url>
-    <loc>https://spatlyu.github.io/spEcula/articles/Geographic-detector.html</loc>
-  </url>
-  <url>
     <loc>https://spatlyu.github.io/spEcula/articles/Geographically-optimal-similarity.html</loc>
   </url>
   <url>
     <loc>https://spatlyu.github.io/spEcula/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://spatlyu.github.io/spEcula/articles/ssh-test.html</loc>
   </url>
   <url>
     <loc>https://spatlyu.github.io/spEcula/authors.html</loc>
@@ -26,9 +26,6 @@
   </url>
   <url>
     <loc>https://spatlyu.github.io/spEcula/reference/factor_detector.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/gd_bestunidisc.html</loc>
   </url>
   <url>
     <loc>https://spatlyu.github.io/spEcula/reference/gos.html</loc>
@@ -65,9 +62,6 @@
   </url>
   <url>
     <loc>https://spatlyu.github.io/spEcula/reference/ssh.test.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/st_unidisc.html</loc>
   </url>
   <url>
     <loc>https://spatlyu.github.io/spEcula/reference/zn.html</loc>

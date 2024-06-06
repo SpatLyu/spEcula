@@ -2,9 +2,9 @@ pandoc: 3.1.11
 pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
-  Geographic-detector: Geographic-detector.html
   Geographically-optimal-similarity: Geographically-optimal-similarity.html
-last_built: 2024-06-06T15:37Z
+  ssh-test: ssh-test.html
+last_built: 2024-06-06T17:43Z
 urls:
   reference: https://spatlyu.github.io/spEcula/reference
   article: https://spatlyu.github.io/spEcula/articles

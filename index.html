@@ -59,10 +59,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/Geographic-detector.html">Geographic detectors(geodetector) Model</a>
+      <a href="articles/Geographically-optimal-similarity.html">Geographically Optimal Similarity Model</a>
     </li>
     <li>
-      <a href="articles/Geographically-optimal-similarity.html">Geographically Optimal Similarity Model</a>
+      <a href="articles/ssh-test.html">Spatial Stratified Heterogeneity Test</a>
     </li>
   </ul>
 </li>
@@ -120,7 +120,7 @@
 <span><span class="va">g1</span> <span class="op">=</span> <span class="fu"><a href="reference/gos.html">gos</a></span><span class="op">(</span><span class="va">Zn</span> <span class="op">~</span> <span class="va">Slope</span> <span class="op">+</span> <span class="va">Water</span> <span class="op">+</span> <span class="va">NDVI</span>  <span class="op">+</span> <span class="va">SOC</span> <span class="op">+</span> <span class="va">pH</span> <span class="op">+</span> <span class="va">Road</span> <span class="op">+</span> <span class="va">Mine</span>,</span>
 <span>         data <span class="op">=</span> <span class="va">zn</span>, newdata <span class="op">=</span> <span class="va">grid</span>, kappa <span class="op">=</span> <span class="fl">0.08</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 10 sec elapsed</span></span></code></pre></div>
+<span><span class="co">## 10.12 sec elapsed</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span><span class="op">)</span></span>
 <span><span class="va">grid</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="va">g1</span><span class="op">$</span><span class="va">pred</span></span>
@@ -167,35 +167,25 @@
 <p><img src="reference/figures/README-gos_result-1.png" width="100%"></p>
 </div>
 <div class="section level3">
-<h3 id="geographic-detectorsgeodetector-model">Geographic detectors(geodetector) model<a class="anchor" aria-label="anchor" href="#geographic-detectorsgeodetector-model"></a>
+<h3 id="spatial-stratified-heterogeneity-test">Spatial Stratified Heterogeneity Test<a class="anchor" aria-label="anchor" href="#spatial-stratified-heterogeneity-test"></a>
 </h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SpatLyu/spEcula" class="external-link">spEcula</a></span><span class="op">)</span></span>
-<span><span class="va">fvcpath</span> <span class="op">=</span> <span class="st">"https://github.com/SpatLyu/rdevdata/raw/main/FVC.tif"</span></span>
-<span><span class="va">fvc</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"/vsicurl/"</span>,<span class="va">fvcpath</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">fvc</span> <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">fvc</span>,na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fvc</span><span class="op">)</span></span>
-<span><span class="co">## # A tibble: 6 × 13</span></span>
-<span><span class="co">##     fvc premax premin presum tmpmax tmpmin tmpavg    pop   ntl  lulc  elev slope</span></span>
-<span><span class="co">##   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 0.198   163.   7.95  3956.   20.8  -7.53   8.05  1.90   6.60    10 1758.  2.65</span></span>
-<span><span class="co">## 2 0.193   161.   6.80  3892.   20.7  -7.55   8.02  1.20   4.91    10 1754.  3.45</span></span>
-<span><span class="co">## 3 0.192   160.   5.24  3842.   20.9  -7.48   8.15  0.547  3.75    10 1722.  3.96</span></span>
-<span><span class="co">## 4 0.189   159.   5     3808.   21.1  -7.39   8.35  0.542  3.99    10 1672.  2.90</span></span>
-<span><span class="co">## 5 0.208   164.   9.98  4051.   20.6  -7.59   7.97 10.4    7.10    10 1780.  1.94</span></span>
-<span><span class="co">## 6 0.196   163.   8.15  3973.   20.7  -7.53   8.03  9.31   6.56    10 1755.  3.01</span></span>
-<span><span class="co">## # ℹ 1 more variable: aspect &lt;dbl&gt;</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SpatLyu/spEcula" class="external-link">spEcula</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">NTDs</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">NTDs</span><span class="op">)</span></span>
+<span><span class="co">## # A tibble: 6 × 5</span></span>
+<span><span class="co">##   SP_ID incidence watershed elevation soiltype</span></span>
+<span><span class="co">##   &lt;chr&gt;     &lt;dbl&gt;     &lt;int&gt;     &lt;int&gt;    &lt;int&gt;</span></span>
+<span><span class="co">## 1 0          5.94         5         5        5</span></span>
+<span><span class="co">## 2 1          5.87         5         5        4</span></span>
+<span><span class="co">## 3 2          5.88         5         5        5</span></span>
+<span><span class="co">## 4 3          5.98         5         5        5</span></span>
+<span><span class="co">## 5 4          5.96         5         5        1</span></span>
+<span><span class="co">## 6 5          5.66         5         5        4</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">tic</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">g</span> <span class="op">=</span> <span class="fu"><a href="reference/gd_bestunidisc.html">gd_bestunidisc</a></span><span class="op">(</span><span class="va">fvc</span> <span class="op">~</span> <span class="va">.</span>,data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">fvc</span>,<span class="op">-</span><span class="va">lulc</span><span class="op">)</span>,discnum <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">15</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
-<span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 17.41 sec elapsed</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">new.fvc</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">fvc</span>,<span class="va">fvc</span>,<span class="va">lulc</span><span class="op">)</span>,<span class="va">g</span><span class="op">$</span><span class="va">disv</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/ssh.test.html">ssh.test</a></span><span class="op">(</span><span class="va">fvc</span> <span class="op">~</span> <span class="va">.</span>,data <span class="op">=</span> <span class="va">new.fvc</span>,type <span class="op">=</span> <span class="st">'factor'</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fd</span> <span class="op">=</span> <span class="fu"><a href="reference/ssh.test.html">ssh.test</a></span><span class="op">(</span><span class="va">incidence</span> <span class="op">~</span> <span class="va">watershed</span> <span class="op">+</span> <span class="va">elevation</span> <span class="op">+</span> <span class="va">soiltype</span>,</span>
+<span>              data <span class="op">=</span> <span class="va">NTDs</span>,type <span class="op">=</span> <span class="st">'factor'</span><span class="op">)</span></span>
+<span><span class="va">fd</span></span>
 <span><span class="co">## Spatial Stratified Heterogeneity Test </span></span>
 <span><span class="co">##  </span></span>
 <span><span class="co">##           Factor detector</span></span></code></pre></div>
@@ -207,341 +197,19 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="center">presum</td>
-<td align="center">0.6412</td>
-<td align="center">4.51e-10</td>
+<td align="center">watershed</td>
+<td align="center">0.6378</td>
+<td align="center">0.0001288</td>
 </tr>
 <tr class="even">
-<td align="center">lulc</td>
-<td align="center">0.5533</td>
-<td align="center">9.106e-10</td>
+<td align="center">elevation</td>
+<td align="center">0.6067</td>
+<td align="center">0.04338</td>
 </tr>
 <tr class="odd">
-<td align="center">premin</td>
-<td align="center">0.4426</td>
-<td align="center">6.505e-10</td>
-</tr>
-<tr class="even">
-<td align="center">tmpmin</td>
-<td align="center">0.4011</td>
-<td align="center">3.85e-10</td>
-</tr>
-<tr class="odd">
-<td align="center">tmpmax</td>
-<td align="center">0.223</td>
-<td align="center">5.874e-10</td>
-</tr>
-<tr class="even">
-<td align="center">elev</td>
-<td align="center">0.209</td>
-<td align="center">1.5e-10</td>
-</tr>
-<tr class="odd">
-<td align="center">tmpavg</td>
-<td align="center">0.197</td>
-<td align="center">6.833e-10</td>
-</tr>
-<tr class="even">
-<td align="center">slope</td>
-<td align="center">0.193</td>
-<td align="center">8.951e-10</td>
-</tr>
-<tr class="odd">
-<td align="center">pop</td>
-<td align="center">0.1856</td>
-<td align="center">3.221e-10</td>
-</tr>
-<tr class="even">
-<td align="center">premax</td>
-<td align="center">0.1341</td>
-<td align="center">8.861e-10</td>
-</tr>
-<tr class="odd">
-<td align="center">ntl</td>
-<td align="center">0.02152</td>
-<td align="center">5.293e-10</td>
-</tr>
-<tr class="even">
-<td align="center">aspect</td>
-<td align="center">0.00741</td>
-<td align="center">5.448e-10</td>
-</tr>
-</tbody>
-</table>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/ssh.test.html">ssh.test</a></span><span class="op">(</span><span class="va">fvc</span> <span class="op">~</span> <span class="va">.</span>,data <span class="op">=</span> <span class="va">new.fvc</span>,type <span class="op">=</span> <span class="st">'interaction'</span><span class="op">)</span></span>
-<span><span class="co">## Spatial Stratified Heterogeneity Test </span></span>
-<span><span class="co">##  </span></span>
-<span><span class="co">##          Interaction detector</span></span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="center">Interactive variable</th>
-<th align="center">Interaction</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="center">lulc ∩ aspect</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">lulc ∩ elev</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">lulc ∩ ntl</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">lulc ∩ pop</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">lulc ∩ premax</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">lulc ∩ premin</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">lulc ∩ presum</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">lulc ∩ slope</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">lulc ∩ tmpavg</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">lulc ∩ tmpmax</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">lulc ∩ tmpmin</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">aspect ∩ elev</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">aspect ∩ ntl</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">aspect ∩ pop</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">aspect ∩ premax</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">aspect ∩ premin</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">aspect ∩ presum</td>
-<td align="center">Weaken, uni-</td>
-</tr>
-<tr class="even">
-<td align="center">aspect ∩ slope</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">aspect ∩ tmpavg</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">aspect ∩ tmpmax</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">aspect ∩ tmpmin</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">elev ∩ ntl</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">elev ∩ pop</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">elev ∩ premax</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">elev ∩ premin</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">elev ∩ presum</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">elev ∩ slope</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">elev ∩ tmpavg</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">elev ∩ tmpmax</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">elev ∩ tmpmin</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">ntl ∩ pop</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">ntl ∩ premax</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">ntl ∩ premin</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">ntl ∩ presum</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">ntl ∩ slope</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">ntl ∩ tmpavg</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">ntl ∩ tmpmax</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">ntl ∩ tmpmin</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">pop ∩ premax</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">pop ∩ premin</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">pop ∩ presum</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">pop ∩ slope</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">pop ∩ tmpavg</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">pop ∩ tmpmax</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">pop ∩ tmpmin</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">premax ∩ premin</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">premax ∩ presum</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">premax ∩ slope</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">premax ∩ tmpavg</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">premax ∩ tmpmax</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">premax ∩ tmpmin</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">premin ∩ presum</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">premin ∩ slope</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">premin ∩ tmpavg</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">premin ∩ tmpmax</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">premin ∩ tmpmin</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">presum ∩ slope</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">presum ∩ tmpavg</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">presum ∩ tmpmax</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">presum ∩ tmpmin</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">slope ∩ tmpavg</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">slope ∩ tmpmax</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="odd">
-<td align="center">slope ∩ tmpmin</td>
-<td align="center">Enhance, bi-</td>
-</tr>
-<tr class="even">
-<td align="center">tmpavg ∩ tmpmax</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="odd">
-<td align="center">tmpavg ∩ tmpmin</td>
-<td align="center">Enhance, nonlinear</td>
-</tr>
-<tr class="even">
-<td align="center">tmpmax ∩ tmpmin</td>
-<td align="center">Enhance, nonlinear</td>
+<td align="center">soiltype</td>
+<td align="center">0.3857</td>
+<td align="center">0.3721</td>
 </tr>
 </tbody>
 </table>
