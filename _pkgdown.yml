@@ -1,7 +1,7 @@
 url: https://spatlyu.github.io/spEcula
 template:
   bootstrap: 5
-  bootswatch: cerulean
+  bootswatch: morph
 
 on:
   push:
