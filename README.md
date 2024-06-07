@@ -5,8 +5,8 @@
 
 <!-- badges: start -->
 
-![CRAN](https://www.r-pkg.org/badges/version/spEcula)
-![r-universe](https://spatlyu.r-universe.dev/badges/spEcula)
+[![CRAN](https://www.r-pkg.org/badges/version/spEcula)](https://CRAN.R-project.org/package=spEcula)
+[![r-universe](https://spatlyu.r-universe.dev/badges/spEcula)](https://spatlyu.r-universe.dev/spEcula)
 
 <!-- badges: end -->
 
@@ -45,7 +45,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 10.12 sec elapsed
+## 9.3 sec elapsed
 ```
 
 ``` r

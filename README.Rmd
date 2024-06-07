@@ -19,8 +19,8 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
-![CRAN](https://www.r-pkg.org/badges/version/spEcula)
-![r-universe](https://spatlyu.r-universe.dev/badges/spEcula)
+[![CRAN](https://www.r-pkg.org/badges/version/spEcula)](https://CRAN.R-project.org/package=spEcula)
+[![r-universe](https://spatlyu.r-universe.dev/badges/spEcula)](https://spatlyu.r-universe.dev/spEcula)
 
 <!-- badges: end -->
 
