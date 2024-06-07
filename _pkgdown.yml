@@ -1,4 +1,6 @@
 url: https://spatlyu.github.io/spEcula
+template:
+  bootstrap: 5
 
 on:
   push:
