@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   Geographically-optimal-similarity: Geographically-optimal-similarity.html
   ssh-test: ssh-test.html
-last_built: 2024-06-06T17:43Z
+last_built: 2024-06-07T01:53Z
 urls:
   reference: https://spatlyu.github.io/spEcula/reference
   article: https://spatlyu.github.io/spEcula/articles

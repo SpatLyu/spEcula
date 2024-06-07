@@ -90,7 +90,7 @@
 <div class="page-header"><h1 id="specula-">spEcula <img src="reference/figures/logo.png" align="right" height="140"><a class="anchor" aria-label="anchor" href="#specula-"></a>
 </h1></div>
 <!-- badges: start -->
-<p><img src="https://www.r-pkg.org/badges/version/spEcula" alt="CRAN"><img src="https://spatlyu.r-universe.dev/badges/spEcula" alt="r-universe"></p>
+
 <!-- badges: end -->
 <p>The goal of <strong>spEcula</strong> is to make it easier to use R for spatial prediction based on <em>spatial dependence</em>, <em>spatial stratification heterogeneity</em> and <em>geographical configuration similarity</em>, and spatial statistical inference based on <strong>spatial relationships</strong> (the <strong>three laws of geography</strong>).</p>
 <div class="section level2">
@@ -120,7 +120,7 @@
 <span><span class="va">g1</span> <span class="op">=</span> <span class="fu"><a href="reference/gos.html">gos</a></span><span class="op">(</span><span class="va">Zn</span> <span class="op">~</span> <span class="va">Slope</span> <span class="op">+</span> <span class="va">Water</span> <span class="op">+</span> <span class="va">NDVI</span>  <span class="op">+</span> <span class="va">SOC</span> <span class="op">+</span> <span class="va">pH</span> <span class="op">+</span> <span class="va">Road</span> <span class="op">+</span> <span class="va">Mine</span>,</span>
 <span>         data <span class="op">=</span> <span class="va">zn</span>, newdata <span class="op">=</span> <span class="va">grid</span>, kappa <span class="op">=</span> <span class="fl">0.08</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 10.12 sec elapsed</span></span></code></pre></div>
+<span><span class="co">## 9.3 sec elapsed</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span><span class="op">)</span></span>
 <span><span class="va">grid</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="va">g1</span><span class="op">$</span><span class="va">pred</span></span>
@@ -250,7 +250,13 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://CRAN.R-project.org/package=spEcula" class="external-link"><img src="https://www.r-pkg.org/badges/version/spEcula" alt="CRAN"></a></li>
+<li><a href="https://spatlyu.r-universe.dev/spEcula" class="external-link"><img src="https://spatlyu.r-universe.dev/badges/spEcula" alt="r-universe"></a></li>
+</ul>
+</div>
 
   </div>
 </div>
