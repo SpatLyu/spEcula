@@ -22,3 +22,10 @@
 inverse_bcPower = \(z,alpha){
   return((z * alpha + 1) ^ (1 / alpha))
 }
+
+
+#' @title Calculate RMSE
+#' @noRd
+CalRMSE = \(yobse,ypred){
+  return(sqrt(mean((yobse-ypred)^2)))
+}

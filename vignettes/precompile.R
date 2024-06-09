@@ -4,8 +4,8 @@
 
 devtools::load_all()
 
-knitr::knit("vignettes/Geographically-optimal-similarity.Rmd.orig",
-            "vignettes/Geographically-optimal-similarity.Rmd")
+knitr::knit("vignettes/GOS.Rmd.orig",
+            "vignettes/GOS.Rmd")
 
 # knitr::knit("vignettes/ssh-test.Rmd.orig",
 #             "vignettes/ssh-test.Rmd")

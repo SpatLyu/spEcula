@@ -3,7 +3,7 @@ title: "Geographically Optimal Similarity Model"
 author: "Wenbo Lv"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Geographically-optimal-similarity}
+  %\VignetteIndexEntry{GOS}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

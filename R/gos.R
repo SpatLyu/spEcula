@@ -135,8 +135,7 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
 #' @return A list of the result of the best kappa and the computation process curve.
 #'
 #' @importFrom stats as.formula
-#' @importFrom DescTools RMSE
-#' @importFrom dplyr %>% summarise
+#' @importFrom dplyr summarise
 #' @importFrom parallel makeCluster stopCluster clusterExport parLapply
 #' @importFrom purrr map_dfr
 #' @importFrom ggplot2 ggplot aes geom_point geom_line scale_x_continuous scale_y_continuous theme_bw
@@ -189,7 +188,7 @@ gos_bestkappa = \(formula, data = NULL, kappa = seq(0.05,1,0.05),
             kappa = kappa, cores = 1)
     pred = g$pred
 
-    cvrmse = c(kappa,DescTools::RMSE(cvtest[[namey]], pred))
+    cvrmse = c(kappa,CalRMSE(cvtest[[namey]], pred))
     names(cvrmse) = c('kappa','rmse')
     return(cvrmse)
   }
@@ -200,7 +199,7 @@ gos_bestkappa = \(formula, data = NULL, kappa = seq(0.05,1,0.05),
   parak = split(paradf, seq_len(nrow(paradf)))
 
   if (doclust) {
-    parallel::clusterExport(cores,'gos')
+    parallel::clusterExport(cores,c('gos','CalRMSE'))
     out_rmse = parallel::parLapply(cores,parak,calcvrmse)
     out_rmse = tibble::as_tibble(do.call(rbind, out_rmse))
   } else {
