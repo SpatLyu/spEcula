@@ -4,7 +4,7 @@
     <loc>https://spatlyu.github.io/spEcula/404.html</loc>
   </url>
   <url>
-    <loc>https://spatlyu.github.io/spEcula/articles/Geographically-optimal-similarity.html</loc>
+    <loc>https://spatlyu.github.io/spEcula/articles/GOS.html</loc>
   </url>
   <url>
     <loc>https://spatlyu.github.io/spEcula/articles/index.html</loc>
@@ -44,6 +44,9 @@
   </url>
   <url>
     <loc>https://spatlyu.github.io/spEcula/reference/inverse_bcPower.html</loc>
+  </url>
+  <url>
+    <loc>https://spatlyu.github.io/spEcula/reference/pipe.html</loc>
   </url>
   <url>
     <loc>https://spatlyu.github.io/spEcula/reference/print.ecological_detector.html</loc>
