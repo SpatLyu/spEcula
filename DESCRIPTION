@@ -23,6 +23,7 @@ Imports:
   tidyr,
   ggplot2,
   magrittr,
+  sf,
   ggrepel,
   pander,
   knitr
@@ -30,7 +31,6 @@ Depends:
     R (>= 4.1.0)
 LazyData: true
 Suggests: 
-    sf,
     terra,
     ggspatial,
     tidyverse,
@@ -44,11 +44,9 @@ Suggests:
     cowplot,
     viridis,
     mapview,
-    classInt,
     readxl,
     writexl,
     DescTools,
-    htmlwidgets,
     PerformanceAnalytics,
     tictoc
 VignetteBuilder: knitr
