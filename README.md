@@ -45,7 +45,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 10.43 sec elapsed
+## 10.83 sec elapsed
 ```
 
 ``` r
@@ -190,7 +190,8 @@ f1 = ggplot(data = sim_est, aes(fill = sandwichest_mean),
             color = "darkgray") +
   geom_sf() + 
   labs(fill='mean') +
-  scale_fill_gradient(low = "white", high = "red") +
+  scale_fill_gradient(low = "#f0bc9c", high = "red",
+                      breaks = range(sim_est$sandwichest_mean)) +
   theme_bw() +
   theme(
     axis.text = element_blank(),
@@ -205,7 +206,8 @@ f2 = ggplot(data = sim_est, aes(fill = sandwichest_standarderror),
             color = "darkgray") +
   geom_sf() + 
   labs(fill='se') +
-  scale_fill_gradient(low = "white", high = "blue") +
+  scale_fill_gradient(low = "#b6edf0", high = "blue",
+                      breaks = range(sim_est$sandwichest_standarderror)) +
   theme_bw() +
   theme(
     axis.text = element_blank(),

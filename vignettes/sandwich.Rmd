@@ -76,7 +76,8 @@ f1 = ggplot(data = sim_est, aes(fill = sandwichest_mean),
             color = "darkgray") +
   geom_sf() + 
   labs(fill='mean') +
-  scale_fill_gradient(low = "white", high = "red") +
+  scale_fill_gradient(low = "#f0bc9c", high = "red",
+                      breaks = range(sim_est$sandwichest_mean)) +
   theme_bw() +
   theme(
     axis.text = element_blank(),
@@ -91,7 +92,8 @@ f2 = ggplot(data = sim_est, aes(fill = sandwichest_standarderror),
             color = "darkgray") +
   geom_sf() + 
   labs(fill='se') +
-  scale_fill_gradient(low = "white", high = "blue") +
+  scale_fill_gradient(low = "#b6edf0", high = "blue",
+                      breaks = range(sim_est$sandwichest_standarderror)) +
   theme_bw() +
   theme(
     axis.text = element_blank(),
