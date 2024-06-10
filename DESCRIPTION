@@ -14,19 +14,19 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Imports: 
-  stats,
-  utils,
-  parallel,
-  tibble, 
-  dplyr,
-  purrr,
-  tidyr,
-  ggplot2,
-  magrittr,
-  sf,
-  ggrepel,
-  pander,
-  knitr
+    stats,
+    utils,
+    parallel,
+    tibble,
+    dplyr (>= 1.1.0),
+    purrr,
+    tidyr,
+    ggplot2,
+    magrittr,
+    sf,
+    ggrepel,
+    pander,
+    knitr
 Depends: 
     R (>= 4.1.0)
 LazyData: true
