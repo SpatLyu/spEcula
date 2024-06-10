@@ -102,3 +102,76 @@ fd = ssh.test(incidence ~ watershed + elevation + soiltype,
               data = NTDs,type = 'factor')
 fd
 ```
+
+### Sandwich Mapping Model
+
+```{r sandwich,fig.width=5.5,fig.height=3.5}
+library(sf)
+library(tidyverse)
+library(spEcula)
+simpath = system.file("extdata", "sim.gpkg", package="spEcula")
+sampling = read_sf(simpath,layer = 'sim_sampling')
+ssh = read_sf(simpath,layer = 'sim_ssh')
+reporting = read_sf(simpath,layer = 'sim_reporting')
+
+sampling_zone = sampling %>%
+    st_join(ssh['X']) %>%
+    st_drop_geometry()
+
+library(ggpubr)
+
+ggerrorplot(sampling_zone, x = "X", y = "Value",
+            desc_stat = "mean_sd", color = "black",
+            add = "violin", add.params = list(color = "darkgray")) +
+  geom_text(data = summarise(sampling_zone,vmean = mean(Value),.by = X), 
+            aes(x = X, y = vmean, label = round(vmean,2)), 
+            vjust = -0.5, hjust = -0.15, color = "black",size = 3) +
+  scale_x_discrete(labels = LETTERS[1:4]) +
+  theme(axis.title.x = element_blank())
+
+sim_est = sandwich(sampling = sampling,stratification = ssh,reporting = reporting,
+                   sampling_attr = 'Value',ssh_zone = 'X',reporting_id = 'Y',
+                   weight_type = 'area')
+sim_est
+```
+
+```{r sandwich_sim_est,fig.width=9.5, fig.height=3.5}
+library(cowplot) 
+
+f1 = ggplot(data = sim_est, aes(fill = sandwichest_mean), 
+            color = "darkgray") +
+  geom_sf() + 
+  labs(fill='mean') +
+  scale_fill_gradient(low = "white", high = "red") +
+  theme_bw() +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    panel.grid = element_blank(),
+    legend.position = 'right',
+    legend.background = element_rect(fill = 'transparent',color = NA)
+  )
+
+f2 = ggplot(data = sim_est, aes(fill = sandwichest_standarderror), 
+            color = "darkgray") +
+  geom_sf() + 
+  labs(fill='se') +
+  scale_fill_gradient(low = "white", high = "blue") +
+  theme_bw() +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    panel.grid = element_blank(),
+    legend.position = 'right',
+    legend.background = element_rect(fill = 'transparent',color = NA)
+  )
+
+plot_grid(f1, f2, nrow = 1,label_fontfamily = 'serif',
+          labels = paste0('(',letters[1:4],')'),
+          label_fontface = 'plain',label_size = 10,
+          hjust = -1,align = 'hv')  -> p
+p
+```
+

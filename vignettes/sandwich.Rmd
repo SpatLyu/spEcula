@@ -48,9 +48,13 @@ sampling_zone = sampling %>%
 
 library(ggpubr)
 
-ggerrorplot(sampling_zone, x = "X", y = "Value", xlab = LETTERS[1:4],
+ggerrorplot(sampling_zone, x = "X", y = "Value",
             desc_stat = "mean_sd", color = "black",
             add = "violin", add.params = list(color = "darkgray")) +
+  geom_text(data = summarise(sampling_zone,vmean = mean(Value),.by = X), 
+            aes(x = X, y = vmean, label = round(vmean,2)), 
+            vjust = -0.5, hjust = -0.15, color = "black",size = 3) +
+  scale_x_discrete(labels = LETTERS[1:4]) +
   theme(axis.title.x = element_blank())
 ```
 
@@ -65,7 +69,7 @@ sim_est
 
 see the estimated mean (a) and its standard error (b) returned by the Sandwich mapping model for each of the seven reporting units.
 
-```{r sandwich_sim_est,fig.width=9, fig.height=3}
+```{r sandwich_sim_est,fig.width=9.5, fig.height=3.5}
 library(cowplot) 
 
 f1 = ggplot(data = sim_est, aes(fill = sandwichest_mean), 
@@ -101,7 +105,7 @@ f2 = ggplot(data = sim_est, aes(fill = sandwichest_standarderror),
 plot_grid(f1, f2, nrow = 1,label_fontfamily = 'serif',
           labels = paste0('(',letters[1:4],')'),
           label_fontface = 'plain',label_size = 10,
-          hjust = -1.5,align = 'hv')  -> p
+          hjust = -1,align = 'hv')  -> p
 p
 ```
 
