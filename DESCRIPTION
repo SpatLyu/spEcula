@@ -40,6 +40,7 @@ Suggests:
     fs,
     skimr,
     car,
+    ggpubr,
     moments,
     cowplot,
     viridis,
