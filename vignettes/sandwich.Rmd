@@ -50,10 +50,7 @@ library(ggpubr)
 
 ggerrorplot(sampling_zone, x = "X", y = "Value", xlab = LETTERS[1:4],
             desc_stat = "mean_sd", color = "black",
-            add = "violin", add.params = list(color = "darkgray")) + 
-  geom_text(data = summarise(sampling_zone,vmean = mean(Value),.by = X), 
-            aes(x = X, y = vmean, label = vmean), 
-            vjust = -0.75, color = "black") +
+            add = "violin", add.params = list(color = "darkgray")) +
   theme(axis.title.x = element_blank())
 ```
 
@@ -68,7 +65,7 @@ sim_est
 
 see the estimated mean (a) and its standard error (b) returned by the Sandwich mapping model for each of the seven reporting units.
 
-```{r sandwich_sim_est,fig.width=7.5, fig.height=3}
+```{r sandwich_sim_est,fig.width=9, fig.height=3}
 library(cowplot) 
 
 f1 = ggplot(data = sim_est, aes(fill = sandwichest_mean), 
@@ -82,7 +79,7 @@ f1 = ggplot(data = sim_est, aes(fill = sandwichest_mean),
     axis.ticks = element_blank(),
     axis.title = element_blank(),
     panel.grid = element_blank(),
-    legend.position = 'outside',
+    legend.position = 'right',
     legend.background = element_rect(fill = 'transparent',color = NA)
   )
 
@@ -97,14 +94,14 @@ f2 = ggplot(data = sim_est, aes(fill = sandwichest_standarderror),
     axis.ticks = element_blank(),
     axis.title = element_blank(),
     panel.grid = element_blank(),
-    legend.position = 'outside',
+    legend.position = 'right',
     legend.background = element_rect(fill = 'transparent',color = NA)
   )
 
 plot_grid(f1, f2, nrow = 1,label_fontfamily = 'serif',
           labels = paste0('(',letters[1:4],')'),
           label_fontface = 'plain',label_size = 10,
-          align = 'hv')  -> p
+          hjust = -1.5,align = 'hv')  -> p
 p
 ```
 
