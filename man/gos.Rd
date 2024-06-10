@@ -2,7 +2,7 @@
 % Please edit documentation in R/gos.R
 \name{gos}
 \alias{gos}
-\title{Geographically optimal similarity}
+\title{geographically optimal similarity}
 \usage{
 gos(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1)
 }

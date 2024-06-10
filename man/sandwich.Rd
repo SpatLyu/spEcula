@@ -2,7 +2,7 @@
 % Please edit documentation in R/sandwich.R
 \name{sandwich}
 \alias{sandwich}
-\title{Sandwich mapping model}
+\title{sandwich mapping model}
 \usage{
 sandwich(
   sampling,

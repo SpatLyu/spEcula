@@ -1,4 +1,4 @@
-#' @title Sandwich mapping model
+#' @title sandwich mapping model
 #' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
 #' @description
 #' Spatial prediction based on spatial stratified heterogeneity using sandwich mapping model.

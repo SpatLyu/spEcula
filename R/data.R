@@ -1,4 +1,4 @@
-#' @title Spatial datasets of trace element Zn
+#' @title spatial datasets of trace element Zn
 #'
 #' @description Spatial datasets of trace element Zn,modified from `geosimilarity`
 #' package.
@@ -9,7 +9,7 @@
 #' @keywords dataset trace elements
 "zn"
 
-#' @title Spatial grid data of explanatory variables
+#' @title spatial grid data of explanatory variables
 #'
 #' @description Spatial grid data of explanatory variables,modified from `geosimilarity`
 #' package.

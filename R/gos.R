@@ -1,4 +1,4 @@
-#' @title Geographically optimal similarity
+#' @title geographically optimal similarity
 #' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
 #' @description
 #' Computationally optimized function for geographically optimal similarity (GOS) model
@@ -105,7 +105,7 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
   return(out)
 }
 
-#' @title Function for the best kappa parameter
+#' @title function for the best kappa parameter
 #' @author Wenbo Lv \email{lyu.geosocial@gmail.com}
 #' @description
 #' Computationally optimized function for determining the best kappa parameter for the optimal similarity
