@@ -29,3 +29,21 @@ inverse_bcPower = \(z,alpha){
 CalRMSE = \(yobse,ypred){
   return(sqrt(mean((yobse-ypred)^2)))
 }
+
+#' @title Rename sf object geometry name
+#' @noRd
+st_rename_geometry = \(g, name){
+  current = attr(g, "sf_column")
+  names(g)[names(g) == current] = name
+  sf::st_geometry(g) = name
+  return(g)
+}
+
+#' @title Calculate the area of the polygon element using the specified unit
+#' @noRd
+st_geographical_area = \(g){
+  garea = g %>%
+    sf::st_area() %>%
+    as.double()
+  return(garea)
+}
