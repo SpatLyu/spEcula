@@ -48,9 +48,12 @@ sampling_zone = sampling %>%
 
 library(ggpubr)
 
-ggerrorplot(sampling_zone, x = "X", y = "Value", 
+ggerrorplot(sampling_zone, x = "X", y = "Value", xlab = LETTERS[1:4],
             desc_stat = "mean_sd", color = "black",
             add = "violin", add.params = list(color = "darkgray")) + 
+  geom_text(data = summarise(sampling_zone,vmean = mean(Value),.by = X), 
+            aes(x = X, y = vmean, label = vmean), 
+            vjust = -0.75, color = "black") +
   theme(axis.title.x = element_blank())
 ```
 
@@ -101,7 +104,7 @@ f2 = ggplot(data = sim_est, aes(fill = sandwichest_standarderror),
 plot_grid(f1, f2, nrow = 1,label_fontfamily = 'serif',
           labels = paste0('(',letters[1:4],')'),
           label_fontface = 'plain',label_size = 10,
-          hjust = -1.5,align = 'hv')  -> p
+          align = 'hv')  -> p
 p
 ```
 
