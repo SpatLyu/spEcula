@@ -45,7 +45,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 10.83 sec elapsed
+## 6.89 sec elapsed
 ```
 
 ``` r
@@ -221,7 +221,7 @@ f2 = ggplot(data = sim_est, aes(fill = sandwichest_standarderror),
 plot_grid(f1, f2, nrow = 1,label_fontfamily = 'serif',
           labels = paste0('(',letters[1:4],')'),
           label_fontface = 'plain',label_size = 10,
-          hjust = -1,align = 'hv')  -> p
+          hjust = 0.05,align = 'hv')  -> p
 p
 ```
 

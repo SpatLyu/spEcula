@@ -69,7 +69,7 @@ sim_est
 
 see the estimated mean (a) and its standard error (b) returned by the Sandwich mapping model for each of the seven reporting units.
 
-```{r sandwich_sim_est,fig.width=9.5, fig.height=3.5}
+```{r sandwich_sim_est,fig.width=9.75, fig.height=3.5}
 library(cowplot) 
 
 f1 = ggplot(data = sim_est, aes(fill = sandwichest_mean), 
@@ -107,7 +107,7 @@ f2 = ggplot(data = sim_est, aes(fill = sandwichest_standarderror),
 plot_grid(f1, f2, nrow = 1,label_fontfamily = 'serif',
           labels = paste0('(',letters[1:4],')'),
           label_fontface = 'plain',label_size = 10,
-          hjust = -1,align = 'hv')  -> p
+          hjust = 0.05,align = 'hv')  -> p
 p
 ```
 
