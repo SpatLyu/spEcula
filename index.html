@@ -89,11 +89,11 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of <code>spEcula</code> from <code>github</code>:</p>
+<p>You can install the development version of <em>spEcula</em> from <a href="https://github.com/SpatLyu/spEcula" class="external-link"><em>github</em></a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SpatLyu/spEcula"</span>,build_vignettes <span class="op">=</span> <span class="cn">T</span>,dep <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<p>or install <code>spEcula</code> from <code>r-universe</code>:</p>
+<p>or install <em>spEcula</em> from <a href="https://spatlyu.r-universe.dev/spEcula" class="external-link"><em>r-universe</em></a>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'spEcula'</span>, repos<span class="op">=</span><span class="st">'https://spatlyu.r-universe.dev'</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -113,7 +113,7 @@
 <span><span class="va">g1</span> <span class="op">=</span> <span class="fu"><a href="reference/gos.html">gos</a></span><span class="op">(</span><span class="va">Zn</span> <span class="op">~</span> <span class="va">Slope</span> <span class="op">+</span> <span class="va">Water</span> <span class="op">+</span> <span class="va">NDVI</span>  <span class="op">+</span> <span class="va">SOC</span> <span class="op">+</span> <span class="va">pH</span> <span class="op">+</span> <span class="va">Road</span> <span class="op">+</span> <span class="va">Mine</span>,</span>
 <span>         data <span class="op">=</span> <span class="va">zn</span>, newdata <span class="op">=</span> <span class="va">grid</span>, kappa <span class="op">=</span> <span class="fl">0.08</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 6.89 sec elapsed</span></span></code></pre></div>
+<span><span class="co">## 6.39 sec elapsed</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span><span class="op">)</span></span>
 <span><span class="va">grid</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="va">g1</span><span class="op">$</span><span class="va">pred</span></span>
