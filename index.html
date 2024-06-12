@@ -113,7 +113,7 @@
 <span><span class="va">g1</span> <span class="op">=</span> <span class="fu"><a href="reference/gos.html">gos</a></span><span class="op">(</span><span class="va">Zn</span> <span class="op">~</span> <span class="va">Slope</span> <span class="op">+</span> <span class="va">Water</span> <span class="op">+</span> <span class="va">NDVI</span>  <span class="op">+</span> <span class="va">SOC</span> <span class="op">+</span> <span class="va">pH</span> <span class="op">+</span> <span class="va">Road</span> <span class="op">+</span> <span class="va">Mine</span>,</span>
 <span>         data <span class="op">=</span> <span class="va">zn</span>, newdata <span class="op">=</span> <span class="va">grid</span>, kappa <span class="op">=</span> <span class="fl">0.08</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 10.83 sec elapsed</span></span></code></pre></div>
+<span><span class="co">## 6.89 sec elapsed</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span><span class="op">)</span></span>
 <span><span class="va">grid</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="va">g1</span><span class="op">$</span><span class="va">pred</span></span>
@@ -293,7 +293,7 @@
 <span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="va">f1</span>, <span class="va">f2</span>, nrow <span class="op">=</span> <span class="fl">1</span>,label_fontfamily <span class="op">=</span> <span class="st">'serif'</span>,</span>
 <span>          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'('</span>,<span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,<span class="st">')'</span><span class="op">)</span>,</span>
 <span>          label_fontface <span class="op">=</span> <span class="st">'plain'</span>,label_size <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>          hjust <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,align <span class="op">=</span> <span class="st">'hv'</span><span class="op">)</span>  <span class="op">-&gt;</span> <span class="va">p</span></span>
+<span>          hjust <span class="op">=</span> <span class="fl">0.05</span>,align <span class="op">=</span> <span class="st">'hv'</span><span class="op">)</span>  <span class="op">-&gt;</span> <span class="va">p</span></span>
 <span><span class="va">p</span></span></code></pre></div>
 <p><img src="reference/figures/README-sandwich_sim_est-1.png" width="100%"></p>
 </div>
