@@ -1,6 +1,7 @@
 ---
 title: "Spatial Stratified Heterogeneity Test"
 author: "Wenbo Lv"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{ssh-test}
   %\VignetteEngine{knitr::rmarkdown}
