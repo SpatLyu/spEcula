@@ -28,14 +28,14 @@ The goal of **spEcula** is to make it easier to use R for spatial prediction bas
 
 ## Installation
 
-You can install the development version of `spEcula` from `github`:
+You can install the development version of *spEcula* from [*github*](https://github.com/SpatLyu/spEcula):
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("SpatLyu/spEcula",build_vignettes = T,dep = T)
 ```
 
-or install `spEcula` from `r-universe`:
+or install *spEcula* from [*r-universe*](https://spatlyu.r-universe.dev/spEcula):
 
 ```r
 install.packages('spEcula', repos='https://spatlyu.r-universe.dev')

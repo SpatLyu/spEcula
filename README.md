@@ -18,14 +18,16 @@ laws of geography**).
 
 ## Installation
 
-You can install the development version of `spEcula` from `github`:
+You can install the development version of *spEcula* from
+[*github*](https://github.com/SpatLyu/spEcula):
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("SpatLyu/spEcula",build_vignettes = T,dep = T)
 ```
 
-or install `spEcula` from `r-universe`:
+or install *spEcula* from
+[*r-universe*](https://spatlyu.r-universe.dev/spEcula):
 
 ``` r
 install.packages('spEcula', repos='https://spatlyu.r-universe.dev')
@@ -45,7 +47,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 6.89 sec elapsed
+## 6.39 sec elapsed
 ```
 
 ``` r
