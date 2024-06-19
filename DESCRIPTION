@@ -7,7 +7,7 @@ Authors@R: c(
     person("Yangyang", "Lei", , "2237768656@qq.com", role = c("aut"),
            comment = c(ORCID = "0009-0002-6518-3613"))      
     )
-Description: Advanced spatial prediction methods based on spatial relationships.
+Description: Advanced spatial prediction methods based on various spatial relationships.
 License: GPL-3
 URL: https://github.com/SpatLyu/spEcula, https://spatlyu.github.io/spEcula/
 Encoding: UTF-8

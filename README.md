@@ -10,11 +10,9 @@
 
 <!-- badges: end -->
 
-The goal of **spEcula** is to make it easier to use R for spatial
-prediction based on *spatial dependence*, *spatial stratification
-heterogeneity* and *geographical configuration similarity*, and spatial
-statistical inference based on **spatial relationships** (the **three
-laws of geography**).
+The goal of **spEcula** is to make it easier to use R for **spatial
+prediction** based on **various spatial relationships** (e.g. spatial
+dependence, spatial heterogeneity, geographical similarity).
 
 ## Installation
 
@@ -47,7 +45,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 6.39 sec elapsed
+## 6.56 sec elapsed
 ```
 
 ``` r
