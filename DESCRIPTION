@@ -1,5 +1,5 @@
 Package: spEcula
-Title: Spatial Methods In R
+Title: Spatial Prediction Methods In R
 Version: 0.1.2
 Authors@R: c(
     person("Wenbo", "Lv", , "lyu.geosocial@gmail.com", role = c("aut", "cre"),
@@ -7,7 +7,7 @@ Authors@R: c(
     person("Yangyang", "Lei", , "2237768656@qq.com", role = c("aut"),
            comment = c(ORCID = "0009-0002-6518-3613"))      
     )
-Description: Spatial Inference and Spatial Prediction based on Spatial Dependence, Spatial Heterogeneity and Geographical Similarity With R.
+Description: Advanced spatial prediction methods based on spatial relationships.
 License: GPL-3
 URL: https://github.com/SpatLyu/spEcula, https://spatlyu.github.io/spEcula/
 Encoding: UTF-8
