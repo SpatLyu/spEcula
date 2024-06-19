@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-The goal of **spEcula** is to make it easier to use R for **spatial prediction** based on **various spatial relationships** (e.g. spatial dependence, spatial heterogeneity, geographical similarity).
+The goal of **spEcula** is to make it easier to use **R** for **spatial prediction** based on **various spatial relationships** (e.g. spatial dependence, spatial heterogeneity and geographical similarity).
 
 ## Installation
 

@@ -10,9 +10,9 @@
 
 <!-- badges: end -->
 
-The goal of **spEcula** is to make it easier to use R for **spatial
+The goal of **spEcula** is to make it easier to use **R** for **spatial
 prediction** based on **various spatial relationships** (e.g. spatial
-dependence, spatial heterogeneity, geographical similarity).
+dependence, spatial heterogeneity and geographical similarity).
 
 ## Installation
 
@@ -45,7 +45,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 6.56 sec elapsed
+## 6.85 sec elapsed
 ```
 
 ``` r
