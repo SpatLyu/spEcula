@@ -31,6 +31,7 @@ CalRMSE = \(yobse,ypred){
 }
 
 #' @title Rename sf object geometry name
+#' @importFrom sf st_geometry
 #' @noRd
 st_rename_geometry = \(g, name){
   current = attr(g, "sf_column")
@@ -40,6 +41,7 @@ st_rename_geometry = \(g, name){
 }
 
 #' @title Calculate the area of the polygon element using the specified unit
+#' @importFrom sf st_area
 #' @noRd
 st_geographical_area = \(g){
   garea = g %>%

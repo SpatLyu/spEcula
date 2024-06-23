@@ -14,6 +14,18 @@ The goal of **spEcula** is to make it easier to use **R** for **spatial
 prediction** based on **various spatial relationships** (e.g. spatial
 dependence, spatial heterogeneity and geographical similarity).
 
+## Overview
+
+Full document of the most recent release of **spEcula** is online:
+<https://spatlyu.github.io/spEcula/>
+
+Current models and functions provided by **spEcula** are:
+
+| **spatial prediction method**     | **spEcula function** | **support status** |
+|-----------------------------------|----------------------|--------------------|
+| Geographically Optimal Similarity | `gos()`              | ✔️                 |
+| Sandwich Mapping Model            | `sandwich()`         | ✔️                 |
+
 ## Installation
 
 You can install the development version of *spEcula* from
@@ -45,7 +57,7 @@ tictoc::tic()
 g1 = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
          data = zn, newdata = grid, kappa = 0.08,cores = 6)
 tictoc::toc()
-## 6.85 sec elapsed
+## 6.6 sec elapsed
 ```
 
 ``` r
@@ -98,38 +110,6 @@ p
 ```
 
 <img src="man/figures/README-gos_result-1.png" width="100%" />
-
-### Spatial Stratified Heterogeneity Test
-
-``` r
-library(spEcula)
-data(NTDs)
-head(NTDs)
-## # A tibble: 6 × 5
-##   SP_ID incidence watershed elevation soiltype
-##   <chr>     <dbl>     <int>     <int>    <int>
-## 1 0          5.94         5         5        5
-## 2 1          5.87         5         5        4
-## 3 2          5.88         5         5        5
-## 4 3          5.98         5         5        5
-## 5 4          5.96         5         5        1
-## 6 5          5.66         5         5        4
-```
-
-``` r
-fd = ssh.test(incidence ~ watershed + elevation + soiltype,
-              data = NTDs,type = 'factor')
-fd
-## Spatial Stratified Heterogeneity Test 
-##  
-##           Factor detector
-```
-
-| variable  | Q-statistic |  P-value  |
-|:---------:|:-----------:|:---------:|
-| watershed |   0.6378    | 0.0001288 |
-| elevation |   0.6067    |  0.04338  |
-| soiltype  |   0.3857    |  0.3721   |
 
 ### Sandwich Mapping Model
 

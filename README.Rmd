@@ -26,6 +26,19 @@ knitr::opts_chunk$set(
 
 The goal of **spEcula** is to make it easier to use **R** for **spatial prediction** based on **various spatial relationships** (e.g. spatial dependence, spatial heterogeneity and geographical similarity).
 
+## Overview
+
+Full document of the most recent release of **spEcula** is online:
+<https://spatlyu.github.io/spEcula/>
+
+Current models and functions provided by **spEcula** are:
+
+|   **spatial prediction method**   |   **spEcula function**   |   **support status**   |
+|-----------------------------------|--------------------------|------------------------|
+|  Geographically Optimal Similarity  |        `gos()`         |          ✔️        |
+|  Sandwich Mapping Model  |        `sandwich()`         |          ✔️        |
+
+
 ## Installation
 
 You can install the development version of *spEcula* from [*github*](https://github.com/SpatLyu/spEcula):
@@ -87,20 +100,6 @@ plot_grid(f1,f2,nrow = 1,label_fontfamily = 'serif',
           label_fontface = 'plain',label_size = 10,
           hjust = -1.5,align = 'hv')  -> p
 p
-```
-
-### Spatial Stratified Heterogeneity Test
-
-```{r example_ssh_test}
-library(spEcula)
-data(NTDs)
-head(NTDs)
-```
-
-```{r}
-fd = ssh.test(incidence ~ watershed + elevation + soiltype,
-              data = NTDs,type = 'factor')
-fd
 ```
 
 ### Sandwich Mapping Model

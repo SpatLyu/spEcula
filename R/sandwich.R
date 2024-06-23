@@ -16,6 +16,10 @@
 #' Default is `area`.
 #'
 #' @return A `sf` object with estimated mean `sandwichest_mean` and standard error `sandwichest_standarderror`.
+#' @importFrom sf st_as_sf st_join st_drop_geometry st_intersection st_union
+#' @importFrom dplyr group_by pick group_by summarise n ungroup select left_join mutate all_of
+#' @importFrom tidyr replace_na
+#' @importFrom stats var
 #' @export
 #'
 #' @examples
