@@ -1,5 +1,5 @@
 ---
-title: "Spatial prediction based on spatial stratified heterogeneity"
+title: "Sandwich Mapping Model"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{sandwich}
