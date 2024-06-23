@@ -20,12 +20,3 @@
 #' @docType data
 #' @keywords dataset trace elements
 "grid"
-
-#' @title NTDs data
-#' @description
-#' See Geodetecor Model Vignette
-#'
-#' @name NTDs
-#' @format \code{NTDs}: A tibble with 185 rows and 5 variables.
-#' @docType data
-"NTDs"

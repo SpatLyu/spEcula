@@ -1,6 +1,6 @@
 Package: spEcula
 Title: Spatial Prediction Methods In R
-Version: 0.1.2
+Version: 0.1.2.9000
 Authors@R: c(
     person("Wenbo", "Lv", , "lyu.geosocial@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0002-6003-3800")),
@@ -15,7 +15,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Imports: 
     stats,
-    utils,
     parallel,
     tibble,
     dplyr (>= 1.1.0),
@@ -24,20 +23,15 @@ Imports:
     ggplot2,
     magrittr,
     sf,
-    ggrepel,
-    pander,
-    knitr
+    ggrepel
 Depends: 
     R (>= 4.1.0)
 LazyData: true
 Suggests: 
     terra,
-    ggspatial,
     tidyverse,
     tidyterra,
-    tmap,
     rmarkdown,
-    fs,
     skimr,
     car,
     ggpubr,
@@ -49,5 +43,6 @@ Suggests:
     writexl,
     DescTools,
     PerformanceAnalytics,
-    tictoc
+    tictoc,
+    knitr
 VignetteBuilder: knitr

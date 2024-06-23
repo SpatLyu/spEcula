@@ -6,6 +6,3 @@ devtools::load_all()
 
 knitr::knit("vignettes/GOS.Rmd.orig",
             "vignettes/GOS.Rmd")
-
-# knitr::knit("vignettes/ssh-test.Rmd.orig",
-#             "vignettes/ssh-test.Rmd")
