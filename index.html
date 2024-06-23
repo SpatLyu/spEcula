@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="index.html">spEcula</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,6 +86,36 @@
 <!-- badges: end -->
 <p>The goal of <strong>spEcula</strong> is to make it easier to use <strong>R</strong> for <strong>spatial prediction</strong> based on <strong>various spatial relationships</strong> (e.g. spatial dependence, spatial heterogeneity and geographical similarity).</p>
 <div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>Full document of the most recent release of <strong>spEcula</strong> is online: <a href="https://spatlyu.github.io/spEcula/" class="uri">https://spatlyu.github.io/spEcula/</a></p>
+<p>Current models and functions provided by <strong>spEcula</strong> are:</p>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="45%">
+<col width="28%">
+<col width="25%">
+</colgroup>
+<thead><tr class="header">
+<th><strong>spatial prediction method</strong></th>
+<th><strong>spEcula function</strong></th>
+<th><strong>support status</strong></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Geographically Optimal Similarity</td>
+<td><code><a href="reference/gos.html">gos()</a></code></td>
+<td>✔️</td>
+</tr>
+<tr class="even">
+<td>Sandwich Mapping Model</td>
+<td><code><a href="reference/sandwich.html">sandwich()</a></code></td>
+<td>✔️</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of <em>spEcula</em> from <a href="https://github.com/SpatLyu/spEcula" class="external-link"><em>github</em></a>:</p>
@@ -112,7 +142,7 @@
 <span><span class="va">g1</span> <span class="op">=</span> <span class="fu"><a href="reference/gos.html">gos</a></span><span class="op">(</span><span class="va">Zn</span> <span class="op">~</span> <span class="va">Slope</span> <span class="op">+</span> <span class="va">Water</span> <span class="op">+</span> <span class="va">NDVI</span>  <span class="op">+</span> <span class="va">SOC</span> <span class="op">+</span> <span class="va">pH</span> <span class="op">+</span> <span class="va">Road</span> <span class="op">+</span> <span class="va">Mine</span>,</span>
 <span>         data <span class="op">=</span> <span class="va">zn</span>, newdata <span class="op">=</span> <span class="va">grid</span>, kappa <span class="op">=</span> <span class="fl">0.08</span>,cores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## 6.85 sec elapsed</span></span></code></pre></div>
+<span><span class="co">## 6.6 sec elapsed</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">g1</span><span class="op">$</span><span class="va">pred</span><span class="op">)</span></span>
 <span><span class="va">grid</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="va">g1</span><span class="op">$</span><span class="va">pred</span></span>
@@ -159,57 +189,9 @@
 <p><img src="reference/figures/README-gos_result-1.png" width="100%"></p>
 </div>
 <div class="section level3">
-<h3 id="spatial-stratified-heterogeneity-test">Spatial Stratified Heterogeneity Test<a class="anchor" aria-label="anchor" href="#spatial-stratified-heterogeneity-test"></a>
-</h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SpatLyu/spEcula" class="external-link">spEcula</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">NTDs</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">NTDs</span><span class="op">)</span></span>
-<span><span class="co">## # A tibble: 6 × 5</span></span>
-<span><span class="co">##   SP_ID incidence watershed elevation soiltype</span></span>
-<span><span class="co">##   &lt;chr&gt;     &lt;dbl&gt;     &lt;int&gt;     &lt;int&gt;    &lt;int&gt;</span></span>
-<span><span class="co">## 1 0          5.94         5         5        5</span></span>
-<span><span class="co">## 2 1          5.87         5         5        4</span></span>
-<span><span class="co">## 3 2          5.88         5         5        5</span></span>
-<span><span class="co">## 4 3          5.98         5         5        5</span></span>
-<span><span class="co">## 5 4          5.96         5         5        1</span></span>
-<span><span class="co">## 6 5          5.66         5         5        4</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fd</span> <span class="op">=</span> <span class="fu">ssh.test</span><span class="op">(</span><span class="va">incidence</span> <span class="op">~</span> <span class="va">watershed</span> <span class="op">+</span> <span class="va">elevation</span> <span class="op">+</span> <span class="va">soiltype</span>,</span>
-<span>              data <span class="op">=</span> <span class="va">NTDs</span>,type <span class="op">=</span> <span class="st">'factor'</span><span class="op">)</span></span>
-<span><span class="va">fd</span></span>
-<span><span class="co">## Spatial Stratified Heterogeneity Test </span></span>
-<span><span class="co">##  </span></span>
-<span><span class="co">##           Factor detector</span></span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="center">variable</th>
-<th align="center">Q-statistic</th>
-<th align="center">P-value</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="center">watershed</td>
-<td align="center">0.6378</td>
-<td align="center">0.0001288</td>
-</tr>
-<tr class="even">
-<td align="center">elevation</td>
-<td align="center">0.6067</td>
-<td align="center">0.04338</td>
-</tr>
-<tr class="odd">
-<td align="center">soiltype</td>
-<td align="center">0.3857</td>
-<td align="center">0.3721</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level3">
 <h3 id="sandwich-mapping-model">Sandwich Mapping Model<a class="anchor" aria-label="anchor" href="#sandwich-mapping-model"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SpatLyu/spEcula" class="external-link">spEcula</a></span><span class="op">)</span></span>
@@ -233,7 +215,7 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html" class="external-link">scale_x_discrete</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-sandwich-1.png" width="100%"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">sim_est</span> <span class="op">=</span> <span class="fu"><a href="reference/sandwich.html">sandwich</a></span><span class="op">(</span>sampling <span class="op">=</span> <span class="va">sampling</span>,stratification <span class="op">=</span> <span class="va">ssh</span>,reporting <span class="op">=</span> <span class="va">reporting</span>,</span>
 <span>                   sampling_attr <span class="op">=</span> <span class="st">'Value'</span>,ssh_zone <span class="op">=</span> <span class="st">'X'</span>,reporting_id <span class="op">=</span> <span class="st">'Y'</span>,</span>
@@ -254,7 +236,7 @@
 <span><span class="co">## 5     5             390.                      2.53 ((1 3.6, 1 3.4, 1.2 3.4, 1.4…</span></span>
 <span><span class="co">## 6     6             357.                      2.15 ((1.6 3, 1.6 2.8, 1.8 2.8, 2…</span></span>
 <span><span class="co">## 7     7             203.                      2.40 ((0.6 5, 0.6 5, 0.6 5.2, 0.6…</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/cowplot/" class="external-link">cowplot</a></span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">f1</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sim_est</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">sandwichest_mean</span><span class="op">)</span>, </span>
