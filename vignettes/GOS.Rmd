@@ -1,6 +1,5 @@
 ---
 title: "Geographically Optimal Similarity Model"
-author: "Wenbo Lv"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{GOS}
@@ -148,7 +147,7 @@ Now, let's see the transformed `zn` variable in `Zn` data and see the skewness:
 hist(zn$Zn)
 ```
 
-![](figure/skewness-1.png)
+![](../man/figures/gos/skewness-1.png)
 
 ``` r
 moments::skewness(zn$Zn)
@@ -162,7 +161,7 @@ All right, let's move on to the next step to see variable correlation:
 PerformanceAnalytics::chart.Correlation(zn[, c(3:12)],pch = 19)
 ```
 
-![](figure/correlation-1.png)
+![](../man/figures/gos/correlation-1.png)
 
 and test multicollinearity use vif:
 
@@ -185,7 +184,7 @@ b1 = gos_bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
                    data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
                    nrepeat = 10,nsplit = .8,cores = 1)
 tictoc::toc()
-## 30.13 sec elapsed
+## 31.67 sec elapsed
 ```
 
 ``` r
@@ -223,7 +222,7 @@ b1$cvmean
 b1$plot
 ```
 
-![](figure/b1-1.png)
+![](../man/figures/gos/bestkappa1-1.png)
 
 You can set more optional numbers to the `kappa` vector and a higher value of the cross-validation repeat times `nrepeat` with a multi-core parallel(set `cores` bigger).
 
@@ -234,7 +233,7 @@ b2 = gos_bestkappa(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
                    data = zn,kappa = c(seq(0.01, 0.1, 0.01), seq(0.2, 1, 0.1)),
                    nrepeat = 10,nsplit = .8,cores = 6)
 tictoc::toc()
-## 10.65 sec elapsed
+## 9.86 sec elapsed
 ```
 
 ``` r
@@ -272,7 +271,7 @@ b2$cvmean
 b2$plot
 ```
 
-![](figure/b2-1.png)
+![](../man/figures/gos/bestkappa2-1.png)
 
 ### Spatial prediction use GOS model
 
@@ -282,7 +281,7 @@ tictoc::tic()
 g = gos(Zn ~ Slope + Water + NDVI  + SOC + pH + Road + Mine,
         data = zn, newdata = grid, kappa = 0.07,cores = 6)
 tictoc::toc()
-## 10.92 sec elapsed
+## 7.61 sec elapsed
 ```
 
 back transformation using transformation parameters that have used Box-cos transformation
@@ -299,10 +298,6 @@ show the result
 ``` r
 library(ggplot2)
 library(viridis)
-## Loading required package: viridisLite
-```
-
-``` r
 library(cowplot)
 
 f1 = ggplot(grid, aes(x = Lon, y = Lat, fill = pred)) +
@@ -325,4 +320,4 @@ plot_grid(f1,f2,nrow = 1,label_fontfamily = 'serif',
 p
 ```
 
-![](figure/gosresult-1.png)
+![](../man/figures/gos/gos_result-1.png)

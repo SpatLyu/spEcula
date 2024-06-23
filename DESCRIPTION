@@ -28,6 +28,7 @@ Depends:
     R (>= 4.1.0)
 LazyData: true
 Suggests: 
+    knitr,
     terra,
     tidyverse,
     tidyterra,
@@ -43,6 +44,5 @@ Suggests:
     writexl,
     DescTools,
     PerformanceAnalytics,
-    tictoc,
-    knitr
+    tictoc
 VignetteBuilder: knitr
