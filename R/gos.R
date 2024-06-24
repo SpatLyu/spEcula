@@ -21,12 +21,7 @@
 #' object.
 #'
 #' @return A tibble made up of predictions and uncertainties.
-#'
-#' @importFrom stats as.formula sd quantile
-#' @importFrom parallel makeCluster stopCluster parLapply
-#' @importFrom tibble as_tibble
-#' @importFrom purrr map_dfr
-#' @importFrom dplyr select
+#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -36,9 +31,6 @@
 #' data = zn, newdata = grid, kappa = 0.08,cores = 6)
 #' g
 #' }
-
-#' @export
-
 gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
   doclust = FALSE
   tau = 1 - kappa
@@ -74,22 +66,22 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
   obs_explanatory = as.matrix(obs_explanatory)
   pred_explanatory = as.matrix(pred_explanatory)
   xall = rbind(obs_explanatory, pred_explanatory)
-  sdv = sapply(1:nv, \(x) sd(xall[,x]))
+  sdv = sapply(1:nv, \(x) stats::sd(xall[,x]))
 
   calculgos = \(u){
     xpredvalues = pred_explanatory[u,]
     ej1 = lapply(1:nv, \(x) Ej(obs_explanatory[,x], xpredvalues[x], np, sdv[x]))
     ej = do.call(pmin, ej1)
-    k = which(ej >= quantile(ej, tau))
+    k = which(ej >= stats::quantile(ej, tau))
     ej2 = ej[k]
 
     c(sum(response[k] * ej2) / sum(ej2),
-      1 - quantile(ej2, 0.9),
-      1 - quantile(ej2, 0.95),
-      1 - quantile(ej2, 0.99),
-      1 - quantile(ej2, 0.995),
-      1 - quantile(ej2, 0.999),
-      1 - quantile(ej2, 1)) -> pred_unce
+      1 - stats::quantile(ej2, 0.9),
+      1 - stats::quantile(ej2, 0.95),
+      1 - stats::quantile(ej2, 0.99),
+      1 - stats::quantile(ej2, 0.995),
+      1 - stats::quantile(ej2, 0.999),
+      1 - stats::quantile(ej2, 1)) -> pred_unce
     names(pred_unce) = c('pred',paste0('uncertainty',
                                        c(90, 95, 99, 99.5, 99.9, 100)))
     return(pred_unce)
@@ -133,13 +125,7 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
 #' object.
 #'
 #' @return A list of the result of the best kappa and the computation process curve.
-#'
-#' @importFrom stats as.formula
-#' @importFrom dplyr summarise
-#' @importFrom parallel makeCluster stopCluster clusterExport parLapply
-#' @importFrom purrr map_dfr
-#' @importFrom ggplot2 ggplot aes geom_point geom_line scale_x_continuous scale_y_continuous theme_bw
-#' @importFrom ggrepel geom_label_repel
+#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -156,7 +142,6 @@ gos = \(formula, data = NULL, newdata = NULL, kappa = 0.25, cores = 1){
 #' b1$bestkappa
 #' b1$plot
 #' }
-#' @export
 
 gos_bestkappa = \(formula, data = NULL, kappa = seq(0.05,1,0.05),
               nrepeat = 10,nsplit = 0.5,cores = 1){
@@ -216,10 +201,12 @@ gos_bestkappa = \(formula, data = NULL, kappa = seq(0.05,1,0.05),
   best_x = cv.out$kappa[k]
   best_y = cv.out$rmse[k]
 
-  p1 = ggplot2::ggplot(cv.out, aes(x = kappa, y = rmse))+
+  p1 = ggplot2::ggplot(cv.out,
+                       ggplot2::aes(x = kappa, y = rmse))+
     ggplot2::geom_point()+
     ggplot2::geom_line() +
-    ggrepel::geom_label_repel(data = data.frame(kappa=best_x, rmse=best_y),
+    ggrepel::geom_label_repel(data = data.frame(kappa = best_x,
+                                                rmse = best_y),
                               label=as.character(best_kappa)) +
     ggplot2::scale_x_continuous(limits = c(0,1), breaks = seq(0,1,0.2)) +
     ggplot2::scale_y_continuous(limits = c(min(cv.out$rmse) - l1,

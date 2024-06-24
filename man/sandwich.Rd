@@ -48,6 +48,7 @@ sandwich(sampling = sampling,stratification = ssh,reporting = reporting,
 sandwich(sampling = sampling,stratification = ssh,reporting = reporting,
         sampling_attr = 'Value',ssh_zone = 'X',reporting_id = 'Y',
         weight_type = 'area')
+
 }
 \references{
 Lin, Y., Xu, C., & Wang, J. (2023). sandwichr: Spatial prediction in R based on spatial stratified heterogeneity.

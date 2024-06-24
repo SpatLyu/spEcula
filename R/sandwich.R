@@ -16,10 +16,6 @@
 #' Default is `area`.
 #'
 #' @return A `sf` object with estimated mean `sandwichest_mean` and standard error `sandwichest_standarderror`.
-#' @importFrom sf st_as_sf st_join st_drop_geometry st_intersection st_union
-#' @importFrom dplyr group_by pick group_by summarise n ungroup select left_join mutate all_of
-#' @importFrom tidyr replace_na
-#' @importFrom stats var
 #' @export
 #'
 #' @examples
@@ -34,8 +30,9 @@
 #'sandwich(sampling = sampling,stratification = ssh,reporting = reporting,
 #'         sampling_attr = 'Value',ssh_zone = 'X',reporting_id = 'Y',
 #'         weight_type = 'area')
-sandwich = \(sampling,stratification,reporting,sampling_attr,ssh_zone,
-             reporting_id,weight_type = 'area'){
+#'
+sandwich = \(sampling,stratification,reporting,sampling_attr,
+             ssh_zone, reporting_id, weight_type = 'area'){
   if (!inherits(sampling,"sf")){
     sampling = sf::st_as_sf(sampling)
   }
