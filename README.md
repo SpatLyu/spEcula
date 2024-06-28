@@ -33,14 +33,19 @@ You can install the development version of *spEcula* from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SpatLyu/spEcula",build_vignettes = T,dep = T)
+devtools::install_github("SpatLyu/spEcula",
+                         build_vignettes = T,
+                         dep = T)
 ```
 
 or install *spEcula* from
 [*r-universe*](https://spatlyu.r-universe.dev/spEcula):
 
-``` r
-install.packages('spEcula', repos='https://spatlyu.r-universe.dev')
+```r
+install.packages('spEcula',
+                 repos = c("https://spatlyu.r-universe.dev",
+                           "https://cran.rstudio.com/"),
+                 dep = TRUE)
 ```
 
 ## Example
