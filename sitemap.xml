@@ -1,48 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/404.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/articles/GOS.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/articles/sandwich.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/index.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/gos.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/gos_bestkappa.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/grid.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/inverse_bcPower.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/sandwich.html</loc>
-  </url>
-  <url>
-    <loc>https://spatlyu.github.io/spEcula/reference/zn.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://spatlyu.github.io/spEcula/404.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/articles/GOS.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/articles/index.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/articles/sandwich.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/authors.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/index.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/news/index.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/reference/gos.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/reference/gos_bestkappa.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/reference/grid.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/reference/index.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/reference/inverse_bcPower.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/reference/pipe.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/reference/sandwich.html</loc></url>
+<url><loc>https://spatlyu.github.io/spEcula/reference/zn.html</loc></url>
 </urlset>
+
