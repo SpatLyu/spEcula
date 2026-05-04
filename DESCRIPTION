@@ -2,7 +2,7 @@ Package: spEcula
 Title: Spatial Prediction Methods In R
 Version: 0.1.3.9900
 Authors@R: c(
-    person("Wenbo", "Lv", , "lyu.geosocial@gmail.com", role = c("aut", "cre"),
+    person("Wenbo", "Lyu", , "lyu.geosocial@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0002-6003-3800")),
     person("Yangyang", "Lei", , "2237768656@qq.com", role = c("aut"),
            comment = c(ORCID = "0009-0002-6518-3613"))      
